@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { Search } from "lucide-react";
 import { allSkills, searchJobsBySkill, type Job } from "@/data/jobs";
 import { JobResults } from "./JobResults";
@@ -13,12 +13,17 @@ const PLACEHOLDER_SKILLS = [
   "Strategic Planning",
 ];
 
-export function HeroSearch() {
+export interface HeroSearchHandle {
+  triggerSearch: (skill: string) => void;
+}
+
+export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, ref) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Job[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -46,8 +51,12 @@ export function HeroSearch() {
     const matched = searchJobsBySkill(skill);
     setResults(matched);
     setHasSearched(true);
-    setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
+    // Scroll to search input first, then to results
+    inputRef.current?.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 300);
   };
+
+  useImperativeHandle(ref, () => ({ triggerSearch }));
 
   return (
     <>
@@ -68,6 +77,7 @@ export function HeroSearch() {
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <input
+                  ref={inputRef}
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -132,4 +142,4 @@ export function HeroSearch() {
       )}
     </>
   );
-}
+});
