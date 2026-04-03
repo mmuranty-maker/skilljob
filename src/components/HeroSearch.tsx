@@ -61,7 +61,7 @@ export function HeroSearch() {
             </h1>
 
             <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-xl animate-fade-up-delay">
-              Most job sites look at where you've been. We look at what you can actually do. Get matched with roles that value your hustle.
+              Most job sites look at your job title. We look at what you can actually do. Get matched with roles that value your hustle.
             </p>
 
             <div className="mt-10 flex items-center gap-0 max-w-xl animate-fade-up-delay-2">
