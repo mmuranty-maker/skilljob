@@ -35,7 +35,12 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
     return () => clearInterval(interval);
   }, []);
 
-  const handleSearch = () => {
+  useEffect(() => {
+    if (showSearch) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [showSearch]);
+
     if (!query.trim()) return;
     const matched = searchJobsBySkill(query);
     setResults(matched);
