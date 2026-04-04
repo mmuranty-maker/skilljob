@@ -135,7 +135,11 @@ export function JobResults({ results, query }: JobResultsProps) {
                 </span>
               </div>
 
-              {/* Skills as social proof */}
+              <div className="flex items-center gap-2 mt-4">
+                <span className="text-xs px-2.5 py-1 rounded-full border border-primary/30 bg-primary/5 text-primary font-medium">{selectedJob.seniority}</span>
+                <span className="text-xs px-2.5 py-1 rounded-full border border-border text-muted-foreground">{selectedJob.category}</span>
+              </div>
+
               <div className="mt-8">
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
                   Skills That Match This Role
