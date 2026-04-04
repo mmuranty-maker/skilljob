@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Sparkles, Search } from "lucide-react";
-import { jobs } from "@/data/jobs";
+import { skillMappings } from "@/data/jobs";
 
 interface SkillBridgeProps {
   onSkillSearch?: (skill: string) => void;
@@ -11,20 +11,18 @@ function getSkillsForTitle(input: string): string[] {
   const q = input.toLowerCase().trim();
   if (!q) return [];
 
-  // Find jobs whose title matches the input
-  const matched = jobs.filter((job) =>
-    job.title.toLowerCase().includes(q)
+  const matched = skillMappings.filter((m) =>
+    m.title.toLowerCase().includes(q)
   );
 
   if (matched.length > 0) {
-    // Deduplicate skills across matched jobs
-    return [...new Set(matched.flatMap((j) => j.skills))];
+    return [...new Set(matched.flatMap((m) => m.skills))];
   }
 
   return [];
 }
 
-const EXAMPLE_TITLES = ["Waiter", "Barista", "Cashier", "Project Manager", "Social Media Manager"];
+const EXAMPLE_TITLES = ["Waiter", "Nurse", "Software Engineer", "Chef", "Project Manager", "Barista"];
 
 export function SkillBridge({ onSkillSearch }: SkillBridgeProps) {
   const [titleInput, setTitleInput] = useState("");
