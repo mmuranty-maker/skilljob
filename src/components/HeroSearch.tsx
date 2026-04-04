@@ -23,6 +23,7 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
   const [results, setResults] = useState<Job[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [quizOpen, setQuizOpen] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
