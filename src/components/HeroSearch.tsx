@@ -108,6 +108,13 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
                 </button>
               ))}
             </div>
+
+            <button
+              onClick={() => setQuizOpen(true)}
+              className="mt-3 text-sm text-primary hover:text-primary/80 transition-colors animate-fade-up-delay-2 text-left"
+            >
+              Not sure what your skills are? Let us help you find out →
+            </button>
           </div>
 
           {/* Right: Hero Image */}
