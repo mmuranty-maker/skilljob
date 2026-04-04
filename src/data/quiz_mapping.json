@@ -1,0 +1,93 @@
+{
+  "question_1": {
+    "tiles": {
+      "Talking to people": {
+        "maps_to_skills": ["Communication", "Active listening", "Customer service", "Verbal Communication", "Client relations"],
+        "suggested_posting_ids": ["jp007", "jp005", "jp024", "jp042", "jp020"]
+      },
+      "Managing tasks & schedules": {
+        "maps_to_skills": ["Planning", "Scheduling", "Time management", "Team coordination", "Budgeting"],
+        "suggested_posting_ids": ["jp008", "jp021", "jp040", "jp048", "jp030"]
+      },
+      "Solving problems": {
+        "maps_to_skills": ["Problem solving", "Critical thinking", "Troubleshooting", "Debugging", "Analytical thinking"],
+        "suggested_posting_ids": ["jp001", "jp013", "jp023", "jp032", "jp028"]
+      },
+      "Working with data or numbers": {
+        "maps_to_skills": ["Data analysis", "Excel", "SQL", "Reporting", "Financial modeling", "Statistics"],
+        "suggested_posting_ids": ["jp003", "jp015", "jp025", "jp037", "jp049"]
+      },
+      "Creating content or designs": {
+        "maps_to_skills": ["Content creation", "Creativity", "Copywriting", "Graphic design", "Brand voice", "Storytelling"],
+        "suggested_posting_ids": ["jp009", "jp017", "jp019", "jp026", "jp043"]
+      },
+      "Leading or coaching others": {
+        "maps_to_skills": ["Team leadership", "Mentoring", "Performance management", "Coaching", "People management"],
+        "suggested_posting_ids": ["jp006", "jp014", "jp021", "jp029", "jp034"]
+      },
+      "Selling or persuading": {
+        "maps_to_skills": ["Negotiation", "Closing", "Persuasion", "Objection handling", "Upselling", "Sales"],
+        "suggested_posting_ids": ["jp005", "jp024", "jp027", "jp042", "jp044"]
+      },
+      "Building or fixing things": {
+        "maps_to_skills": ["Troubleshooting", "Blueprint reading", "Safety compliance", "Hands-on repair", "Wiring", "CAD"],
+        "suggested_posting_ids": ["jp013", "jp032", "jp048", "jp036", "jp023"]
+      },
+      "Caring for or supporting people": {
+        "maps_to_skills": ["Empathy", "Patient care", "Conflict resolution", "Active listening", "Crisis intervention"],
+        "suggested_posting_ids": ["jp011", "jp033", "jp007", "jp038", "jp012"]
+      },
+      "Writing or researching": {
+        "maps_to_skills": ["Research", "Writing", "Documentation", "Editing", "Report writing", "SEO writing"],
+        "suggested_posting_ids": ["jp017", "jp026", "jp039", "jp018", "jp041"]
+      },
+      "Teaching or explaining": {
+        "maps_to_skills": ["Communication", "Lesson planning", "Presentation", "Curriculum design", "Mentoring", "Patience"],
+        "suggested_posting_ids": ["jp012", "jp038", "jp033", "jp011", "jp007"]
+      },
+      "Organising processes": {
+        "maps_to_skills": ["Process optimization", "Workflow management", "Risk management", "Compliance", "Documentation", "Agile"],
+        "suggested_posting_ids": ["jp021", "jp008", "jp040", "jp041", "jp044"]
+      }
+    }
+  },
+  "question_2": {
+    "tiles": {
+      "I solved something that had everyone else stuck": {
+        "maps_to_skills": ["Problem solving", "Critical thinking", "Debugging", "Analytical thinking"],
+        "amplifies_q1_tiles": ["Solving problems", "Building or fixing things", "Working with data or numbers"],
+        "suggested_posting_ids": ["jp001", "jp025", "jp028", "jp032", "jp016"]
+      },
+      "I helped someone through a difficult situation": {
+        "maps_to_skills": ["Empathy", "Conflict resolution", "Active listening", "Patient care"],
+        "amplifies_q1_tiles": ["Caring for or supporting people", "Talking to people", "Teaching or explaining"],
+        "suggested_posting_ids": ["jp011", "jp033", "jp007", "jp012", "jp014"]
+      },
+      "I organised chaos and made things run smoothly": {
+        "maps_to_skills": ["Process optimization", "Planning", "Team coordination", "Risk management"],
+        "amplifies_q1_tiles": ["Managing tasks & schedules", "Organising processes", "Leading or coaching others"],
+        "suggested_posting_ids": ["jp021", "jp008", "jp040", "jp048", "jp030"]
+      },
+      "I created something I'm genuinely proud of": {
+        "maps_to_skills": ["Creativity", "Content creation", "Storytelling", "Brand voice"],
+        "amplifies_q1_tiles": ["Creating content or designs", "Writing or researching", "Building or fixing things"],
+        "suggested_posting_ids": ["jp009", "jp004", "jp047", "jp043", "jp034"]
+      },
+      "I closed a deal or convinced someone of something": {
+        "maps_to_skills": ["Negotiation", "Closing", "Persuasion", "Sales"],
+        "amplifies_q1_tiles": ["Selling or persuading", "Talking to people", "Leading or coaching others"],
+        "suggested_posting_ids": ["jp005", "jp024", "jp042", "jp044", "jp027"]
+      },
+      "I learned something completely new": {
+        "maps_to_skills": ["Adaptability", "Research", "Critical thinking", "Self-motivation"],
+        "amplifies_q1_tiles": ["Working with data or numbers", "Writing or researching", "Solving problems"],
+        "suggested_posting_ids": ["jp003", "jp036", "jp037", "jp017", "jp039"]
+      },
+      "I led people through something challenging": {
+        "maps_to_skills": ["Team leadership", "Communication", "Decision making", "Coaching"],
+        "amplifies_q1_tiles": ["Leading or coaching others", "Managing tasks & schedules", "Teaching or explaining"],
+        "suggested_posting_ids": ["jp021", "jp006", "jp029", "jp014", "jp040"]
+      }
+    }
+  }
+}
