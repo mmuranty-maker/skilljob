@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
-import { Search } from "lucide-react";
+import { Search, Sparkles } from "lucide-react";
 import { allSkills, searchJobsBySkill, type Job } from "@/data/jobs";
 import { JobResults } from "./JobResults";
 import { SkillQuiz } from "./SkillQuiz";
