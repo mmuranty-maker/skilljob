@@ -78,7 +78,7 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
     setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 300);
   };
 
-  useImperativeHandle(ref, () => ({ triggerSearch }));
+  useImperativeHandle(ref, () => ({ triggerSearch, openQuiz: () => setQuizOpen(true) }));
 
   return (
     <>
