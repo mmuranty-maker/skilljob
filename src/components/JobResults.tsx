@@ -12,7 +12,7 @@ function formatSalary(amount: number) {
 }
 
 export function JobResults({ results, query }: JobResultsProps) {
-  const [selectedId, setSelectedId] = useState<number | null>(
+  const [selectedId, setSelectedId] = useState<string | null>(
     results.length > 0 ? results[0].id : null
   );
 
@@ -135,7 +135,11 @@ export function JobResults({ results, query }: JobResultsProps) {
                 </span>
               </div>
 
-              {/* Skills as social proof */}
+              <div className="flex items-center gap-2 mt-4">
+                <span className="text-xs px-2.5 py-1 rounded-full border border-primary/30 bg-primary/5 text-primary font-medium">{selectedJob.seniority}</span>
+                <span className="text-xs px-2.5 py-1 rounded-full border border-border text-muted-foreground">{selectedJob.category}</span>
+              </div>
+
               <div className="mt-8">
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
                   Skills That Match This Role
@@ -165,6 +169,32 @@ export function JobResults({ results, query }: JobResultsProps) {
                   </p>
                 )}
               </div>
+
+              {/* Nice to have skills */}
+              {selectedJob.niceToHaveSkills && selectedJob.niceToHaveSkills.length > 0 && (
+                <div className="mt-6">
+                  <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                    Nice to Have
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedJob.niceToHaveSkills.map((skill) => {
+                      const isMatch = skill.toLowerCase().includes(query.toLowerCase());
+                      return (
+                        <span
+                          key={skill}
+                          className={`text-sm px-3 py-1.5 rounded-full border ${
+                            isMatch
+                              ? "border-primary/40 bg-primary/10 text-primary font-medium"
+                              : "border-border/60 bg-muted/30 text-muted-foreground"
+                          }`}
+                        >
+                          {skill}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               {/* Description */}
               <div className="mt-8">
