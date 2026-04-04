@@ -170,6 +170,32 @@ export function JobResults({ results, query }: JobResultsProps) {
                 )}
               </div>
 
+              {/* Nice to have skills */}
+              {selectedJob.niceToHaveSkills && selectedJob.niceToHaveSkills.length > 0 && (
+                <div className="mt-6">
+                  <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                    Nice to Have
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedJob.niceToHaveSkills.map((skill) => {
+                      const isMatch = skill.toLowerCase().includes(query.toLowerCase());
+                      return (
+                        <span
+                          key={skill}
+                          className={`text-sm px-3 py-1.5 rounded-full border ${
+                            isMatch
+                              ? "border-primary/40 bg-primary/10 text-primary font-medium"
+                              : "border-border/60 bg-muted/30 text-muted-foreground"
+                          }`}
+                        >
+                          {skill}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               {/* Description */}
               <div className="mt-8">
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
