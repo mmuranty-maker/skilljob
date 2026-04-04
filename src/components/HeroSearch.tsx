@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "re
 import { Search } from "lucide-react";
 import { allSkills, searchJobsBySkill, type Job } from "@/data/jobs";
 import { JobResults } from "./JobResults";
+import { SkillQuiz } from "./SkillQuiz";
 import heroPeople from "@/assets/hero-people.jpg";
 
 const PLACEHOLDER_SKILLS = [
@@ -22,6 +23,7 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
   const [results, setResults] = useState<Job[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [quizOpen, setQuizOpen] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -106,6 +108,13 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
                 </button>
               ))}
             </div>
+
+            <button
+              onClick={() => setQuizOpen(true)}
+              className="mt-3 text-sm text-primary hover:text-primary/80 transition-colors animate-fade-up-delay-2 text-left"
+            >
+              Not sure what your skills are? Let us help you find out →
+            </button>
           </div>
 
           {/* Right: Hero Image */}
@@ -140,6 +149,12 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
           <JobResults results={results} query={query} />
         </div>
       )}
+
+      <SkillQuiz
+        open={quizOpen}
+        onClose={() => setQuizOpen(false)}
+        onComplete={(skill) => triggerSearch(skill)}
+      />
     </>
   );
 });
