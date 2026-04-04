@@ -149,6 +149,12 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
           <JobResults results={results} query={query} />
         </div>
       )}
+
+      <SkillQuiz
+        open={quizOpen}
+        onClose={() => setQuizOpen(false)}
+        onComplete={(skill) => triggerSearch(skill)}
+      />
     </>
   );
 });
