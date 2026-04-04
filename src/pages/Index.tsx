@@ -12,8 +12,8 @@ const Index = () => {
       <Navbar />
       <div className="pt-16">
         <HeroSearch ref={heroRef} />
-        <SkillBridge onSkillSearch={(skill) => heroRef.current?.triggerSearch(skill)} />
         <HowItWorks onStartQuiz={() => heroRef.current?.openQuiz()} />
+        <SkillBridge onSkillSearch={(skill) => heroRef.current?.triggerSearch(skill)} />
       </div>
     </main>
   );
