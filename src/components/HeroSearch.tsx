@@ -17,6 +17,7 @@ const PLACEHOLDER_SKILLS = [
 
 export interface HeroSearchHandle {
   triggerSearch: (skill: string) => void;
+  openQuiz: () => void;
 }
 
 export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, ref) {
