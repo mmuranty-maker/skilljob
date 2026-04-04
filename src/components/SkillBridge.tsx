@@ -11,14 +11,12 @@ function getSkillsForTitle(input: string): string[] {
   const q = input.toLowerCase().trim();
   if (!q) return [];
 
-  // Find jobs whose title matches the input
-  const matched = jobs.filter((job) =>
-    job.title.toLowerCase().includes(q)
+  const matched = skillMappings.filter((m) =>
+    m.title.toLowerCase().includes(q)
   );
 
   if (matched.length > 0) {
-    // Deduplicate skills across matched jobs
-    return [...new Set(matched.flatMap((j) => j.skills))];
+    return [...new Set(matched.flatMap((m) => m.skills))];
   }
 
   return [];
