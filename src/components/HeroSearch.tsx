@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "re
 import { Search } from "lucide-react";
 import { allSkills, searchJobsBySkill, type Job } from "@/data/jobs";
 import { JobResults } from "./JobResults";
+import { SkillQuiz } from "./SkillQuiz";
 import heroPeople from "@/assets/hero-people.jpg";
 
 const PLACEHOLDER_SKILLS = [
