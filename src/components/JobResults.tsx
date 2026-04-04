@@ -12,7 +12,7 @@ function formatSalary(amount: number) {
 }
 
 export function JobResults({ results, query }: JobResultsProps) {
-  const [selectedId, setSelectedId] = useState<number | null>(
+  const [selectedId, setSelectedId] = useState<string | null>(
     results.length > 0 ? results[0].id : null
   );
 
