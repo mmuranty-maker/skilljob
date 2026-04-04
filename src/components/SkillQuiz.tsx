@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { X, Loader2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { allSkills } from "@/data/jobs";
+import { QuizResults } from "./QuizResults";
+import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
 
 const ACTIVITIES = [
   "Talking to people",
@@ -18,65 +19,36 @@ const ACTIVITIES = [
   "Organising processes",
 ];
 
-const EXAMPLE_CHIPS = [
-  "Solving conflicts",
-  "Explaining things clearly",
-  "Keeping things on track",
-  "Coming up with ideas",
+const Q2_TILES = [
+  "I solved something that had everyone else stuck",
+  "I helped someone through a difficult situation",
+  "I organised chaos and made things run smoothly",
+  "I created something I'm genuinely proud of",
+  "I closed a deal or convinced someone of something",
+  "I learned something completely new",
+  "I led people through something challenging",
 ];
-
-// Map quiz answers to relevant skills from our dataset
-function deriveSkills(activities: string[], freeText: string, proudOf: string): string[] {
-  const combined = `${activities.join(" ")} ${freeText} ${proudOf}`.toLowerCase();
-
-  const activitySkillMap: Record<string, string[]> = {
-    "talking to people": ["Communication", "Active listening", "Customer Service", "Verbal Communication"],
-    "managing tasks & schedules": ["Planning", "Time Management", "Task Delegation", "Organisation"],
-    "solving problems": ["Problem Solving", "Critical thinking", "Debugging", "Troubleshooting"],
-    "working with data or numbers": ["Data analysis", "Excel", "Reporting", "Statistical analysis"],
-    "creating content or designs": ["Content Creation", "Graphic Design", "Copywriting", "Figma"],
-    "leading or coaching others": ["Team Leadership", "Coaching", "Mentoring", "People Management"],
-    "selling or persuading": ["Negotiation", "Sales Support", "Persuasion", "Closing"],
-    "building or fixing things": ["Troubleshooting", "Machine Maintenance", "System design", "Hands-on repair"],
-    "caring for or supporting people": ["Empathy", "Patient care", "Conflict Resolution", "Customer Connection"],
-    "writing or researching": ["Research", "Writing", "Documentation", "Content strategy"],
-    "teaching or explaining": ["Teaching", "Presentation", "Curriculum design", "Communication"],
-    "organising processes": ["Process improvement", "Workflow Speed", "Agile", "Risk management"],
-  };
-
-  const candidateSkills: string[] = [];
-  for (const activity of activities) {
-    const mapped = activitySkillMap[activity.toLowerCase()];
-    if (mapped) candidateSkills.push(...mapped);
-  }
-
-  // Also match against existing skills in dataset
-  const bonus = allSkills.filter((s) => combined.includes(s.toLowerCase()));
-  candidateSkills.push(...bonus);
-
-  // Deduplicate and return 6-8
-  const unique = [...new Set(candidateSkills)];
-  return unique.slice(0, 8);
-}
 
 interface SkillQuizProps {
   open: boolean;
   onClose: () => void;
   onComplete: (topSkill: string) => void;
+  onQuizResults?: (userSkills: UserSkill[], topMatches: ScoredPosting[]) => void;
 }
 
-export function SkillQuiz({ open, onClose, onComplete }: SkillQuizProps) {
+export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQuizProps) {
   const [step, setStep] = useState(1);
-  const [selected, setSelected] = useState<string[]>([]);
-  const [freeText, setFreeText] = useState("");
-  const [proudOf, setProudOf] = useState("");
+  const [q1Selections, setQ1Selections] = useState<string[]>([]);
+  const [q2Selection, setQ2Selection] = useState<string | null>(null);
+  const [q3Answer, setQ3Answer] = useState("");
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<string[] | null>(null);
+  const [userSkills, setUserSkills] = useState<UserSkill[] | null>(null);
+  const [topMatches, setTopMatches] = useState<ScoredPosting[]>([]);
 
   if (!open) return null;
 
   const toggleActivity = (a: string) => {
-    setSelected((prev) =>
+    setQ1Selections((prev) =>
       prev.includes(a) ? prev.filter((x) => x !== a) : [...prev, a]
     );
   };
@@ -84,28 +56,51 @@ export function SkillQuiz({ open, onClose, onComplete }: SkillQuizProps) {
   const handleSubmit = () => {
     setLoading(true);
     setStep(4);
+
+    // Minimum 1.5s loading
+    const start = Date.now();
+
     setTimeout(() => {
-      const skills = deriveSkills(selected, freeText, proudOf);
-      setResults(skills.length > 0 ? skills : ["Communication", "Problem Solving", "Organisation", "Teamwork", "Time Management", "Adaptability"]);
-      setLoading(false);
-    }, 1500);
+      const result = runQuizScoring(q1Selections, q2Selection || "", q3Answer);
+      const elapsed = Date.now() - start;
+      const remaining = Math.max(0, 1500 - elapsed);
+
+      setTimeout(() => {
+        setUserSkills(result.userSkills);
+        setTopMatches(result.topMatches);
+        setLoading(false);
+      }, remaining);
+    }, 100);
   };
 
-  const handleFindRoles = () => {
-    if (results && results.length > 0) {
-      onComplete(results[0]);
+  const handleSeeAll = () => {
+    if (onQuizResults && userSkills && topMatches.length > 0) {
+      onQuizResults(userSkills, topMatches);
+    } else if (userSkills && userSkills.length > 0) {
+      onComplete(userSkills[0].name);
     }
     resetAndClose();
   };
 
   const resetAndClose = () => {
     setStep(1);
-    setSelected([]);
-    setFreeText("");
-    setProudOf("");
+    setQ1Selections([]);
+    setQ2Selection(null);
+    setQ3Answer("");
     setLoading(false);
-    setResults(null);
+    setUserSkills(null);
+    setTopMatches([]);
     onClose();
+  };
+
+  const handleStartOver = () => {
+    setStep(1);
+    setQ1Selections([]);
+    setQ2Selection(null);
+    setQ3Answer("");
+    setLoading(false);
+    setUserSkills(null);
+    setTopMatches([]);
   };
 
   const progress = step <= 3 ? (step / 3) * 100 : 100;
@@ -143,7 +138,7 @@ export function SkillQuiz({ open, onClose, onComplete }: SkillQuizProps) {
 
         {/* Content */}
         <div className="px-6 pb-6 min-h-[320px] flex flex-col">
-          {/* Step 1 */}
+          {/* Step 1 — Activities */}
           {step === 1 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">
@@ -158,7 +153,7 @@ export function SkillQuiz({ open, onClose, onComplete }: SkillQuizProps) {
                     key={a}
                     onClick={() => toggleActivity(a)}
                     className={`px-3 py-2.5 rounded-xl text-sm font-medium text-left transition-all border ${
-                      selected.includes(a)
+                      q1Selections.includes(a)
                         ? "bg-primary text-primary-foreground border-primary"
                         : "bg-muted/50 text-foreground border-border hover:border-primary/40"
                     }`}
@@ -169,7 +164,7 @@ export function SkillQuiz({ open, onClose, onComplete }: SkillQuizProps) {
               </div>
               <button
                 onClick={() => setStep(2)}
-                disabled={selected.length === 0}
+                disabled={q1Selections.length === 0}
                 className="mt-6 w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 Next →
@@ -177,33 +172,30 @@ export function SkillQuiz({ open, onClose, onComplete }: SkillQuizProps) {
             </div>
           )}
 
-          {/* Step 2 */}
+          {/* Step 2 — Good day at work (single-select) */}
           {step === 2 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">
-                What do people come to you for?
+                What does a good day at work look like for you?
               </h3>
               <p className="text-sm text-muted-foreground mt-1 mb-6">
-                What do colleagues, customers, or friends ask you for help with?
+                Pick the one that sounds most like you.
               </p>
-              <input
-                type="text"
-                value={freeText}
-                onChange={(e) => setFreeText(e.target.value)}
-                placeholder="e.g. calming upset customers, keeping the team organised, fixing technical issues…"
-                className="w-full h-12 px-4 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm"
-              />
-              <div className="mt-4 flex flex-wrap gap-2">
-                {EXAMPLE_CHIPS.map((c) => (
-                  <span
-                    key={c}
-                    className="px-3 py-1.5 rounded-full bg-muted text-muted-foreground text-xs font-medium"
+              <div className="space-y-2 flex-1">
+                {Q2_TILES.map((tile) => (
+                  <button
+                    key={tile}
+                    onClick={() => setQ2Selection(tile)}
+                    className={`w-full px-4 py-3 rounded-xl text-sm font-medium text-left transition-all border ${
+                      q2Selection === tile
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "bg-muted/50 text-foreground border-border hover:border-primary/40"
+                    }`}
                   >
-                    {c}
-                  </span>
+                    {tile}
+                  </button>
                 ))}
               </div>
-              <div className="flex-1" />
               <div className="flex gap-3 mt-6">
                 <button
                   onClick={() => setStep(1)}
@@ -213,7 +205,7 @@ export function SkillQuiz({ open, onClose, onComplete }: SkillQuizProps) {
                 </button>
                 <button
                   onClick={() => setStep(3)}
-                  disabled={freeText.trim().length < 10}
+                  disabled={!q2Selection}
                   className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Next →
@@ -222,7 +214,7 @@ export function SkillQuiz({ open, onClose, onComplete }: SkillQuizProps) {
             </div>
           )}
 
-          {/* Step 3 */}
+          {/* Step 3 — Proud moment */}
           {step === 3 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">
@@ -232,8 +224,8 @@ export function SkillQuiz({ open, onClose, onComplete }: SkillQuizProps) {
                 At work, big or small — what's something you did that you felt good about?
               </p>
               <textarea
-                value={proudOf}
-                onChange={(e) => setProudOf(e.target.value)}
+                value={q3Answer}
+                onChange={(e) => setQ3Answer(e.target.value)}
                 rows={3}
                 placeholder="e.g. I trained 3 new starters, I reorganised how we handle complaints, I hit my sales target during a really tough month…"
                 className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm resize-none"
@@ -258,38 +250,21 @@ export function SkillQuiz({ open, onClose, onComplete }: SkillQuizProps) {
 
           {/* Loading / Results */}
           {step === 4 && (
-            <div className="animate-fade-in flex flex-col items-center justify-center flex-1 py-8">
+            <div className="flex flex-col items-center justify-center flex-1">
               {loading ? (
-                <>
+                <div className="animate-fade-in flex flex-col items-center py-8">
                   <Loader2 className="h-10 w-10 text-primary animate-spin mb-4" />
                   <p className="text-foreground font-medium">Analysing your answers…</p>
-                </>
-              ) : results ? (
-                <>
-                  <h3 className="text-xl font-bold text-foreground mb-2">
-                    Here are your skills
-                  </h3>
-                  <p className="text-sm text-muted-foreground mb-6">
-                    Based on your answers, these are the skills you bring to the table.
-                  </p>
-                  <div className="flex flex-wrap gap-2 justify-center mb-8">
-                    {results.map((skill, i) => (
-                      <span
-                        key={skill}
-                        className="px-4 py-2 rounded-full bg-primary/10 text-primary font-medium text-sm animate-fade-up"
-                        style={{ animationDelay: `${i * 80}ms` }}
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                  <button
-                    onClick={handleFindRoles}
-                    className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all"
-                  >
-                    Find roles that match these skills →
-                  </button>
-                </>
+                </div>
+              ) : userSkills ? (
+                <div className="w-full transition-opacity duration-200">
+                  <QuizResults
+                    userSkills={userSkills}
+                    topMatches={topMatches}
+                    onSeeAll={handleSeeAll}
+                    onStartOver={handleStartOver}
+                  />
+                </div>
               ) : null}
             </div>
           )}
