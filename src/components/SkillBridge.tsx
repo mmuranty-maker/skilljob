@@ -22,7 +22,7 @@ function getSkillsForTitle(input: string): string[] {
   return [];
 }
 
-const EXAMPLE_TITLES = ["Waiter", "Barista", "Cashier", "Project Manager", "Social Media Manager"];
+const EXAMPLE_TITLES = ["Waiter", "Nurse", "Software Engineer", "Chef", "Project Manager", "Barista"];
 
 export function SkillBridge({ onSkillSearch }: SkillBridgeProps) {
   const [titleInput, setTitleInput] = useState("");
