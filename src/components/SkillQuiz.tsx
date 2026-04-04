@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { X, Loader2 } from "lucide-react";
+import { X, Loader2, Briefcase, GraduationCap } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { QuizResults } from "./QuizResults";
 import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
@@ -19,6 +19,13 @@ const ACTIVITIES = [
   "Organising processes",
 ];
 
+const STUDENT_SUBTEXTS: Record<string, string> = {
+  "Leading or coaching others": "e.g. society president, group project lead",
+  "Selling or persuading": "e.g. pitching ideas, sponsorship, fundraising",
+  "Caring for or supporting people": "e.g. volunteering, peer support, tutoring",
+  "Building or fixing things": "e.g. hackathons, lab work, DIY projects",
+};
+
 const Q2_TILES = [
   "I solved something that had everyone else stuck",
   "I helped someone through a difficult situation",
@@ -37,7 +44,8 @@ interface SkillQuizProps {
 }
 
 export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQuizProps) {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0); // 0 = path selector
+  const [isStudent, setIsStudent] = useState(false);
   const [q1Selections, setQ1Selections] = useState<string[]>([]);
   const [q2Selection, setQ2Selection] = useState<string | null>(null);
   const [q3Answer, setQ3Answer] = useState("");
@@ -53,15 +61,19 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
     );
   };
 
+  const selectPath = (student: boolean) => {
+    setIsStudent(student);
+    setStep(1);
+  };
+
   const handleSubmit = () => {
     setLoading(true);
     setStep(4);
 
-    // Minimum 1.5s loading
     const start = Date.now();
 
     setTimeout(() => {
-      const result = runQuizScoring(q1Selections, q2Selection || "", q3Answer);
+      const result = runQuizScoring(q1Selections, q2Selection || "", q3Answer, isStudent);
       const elapsed = Date.now() - start;
       const remaining = Math.max(0, 1500 - elapsed);
 
@@ -83,7 +95,8 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
   };
 
   const resetAndClose = () => {
-    setStep(1);
+    setStep(0);
+    setIsStudent(false);
     setQ1Selections([]);
     setQ2Selection(null);
     setQ3Answer("");
@@ -94,7 +107,8 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
   };
 
   const handleStartOver = () => {
-    setStep(1);
+    setStep(0);
+    setIsStudent(false);
     setQ1Selections([]);
     setQ2Selection(null);
     setQ3Answer("");
@@ -103,27 +117,25 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
     setTopMatches([]);
   };
 
-  const progress = step <= 3 ? (step / 3) * 100 : 100;
+  const progress = step >= 1 && step <= 3 ? (step / 3) * 100 : 100;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-foreground/40 backdrop-blur-sm animate-fade-in"
         onClick={resetAndClose}
       />
 
-      {/* Modal */}
       <div className="relative z-10 w-full max-w-[560px] bg-card rounded-2xl shadow-2xl overflow-hidden animate-scale-in">
         {/* Header */}
         <div className="p-6 pb-0">
           <div className="flex items-center justify-between mb-4">
-            {step <= 3 && (
+            {step >= 1 && step <= 3 && (
               <span className="text-sm font-medium text-muted-foreground">
                 Step {step} of 3
               </span>
             )}
-            {step === 4 && <span />}
+            {(step === 0 || step === 4) && <span />}
             <button
               onClick={resetAndClose}
               className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
@@ -131,21 +143,58 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
               <X className="h-4 w-4" />
             </button>
           </div>
-          {step <= 3 && (
+          {step >= 1 && step <= 3 && (
             <Progress value={progress} className="h-1.5 mb-6" />
           )}
         </div>
 
         {/* Content */}
         <div className="px-6 pb-6 min-h-[320px] flex flex-col">
+          {/* Step 0 — Path Selector */}
+          {step === 0 && (
+            <div className="animate-fade-in flex flex-col items-center flex-1 py-4">
+              <h3 className="text-[22px] font-medium text-foreground text-center mb-8">
+                First, which best describes you right now?
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                {/* Professional Card */}
+                <div className="border border-border rounded-xl p-8 bg-card hover:border-primary/40 transition-all flex flex-col items-center text-center">
+                  <Briefcase className="h-8 w-8 text-primary mb-4" />
+                  <h4 className="font-semibold text-foreground text-base mb-1">I'm currently working</h4>
+                  <p className="text-sm text-muted-foreground mb-6">Full-time, part-time, or freelance</p>
+                  <button
+                    onClick={() => selectPath(false)}
+                    className="w-full h-10 rounded-xl bg-primary text-primary-foreground font-bold text-sm hover:brightness-110 transition-all"
+                  >
+                    Start →
+                  </button>
+                </div>
+                {/* Student Card */}
+                <div className="border border-border rounded-xl p-8 bg-card hover:border-primary/40 transition-all flex flex-col items-center text-center">
+                  <GraduationCap className="h-8 w-8 text-primary mb-4" />
+                  <h4 className="font-semibold text-foreground text-base mb-1">I'm a student or recent graduate</h4>
+                  <p className="text-sm text-muted-foreground mb-6">University, college, or just finished</p>
+                  <button
+                    onClick={() => selectPath(true)}
+                    className="w-full h-10 rounded-xl border border-primary text-primary font-bold text-sm hover:bg-primary/5 transition-all"
+                  >
+                    Start →
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Step 1 — Activities */}
           {step === 1 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">
-                What do you actually do at work?
+                {isStudent ? "What do you actually spend your time doing?" : "What do you actually do at work?"}
               </h3>
               <p className="text-sm text-muted-foreground mt-1 mb-6">
-                Think about your typical day. Pick everything that applies.
+                {isStudent
+                  ? "Think about university, jobs, projects, clubs — anything counts. Pick everything that applies."
+                  : "Think about your typical day. Pick everything that applies."}
               </p>
               <div className="grid grid-cols-2 gap-2 flex-1">
                 {ACTIVITIES.map((a) => (
@@ -158,7 +207,12 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                         : "bg-muted/50 text-foreground border-border hover:border-primary/40"
                     }`}
                   >
-                    {a}
+                    <span>{a}</span>
+                    {isStudent && STUDENT_SUBTEXTS[a] && (
+                      <span className="block text-xs text-muted-foreground italic mt-0.5 font-normal">
+                        {q1Selections.includes(a) ? "" : STUDENT_SUBTEXTS[a]}
+                      </span>
+                    )}
                   </button>
                 ))}
               </div>
@@ -172,14 +226,16 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
             </div>
           )}
 
-          {/* Step 2 — Good day at work (single-select) */}
+          {/* Step 2 — Good day (single-select) */}
           {step === 2 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">
-                What does a good day at work look like for you?
+                {isStudent ? "What does a great day look like for you?" : "What does a good day at work look like for you?"}
               </h3>
               <p className="text-sm text-muted-foreground mt-1 mb-6">
-                Pick the one that sounds most like you.
+                {isStudent
+                  ? "At uni, at work, or anywhere — pick the one that sounds most like you."
+                  : "Pick the one that sounds most like you."}
               </p>
               <div className="space-y-2 flex-1">
                 {Q2_TILES.map((tile) => (
@@ -218,16 +274,22 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
           {step === 3 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">
-                Tell us about something you're proud of
+                {isStudent ? "Tell us about something you've done that you're proud of" : "Tell us about something you're proud of"}
               </h3>
               <p className="text-sm text-muted-foreground mt-1 mb-6">
-                At work, big or small — what's something you did that you felt good about?
+                {isStudent
+                  ? "A project, a job, a society role, anything — big or small."
+                  : "At work, big or small — what's something you did that you felt good about?"}
               </p>
               <textarea
                 value={q3Answer}
                 onChange={(e) => setQ3Answer(e.target.value)}
                 rows={3}
-                placeholder="e.g. I trained 3 new starters, I reorganised how we handle complaints, I hit my sales target during a really tough month…"
+                placeholder={
+                  isStudent
+                    ? "e.g. I led our university charity campaign and raised £3,000, I built an app for my final year project, I managed social media for our student union..."
+                    : "e.g. I trained 3 new starters, I reorganised how we handle complaints, I hit my sales target during a really tough month…"
+                }
                 className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm resize-none"
               />
               <div className="flex-1" />
@@ -240,7 +302,8 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                 </button>
                 <button
                   onClick={handleSubmit}
-                  className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all"
+                  disabled={q3Answer.length < 15}
+                  className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   Discover my skills →
                 </button>
@@ -263,6 +326,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                     topMatches={topMatches}
                     onSeeAll={handleSeeAll}
                     onStartOver={handleStartOver}
+                    isStudent={isStudent}
                   />
                 </div>
               ) : null}

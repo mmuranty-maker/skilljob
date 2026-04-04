@@ -1,5 +1,5 @@
 import type { ScoredPosting, UserSkill } from "@/lib/quizScoring";
-import { MapPin, DollarSign } from "lucide-react";
+import { DollarSign } from "lucide-react";
 
 interface QuizResultsProps {
   userSkills: UserSkill[];
@@ -7,6 +7,7 @@ interface QuizResultsProps {
   onSeeAll: () => void;
   onStartOver: () => void;
   q3Failed?: boolean;
+  isStudent?: boolean;
 }
 
 function formatSalary(amount: number) {
@@ -27,6 +28,7 @@ export function QuizResults({
   onSeeAll,
   onStartOver,
   q3Failed,
+  isStudent = false,
 }: QuizResultsProps) {
   const top3 = topMatches.slice(0, 3);
   const lowMatches = topMatches.filter((m) => m.matchScore > 20).length < 3;
@@ -50,14 +52,16 @@ export function QuizResults({
         </div>
         {q3Failed && (
           <p className="mt-2 text-xs text-muted-foreground">
-            Results based on your selections. Add a proud moment next time for better matches.
+            Results based on your selections. Add more detail next time for even better matches.
           </p>
         )}
       </div>
 
       {/* Section 2: Top matches */}
       <div>
-        <h3 className="text-lg font-bold text-foreground mb-3">Roles that match your skills</h3>
+        <h3 className="text-lg font-bold text-foreground mb-3">
+          {isStudent ? "Entry-level roles you're already qualified for" : "Roles that match your skills"}
+        </h3>
         <div className="space-y-3">
           {top3.map((posting) => (
             <div
@@ -98,11 +102,14 @@ export function QuizResults({
               {/* Gap line */}
               <div className="mt-2">
                 {posting.gapSkills.length === 0 ? (
-                  <p className="text-xs text-primary font-medium">✓ Full skill match</p>
+                  <p className="text-xs text-primary font-medium">
+                    {isStudent ? "✓ Strong match for this role" : "✓ Full skill match"}
+                  </p>
                 ) : (
                   <p className="text-xs text-muted-foreground">
-                    {posting.gapSkills.length} skill{posting.gapSkills.length !== 1 ? "s" : ""} away
-                    from full match: {posting.gapSkills.slice(0, 3).join(", ")}
+                    {posting.gapSkills.length} skill{posting.gapSkills.length !== 1 ? "s" : ""}{" "}
+                    {isStudent ? "to develop for this role" : "away from full match"}:{" "}
+                    {posting.gapSkills.slice(0, 3).join(", ")}
                     {posting.gapSkills.length > 3 ? "…" : ""}
                   </p>
                 )}
@@ -113,7 +120,7 @@ export function QuizResults({
 
         {lowMatches && (
           <p className="mt-3 text-xs text-muted-foreground">
-            We're adding more roles soon — check back or try different skills.
+            We're adding more roles soon — these are your closest matches today.
           </p>
         )}
       </div>
@@ -124,7 +131,7 @@ export function QuizResults({
           onClick={onSeeAll}
           className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all"
         >
-          See all matching roles →
+          {isStudent ? "See roles you can apply for now →" : "See all matching roles →"}
         </button>
         <button
           onClick={onStartOver}
