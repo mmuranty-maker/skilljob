@@ -194,7 +194,8 @@ function scorePostings(
 export function runQuizScoring(
   q1Selections: string[],
   q2Selection: string,
-  q3Answer: string
+  q3Answer: string,
+  isStudent: boolean = false
 ): { userSkills: UserSkill[]; topMatches: ScoredPosting[] } {
   // Step A
   let userSkills = getQ1Skills(q1Selections);
@@ -207,7 +208,13 @@ export function runQuizScoring(
   userSkills = addQ3Skills(userSkills, q3Skills);
 
   // Step D
-  const scored = scorePostings(userSkills, q1Selections, q2Selection);
+  let scored = scorePostings(userSkills, q1Selections, q2Selection);
+
+  // Filter out Senior roles for student path
+  if (isStudent) {
+    scored = scored.filter((p) => p.seniority !== "Senior");
+  }
+
   const topMatches = scored.slice(0, 5);
 
   // Limit skills display to 8
