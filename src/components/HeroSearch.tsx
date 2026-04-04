@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { Search, Sparkles } from "lucide-react";
-import { allSkills, searchJobsBySkill, type Job } from "@/data/jobs";
+import { searchJobsBySkill, type Job } from "@/data/jobs";
 import { JobResults } from "./JobResults";
 import { SkillQuiz } from "./SkillQuiz";
+import type { UserSkill, ScoredPosting } from "@/lib/quizScoring";
 import heroPeople from "@/assets/hero-people.jpg";
 
 const PLACEHOLDER_SKILLS = [
@@ -25,6 +26,7 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [quizOpen, setQuizOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
+  const [quizResults, setQuizResults] = useState<{ userSkills: UserSkill[]; topMatches: ScoredPosting[] } | null>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -43,6 +45,7 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
 
   const handleSearch = () => {
     if (!query.trim()) return;
+    setQuizResults(null); // Clear quiz results when doing a manual search
     const matched = searchJobsBySkill(query);
     setResults(matched);
     setHasSearched(true);
@@ -57,11 +60,20 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
 
   const triggerSearch = (skill: string) => {
     setQuery(skill);
+    setQuizResults(null);
     const matched = searchJobsBySkill(skill);
     setResults(matched);
     setHasSearched(true);
-    // Scroll to search input first, then to results
     inputRef.current?.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 300);
+  };
+
+  const handleQuizResults = (userSkills: UserSkill[], topMatches: ScoredPosting[]) => {
+    setQuizResults({ userSkills, topMatches });
+    // Convert scored postings to regular results for display
+    setResults(topMatches);
+    setQuery(userSkills[0]?.name || "Your skills");
+    setHasSearched(true);
     setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 300);
   };
 
@@ -86,7 +98,6 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
             <div className="mt-10 max-w-xl animate-fade-up-delay-2">
               <h2 className="text-lg font-bold text-foreground mb-4">How would you like to get started?</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Card 1 — Search by skill */}
                 <div className="bg-card border border-border rounded-xl p-6 hover:border-primary/40 transition-all flex flex-col">
                   <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                     <Search className="h-5 w-5 text-primary" />
@@ -101,7 +112,6 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
                   </button>
                 </div>
 
-                {/* Card 2 — Quiz */}
                 <div className="bg-card border border-border rounded-xl p-6 hover:border-primary/40 transition-all flex flex-col">
                   <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                     <Sparkles className="h-5 w-5 text-primary" />
@@ -117,7 +127,6 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
                 </div>
               </div>
 
-              {/* Inline search bar (revealed on click) */}
               {showSearch && (
                 <div className="mt-5 animate-fade-in">
                   <div className="flex items-center gap-0">
@@ -167,7 +176,6 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
                 height={720}
                 className="w-full h-auto object-cover"
               />
-              {/* Floating card overlay */}
               <div className="absolute bottom-6 left-6 right-6 bg-card/90 backdrop-blur-sm rounded-xl p-4 border border-border shadow-lg">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-primary/15 flex items-center justify-center">
@@ -186,7 +194,11 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
 
       {hasSearched && (
         <div ref={resultsRef}>
-          <JobResults results={results} query={query} />
+          <JobResults
+            results={results}
+            query={query}
+            quizResults={quizResults ?? undefined}
+          />
         </div>
       )}
 
@@ -194,6 +206,7 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
         open={quizOpen}
         onClose={() => setQuizOpen(false)}
         onComplete={(skill) => triggerSearch(skill)}
+        onQuizResults={handleQuizResults}
       />
     </>
   );
