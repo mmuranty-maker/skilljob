@@ -152,7 +152,7 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
                   </div>
                   <div className="mt-3 flex flex-wrap gap-2">
                     <span className="text-sm text-muted-foreground">Popular:</span>
-                    {["Customer Service", "Team Leadership", "Content Creation", "Problem Solving"].map((skill) => (
+                    {["Communication", "Problem Solving", "Reporting", "Excel", "Negotiation"].map((skill) => (
                       <button
                         key={skill}
                         onClick={() => triggerSearch(skill)}
