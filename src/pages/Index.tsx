@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { HeroSearch, type HeroSearchHandle } from "@/components/HeroSearch";
 import { SkillBridge } from "@/components/SkillBridge";
+import { HowItWorks } from "@/components/HowItWorks";
 import { Navbar } from "@/components/Navbar";
 
 const Index = () => {
@@ -12,6 +13,7 @@ const Index = () => {
       <div className="pt-16">
         <HeroSearch ref={heroRef} />
         <SkillBridge onSkillSearch={(skill) => heroRef.current?.triggerSearch(skill)} />
+        <HowItWorks onStartQuiz={() => heroRef.current?.openQuiz()} />
       </div>
     </main>
   );
