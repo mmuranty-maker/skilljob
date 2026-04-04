@@ -176,3 +176,19 @@ export function searchJobsBySkill(query: string): Job[] {
     [...job.skills, ...job.niceToHaveSkills].some((skill) => skill.toLowerCase().includes(q))
   );
 }
+
+export function searchJobsBySkills(skills: string[]): Job[] {
+  if (skills.length === 0) return [];
+  const lowerSkills = skills.map((s) => s.toLowerCase().trim());
+  return jobs
+    .map((job) => {
+      const allJobSkills = [...job.skills, ...job.niceToHaveSkills].map((s) => s.toLowerCase());
+      const matchCount = lowerSkills.filter((q) =>
+        allJobSkills.some((s) => s.includes(q))
+      ).length;
+      return { job, matchCount };
+    })
+    .filter(({ matchCount }) => matchCount > 0)
+    .sort((a, b) => b.matchCount - a.matchCount)
+    .map(({ job }) => job);
+}
