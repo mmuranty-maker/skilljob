@@ -41,6 +41,7 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
     }
   }, [showSearch]);
 
+  const handleSearch = () => {
     if (!query.trim()) return;
     const matched = searchJobsBySkill(query);
     setResults(matched);
