@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
-import { Search, Sparkles } from "lucide-react";
-import { searchJobsBySkill, type Job } from "@/data/jobs";
+import { Search, Sparkles, X } from "lucide-react";
+import { searchJobsBySkills, type Job } from "@/data/jobs";
 import { JobResults } from "./JobResults";
 import { SkillQuiz } from "./SkillQuiz";
 import type { UserSkill, ScoredPosting } from "@/lib/quizScoring";
@@ -15,13 +15,29 @@ const PLACEHOLDER_SKILLS = [
   "Strategic Planning",
 ];
 
+const POPULAR_SKILLS = [
+  "Communication",
+  "Problem Solving",
+  "Documentation",
+  "Empathy",
+  "Research",
+  "Reporting",
+  "Creativity",
+  "Excel",
+  "Negotiation",
+  "Teamwork",
+];
+
+const MIN_SKILLS = 3;
+
 export interface HeroSearchHandle {
   triggerSearch: (skill: string) => void;
   openQuiz: () => void;
 }
 
 export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, ref) {
-  const [query, setQuery] = useState("");
+  const [skillTags, setSkillTags] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState("");
   const [results, setResults] = useState<Job[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
@@ -44,10 +60,21 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
     }
   }, [showSearch]);
 
+  const addSkill = (skill: string) => {
+    const trimmed = skill.trim();
+    if (!trimmed || skillTags.some((s) => s.toLowerCase() === trimmed.toLowerCase())) return;
+    setSkillTags((prev) => [...prev, trimmed]);
+    setInputValue("");
+  };
+
+  const removeSkill = (skill: string) => {
+    setSkillTags((prev) => prev.filter((s) => s !== skill));
+  };
+
   const handleSearch = () => {
-    if (!query.trim()) return;
-    setQuizResults(null); // Clear quiz results when doing a manual search
-    const matched = searchJobsBySkill(query);
+    if (skillTags.length < MIN_SKILLS) return;
+    setQuizResults(null);
+    const matched = searchJobsBySkills(skillTags);
     setResults(matched);
     setHasSearched(true);
     setTimeout(() => {
@@ -56,29 +83,51 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") handleSearch();
+    if (e.key === "Enter" && inputValue.trim()) {
+      e.preventDefault();
+      addSkill(inputValue);
+    } else if (e.key === "Backspace" && !inputValue && skillTags.length > 0) {
+      setSkillTags((prev) => prev.slice(0, -1));
+    }
   };
 
   const triggerSearch = (skill: string) => {
-    setQuery(skill);
+    const newTags = [skill];
+    setSkillTags(newTags);
+    setShowSearch(true);
     setQuizResults(null);
-    const matched = searchJobsBySkill(skill);
+    // For single-skill trigger (from skill bridge), search immediately
+    const matched = searchJobsBySkills(newTags);
     setResults(matched);
     setHasSearched(true);
-    inputRef.current?.scrollIntoView({ behavior: "smooth" });
     setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 300);
+  };
+
+  const handlePopularClick = (skill: string) => {
+    if (!skillTags.some((s) => s.toLowerCase() === skill.toLowerCase())) {
+      const newTags = [...skillTags, skill];
+      setSkillTags(newTags);
+      if (newTags.length >= MIN_SKILLS) {
+        setQuizResults(null);
+        const matched = searchJobsBySkills(newTags);
+        setResults(matched);
+        setHasSearched(true);
+        setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 300);
+      }
+    }
   };
 
   const handleQuizResults = (userSkills: UserSkill[], topMatches: ScoredPosting[]) => {
     setQuizResults({ userSkills, topMatches });
-    // Convert scored postings to regular results for display
     setResults(topMatches);
-    setQuery(userSkills[0]?.name || "Your skills");
+    setSkillTags(userSkills.map((s) => s.name));
     setHasSearched(true);
     setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 300);
   };
 
   useImperativeHandle(ref, () => ({ triggerSearch, openQuiz: () => setQuizOpen(true) }));
+
+  const canSearch = skillTags.length >= MIN_SKILLS;
 
   return (
     <>
@@ -130,32 +179,53 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
 
               {showSearch && (
                 <div className="mt-5 animate-fade-in">
-                  <div className="flex items-center gap-0">
-                    <div className="relative flex-1">
+                  {/* Multi-skill tag input */}
+                  <div className="flex items-stretch gap-0">
+                    <div className="relative flex-1 min-h-[56px] flex flex-wrap items-center gap-1.5 pl-12 pr-3 py-2 rounded-l-xl bg-card border border-border focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary transition-all shadow-sm">
                       <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                      {skillTags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium"
+                        >
+                          {tag}
+                          <button
+                            onClick={() => removeSkill(tag)}
+                            className="hover:bg-primary/20 rounded-full p-0.5 transition-colors"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </span>
+                      ))}
                       <input
                         ref={inputRef}
                         type="text"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        placeholder={`Try "${PLACEHOLDER_SKILLS[placeholderIndex]}"...`}
-                        className="w-full h-14 pl-12 pr-4 rounded-l-xl bg-card border border-border text-foreground placeholder:text-muted-foreground text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all shadow-sm"
+                        placeholder={skillTags.length === 0 ? `Try "${PLACEHOLDER_SKILLS[placeholderIndex]}"...` : skillTags.length < MIN_SKILLS ? `Add ${MIN_SKILLS - skillTags.length} more skill${MIN_SKILLS - skillTags.length > 1 ? "s" : ""}...` : "Add more or search..."}
+                        className="flex-1 min-w-[120px] h-8 bg-transparent text-foreground placeholder:text-muted-foreground text-base focus:outline-none"
                       />
                     </div>
                     <button
                       onClick={handleSearch}
-                      className="h-14 px-8 rounded-r-xl bg-primary text-primary-foreground font-bold text-lg hover:brightness-110 transition-all shrink-0"
+                      disabled={!canSearch}
+                      className="h-auto px-8 rounded-r-xl bg-primary text-primary-foreground font-bold text-lg hover:brightness-110 transition-all shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       Search
                     </button>
                   </div>
+                  {!canSearch && skillTags.length > 0 && (
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      Add at least {MIN_SKILLS} skills to search · {MIN_SKILLS - skillTags.length} more needed
+                    </p>
+                  )}
                   <div className="mt-3 flex flex-wrap gap-2">
                     <span className="text-sm text-muted-foreground">Popular:</span>
-                    {["Communication", "Problem Solving", "Reporting", "Excel", "Negotiation"].map((skill) => (
+                    {POPULAR_SKILLS.filter((s) => !skillTags.some((t) => t.toLowerCase() === s.toLowerCase())).map((skill) => (
                       <button
                         key={skill}
-                        onClick={() => triggerSearch(skill)}
+                        onClick={() => handlePopularClick(skill)}
                         className="text-sm px-3 py-1 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer"
                       >
                         {skill}
@@ -197,7 +267,7 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
         <div ref={resultsRef}>
           <JobResults
             results={results}
-            query={query}
+            query={skillTags.join(", ")}
             quizResults={quizResults ?? undefined}
           />
         </div>
