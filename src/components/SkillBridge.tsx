@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Sparkles, Search } from "lucide-react";
-import { jobs } from "@/data/jobs";
+import { skillMappings } from "@/data/jobs";
 
 interface SkillBridgeProps {
   onSkillSearch?: (skill: string) => void;
