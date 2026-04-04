@@ -75,46 +75,79 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
               Most job sites look at your job title. We look at what you can actually do. Get matched with roles that value your hustle.
             </p>
 
-            <div className="mt-10 flex items-center gap-0 max-w-xl animate-fade-up-delay-2">
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder={`Try "${PLACEHOLDER_SKILLS[placeholderIndex]}"...`}
-                  className="w-full h-14 pl-12 pr-4 rounded-l-xl bg-card border border-border text-foreground placeholder:text-muted-foreground text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all shadow-sm"
-                />
+            {/* Two-path entry point */}
+            <div className="mt-10 max-w-xl animate-fade-up-delay-2">
+              <h2 className="text-lg font-bold text-foreground mb-4">How would you like to get started?</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Card 1 — Search by skill */}
+                <div className="bg-card border border-border rounded-xl p-6 hover:border-primary/40 transition-all flex flex-col">
+                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Search className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="font-bold text-foreground mb-1">I know my skills</h3>
+                  <p className="text-sm text-muted-foreground mb-5 flex-1">Search by what you can do and get matched to roles instantly.</p>
+                  <button
+                    onClick={() => setShowSearch(true)}
+                    className="w-full h-11 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 transition-all"
+                  >
+                    Search by skill →
+                  </button>
+                </div>
+
+                {/* Card 2 — Quiz */}
+                <div className="bg-card border border-border rounded-xl p-6 hover:border-primary/40 transition-all flex flex-col">
+                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="font-bold text-foreground mb-1">Help me discover my skills</h3>
+                  <p className="text-sm text-muted-foreground mb-5 flex-1">Answer 3 quick questions and we'll build your skill profile for you.</p>
+                  <button
+                    onClick={() => setQuizOpen(true)}
+                    className="w-full h-11 rounded-lg border border-primary text-primary font-semibold text-sm hover:bg-primary/5 transition-all"
+                  >
+                    Start the quiz →
+                  </button>
+                </div>
               </div>
-              <button
-                onClick={handleSearch}
-                className="h-14 px-8 rounded-r-xl bg-primary text-primary-foreground font-bold text-lg hover:brightness-110 transition-all animate-pulse-glow shrink-0"
-              >
-                Search
-              </button>
-            </div>
 
-            <div className="mt-4 flex flex-wrap gap-2 animate-fade-up-delay-2">
-              <span className="text-sm text-muted-foreground">Popular:</span>
-              {["Customer Service", "Team Leadership", "Content Creation", "Problem Solving"].map((skill) => (
-                <button
-                  key={skill}
-                  onClick={() => triggerSearch(skill)}
-                  className="text-sm px-3 py-1 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer"
-                >
-                  {skill}
-                </button>
-              ))}
+              {/* Inline search bar (revealed on click) */}
+              {showSearch && (
+                <div className="mt-5 animate-fade-in">
+                  <div className="flex items-center gap-0">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                      <input
+                        ref={inputRef}
+                        type="text"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        placeholder={`Try "${PLACEHOLDER_SKILLS[placeholderIndex]}"...`}
+                        className="w-full h-14 pl-12 pr-4 rounded-l-xl bg-card border border-border text-foreground placeholder:text-muted-foreground text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all shadow-sm"
+                      />
+                    </div>
+                    <button
+                      onClick={handleSearch}
+                      className="h-14 px-8 rounded-r-xl bg-primary text-primary-foreground font-bold text-lg hover:brightness-110 transition-all shrink-0"
+                    >
+                      Search
+                    </button>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <span className="text-sm text-muted-foreground">Popular:</span>
+                    {["Customer Service", "Team Leadership", "Content Creation", "Problem Solving"].map((skill) => (
+                      <button
+                        key={skill}
+                        onClick={() => triggerSearch(skill)}
+                        className="text-sm px-3 py-1 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer"
+                      >
+                        {skill}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-
-            <button
-              onClick={() => setQuizOpen(true)}
-              className="mt-3 text-sm text-primary hover:text-primary/80 transition-colors animate-fade-up-delay-2 text-left"
-            >
-              Not sure what your skills are? Let us help you find out →
-            </button>
           </div>
 
           {/* Right: Hero Image */}
