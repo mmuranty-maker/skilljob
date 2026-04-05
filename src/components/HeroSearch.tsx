@@ -212,9 +212,9 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
               {showSearch && (
                 <div className="mt-5 animate-fade-in">
                   {/* Multi-skill tag input */}
-                  <div className="flex items-end gap-0">
-                    <div className="relative flex-1 min-h-[56px] max-h-24 overflow-y-auto flex flex-wrap items-center gap-1.5 pl-12 pr-3 py-2 rounded-l-xl bg-card border border-border focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary transition-all shadow-sm">
-                      <Search className="absolute left-4 top-4 h-5 w-5 text-muted-foreground" />
+                  <div className="flex items-end gap-2">
+                    <div className="relative flex-1 min-h-[44px] flex flex-wrap items-center gap-1.5 pl-12 pr-3 py-2.5 rounded-xl bg-card border border-border focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary transition-all shadow-sm">
+                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                       {skillTags.map((tag) => (
                         <span
                           key={tag}
@@ -245,7 +245,7 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
                     <button
                       onClick={handleSearch}
                       disabled={!canSearch}
-                      className="h-11 px-8 rounded-r-xl bg-primary text-primary-foreground font-bold text-lg hover:brightness-110 transition-all shrink-0 self-end disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="h-11 px-8 rounded-xl bg-primary text-primary-foreground font-bold text-lg hover:brightness-110 transition-all shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       Search
                     </button>
