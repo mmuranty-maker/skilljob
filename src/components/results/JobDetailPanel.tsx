@@ -16,6 +16,7 @@ interface JobDetailPanelProps {
   allJobs?: Job[];
   allScored?: ScoredPosting[];
   onSelectJob?: (id: string) => void;
+  onApply?: () => void;
 }
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
@@ -48,7 +49,7 @@ function BulletItem({ icon, children, highlight }: { icon: "check" | "heart" | "
   );
 }
 
-export function JobDetailPanel({ job, scored, query, userSkills, allJobs, allScored, onSelectJob }: JobDetailPanelProps) {
+export function JobDetailPanel({ job, scored, query, userSkills, allJobs, allScored, onSelectJob, onApply }: JobDetailPanelProps) {
   if (!job) {
     return (
       <div className="flex-1 flex items-center justify-center bg-white border-l border-[#E8E8E4] shadow-[-2px_0_8px_rgba(0,0,0,0.04)] min-h-[500px]">
@@ -129,7 +130,7 @@ export function JobDetailPanel({ job, scored, query, userSkills, allJobs, allSco
               </p>
             </div>
           </div>
-          <button className="h-10 px-6 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 transition-all shrink-0">
+          <button onClick={onApply} className="h-10 px-6 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 transition-all shrink-0">
             Apply Now
           </button>
         </div>
@@ -270,7 +271,7 @@ export function JobDetailPanel({ job, scored, query, userSkills, allJobs, allSco
         )}
 
         {/* Bottom apply */}
-        <button className="mt-8 w-full h-12 rounded-lg bg-primary text-primary-foreground font-bold text-sm hover:brightness-110 transition-all">
+        <button onClick={onApply} className="mt-8 w-full h-12 rounded-lg bg-primary text-primary-foreground font-bold text-sm hover:brightness-110 transition-all">
           Apply Now
         </button>
       </div>
