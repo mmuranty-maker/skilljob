@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SlidersHorizontal, ArrowLeft, X } from "lucide-react";
+import { SlidersHorizontal, ArrowLeft, X, Sparkles } from "lucide-react";
 import type { Job } from "@/data/jobs";
 import type { UserSkill, ScoredPosting } from "@/lib/quizScoring";
 import { ResultsTopBar } from "@/components/results/ResultsTopBar";
@@ -8,7 +8,8 @@ import { FilterSidebar, type Filters, defaultFilters } from "@/components/result
 import { JobListCard } from "@/components/results/JobListCard";
 import { JobDetailPanel } from "@/components/results/JobDetailPanel";
 import { SkeletonCards } from "@/components/results/SkeletonCards";
-import { searchJobsBySkills } from "@/data/jobs";
+import { SkillQuiz } from "@/components/SkillQuiz";
+import { searchJobsBySkills, jobs } from "@/data/jobs";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ResultsState {
