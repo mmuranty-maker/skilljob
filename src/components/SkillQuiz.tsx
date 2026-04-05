@@ -103,14 +103,14 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
     setStep(1);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (skipQ3 = false) => {
     setLoading(true);
     setStep(5);
 
     const start = Date.now();
 
     setTimeout(() => {
-      const result = runQuizScoring(q1Selections, q2Selection || "", q3Answer, isStudent, industry);
+      const result = runQuizScoring(q1Selections, q2Selection || "", skipQ3 ? "" : q3Answer, isStudent, industry);
       const elapsed = Date.now() - start;
       const remaining = Math.max(0, 1500 - elapsed);
 
@@ -355,7 +355,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
             </div>
           )}
 
-          {/* Step 4 — Proud moment / Q3 (industry-specific copy) */}
+          {/* Step 4 — Proud moment / Q3 (skippable) */}
           {step === 4 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">{q3Heading}</h3>
@@ -368,19 +368,30 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                 className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm resize-none"
               />
               <div className="flex-1" />
-              <div className="flex gap-3 mt-6">
+              <div className="flex flex-col mt-6">
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setStep(3)}
+                    className="h-12 px-6 rounded-xl border border-border text-foreground font-medium hover:bg-muted transition-all"
+                  >
+                    Back
+                  </button>
+                  <button
+                    onClick={() => handleSubmit(false)}
+                    disabled={q3Answer.length < 15}
+                    className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    Discover my skills →
+                  </button>
+                </div>
+                <p className="text-xs text-muted-foreground italic text-center mt-4">
+                  Users who complete this step get 40% more accurate matches.
+                </p>
                 <button
-                  onClick={() => setStep(3)}
-                  className="h-12 px-6 rounded-xl border border-border text-foreground font-medium hover:bg-muted transition-all"
+                  onClick={() => handleSubmit(true)}
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors text-center mt-1.5 underline underline-offset-2"
                 >
-                  Back
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  disabled={q3Answer.length < 15}
-                  className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Discover my skills →
+                  Skip this step — use my answers so far →
                 </button>
               </div>
             </div>
