@@ -1,4 +1,5 @@
-import { Search, X } from "lucide-react";
+import { Search, X, ArrowLeft } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const MAX_SKILLS = 6;
 
@@ -10,6 +11,7 @@ interface ResultsTopBarProps {
 }
 
 export function ResultsTopBar({ skillTags, setSkillTags, resultCount, onSearch }: ResultsTopBarProps) {
+  const navigate = useNavigate();
   const removeSkill = (skill: string) => {
     const next = skillTags.filter((s) => s !== skill);
     setSkillTags(next);
@@ -38,6 +40,12 @@ export function ResultsTopBar({ skillTags, setSkillTags, resultCount, onSearch }
 
   return (
     <div className="sticky top-0 z-30 bg-white border-b border-[#E8E8E4] shadow-[0_1px_3px_rgba(0,0,0,0.06)] h-14 flex items-center px-6 gap-4">
+      <button
+        onClick={() => navigate("/")}
+        className="text-[13px] text-[#888880] hover:text-[#333] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+      >
+        ← Back to search
+      </button>
       <div className="flex items-center gap-1.5 flex-wrap max-w-[480px] flex-1 min-h-[36px]">
         <Search className="h-4 w-4 text-muted-foreground shrink-0" />
         {skillTags.map((tag) => (
