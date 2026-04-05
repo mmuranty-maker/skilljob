@@ -28,10 +28,10 @@ export function JobListCard({ job, scored, query, isSelected, onClick }: JobList
   return (
     <button
       onClick={onClick}
-      className={`w-full text-left px-4 py-3.5 border-b border-[hsl(220,13%,91%)] transition-colors ${
+      className={`w-full text-left rounded-lg border p-3.5 mb-2 transition-colors ${
         isSelected
-          ? "border-l-[3px] border-l-primary bg-[#FAFFFE]"
-          : "border-l-[3px] border-l-transparent hover:bg-[#F9F9F7]"
+          ? "border-[1.5px] border-primary bg-[#FAFFFE]"
+          : "border-[#E8E8E4] bg-white hover:border-[#B0D9CC] hover:bg-[#FDFFFD]"
       }`}
     >
       <div className="flex items-start gap-3">

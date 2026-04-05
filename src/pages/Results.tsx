@@ -136,7 +136,7 @@ const ResultsPage = () => {
         <div
           className={`${
             isMobile ? "w-full" : "w-[340px]"
-          } shrink-0 bg-white overflow-y-auto h-[calc(100vh-56px)] custom-scrollbar`}
+          } shrink-0 bg-[#F5F5F3] overflow-y-auto h-[calc(100vh-56px)] custom-scrollbar px-3 pt-3`}
         >
           {filteredResults.length > 0 ? (
             <>

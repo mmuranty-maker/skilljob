@@ -37,7 +37,7 @@ export function ResultsTopBar({ skillTags, setSkillTags, resultCount, onSearch }
   };
 
   return (
-    <div className="sticky top-0 z-30 bg-white border-b border-[hsl(220,13%,91%)] h-14 flex items-center px-6 gap-4">
+    <div className="sticky top-0 z-30 bg-white border-b border-[#E8E8E4] shadow-[0_1px_3px_rgba(0,0,0,0.06)] h-14 flex items-center px-6 gap-4">
       <div className="flex items-center gap-1.5 flex-wrap max-w-[480px] flex-1 min-h-[36px]">
         <Search className="h-4 w-4 text-muted-foreground shrink-0" />
         {skillTags.map((tag) => (
