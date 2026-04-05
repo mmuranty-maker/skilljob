@@ -426,7 +426,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                   : "Think about your typical day. Pick everything that applies."}
               </p>
               <div className="grid grid-cols-2 gap-2 flex-1">
-                {ACTIVITIES.map((a) => (
+                {(isStudent ? ACTIVITIES : (industry && Q1_TILES_BY_INDUSTRY[industry] ? Q1_TILES_BY_INDUSTRY[industry] : ACTIVITIES)).map((a) => (
                   <button
                     key={a}
                     onClick={() => toggleActivity(a)}
