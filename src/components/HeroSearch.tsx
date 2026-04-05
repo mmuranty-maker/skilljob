@@ -27,14 +27,11 @@ export interface HeroSearchHandle {
 }
 
 export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, ref) {
+  const navigate = useNavigate();
   const [skillTags, setSkillTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [results, setResults] = useState<Job[]>([]);
-  const [hasSearched, setHasSearched] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [quizResults, setQuizResults] = useState<{ userSkills: UserSkill[]; topMatches: ScoredPosting[] } | null>(null);
-  const resultsRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
