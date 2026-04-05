@@ -224,7 +224,7 @@ function scorePostings(
   q2Selection: string,
   industry: string | null
 ): ScoredPosting[] {
-  const userSkillNames = userSkills.map((s) => s.name.toLowerCase());
+  const userSkillNormalised = userSkills.map((s) => normaliseSkill(s.name));
   const industryConfig = industry ? getIndustryConfig(industry) : null;
 
   // Get industry Q2 tile data for boost
