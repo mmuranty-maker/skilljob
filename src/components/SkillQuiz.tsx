@@ -259,11 +259,20 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
       const remaining = Math.max(0, 1500 - elapsed);
 
       setTimeout(() => {
-        setUserSkills(result.userSkills);
-        setTopMatches(result.topMatches);
-        setLoading(false);
         // Store skip state for results page
         (window as any).__skilljob_skippedQ3 = q3SkipRef;
+        // Skip the results popup — navigate directly
+        if (onQuizResults && result.topMatches.length > 0) {
+          onQuizResults(result.userSkills, result.topMatches, q3SkipRef);
+          resetAndClose();
+        } else if (result.userSkills.length > 0) {
+          onComplete(result.userSkills[0].name);
+          resetAndClose();
+        } else {
+          setUserSkills(result.userSkills);
+          setTopMatches(result.topMatches);
+          setLoading(false);
+        }
       }, remaining);
     }, 100);
   };
