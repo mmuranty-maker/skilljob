@@ -105,6 +105,23 @@ export function FilterSidebar({ filters, onChange, onOpenQuiz, className = "" }:
 
   return (
     <aside className={`bg-white border-r border-[hsl(220,13%,91%)] p-5 ${className}`}>
+      {/* Quiz CTA card */}
+      {onOpenQuiz && (
+        <div className="mb-5 rounded-lg bg-primary p-4">
+          <Sparkles className="h-4 w-4 text-white mb-2" />
+          <p className="text-[13px] font-semibold text-white">Not sure what your skills are?</p>
+          <p className="text-xs text-white/80 leading-relaxed mt-1">
+            Take the 3-minute quiz and we'll build your skill profile for you.
+          </p>
+          <button
+            onClick={onOpenQuiz}
+            className="mt-3 w-full text-xs font-semibold text-white border border-white/60 rounded-[20px] px-3.5 py-2.5 hover:bg-white/10 transition-colors"
+          >
+            Discover my skills →
+          </button>
+        </div>
+      )}
+
       <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-5">
         Refine results
       </p>
