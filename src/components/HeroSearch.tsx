@@ -6,15 +6,6 @@ import { SkillQuiz } from "./SkillQuiz";
 import type { UserSkill, ScoredPosting } from "@/lib/quizScoring";
 import heroPeople from "@/assets/hero-people.jpg";
 
-const PLACEHOLDER_SKILLS = [
-  "Content Creation",
-  "Team Leadership",
-  "Conflict Resolution",
-  "Problem Solving",
-  "Customer Service",
-  "Strategic Planning",
-];
-
 const POPULAR_SKILLS = [
   "Communication",
   "Problem Solving",
@@ -28,7 +19,7 @@ const POPULAR_SKILLS = [
   "Teamwork",
 ];
 
-const MIN_SKILLS = 3;
+const MAX_SKILLS = 6;
 
 export interface HeroSearchHandle {
   triggerSearch: (skill: string) => void;
