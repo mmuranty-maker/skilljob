@@ -129,6 +129,7 @@ const ResultsPage = () => {
           <FilterSidebar
             filters={filters}
             onChange={setFilters}
+            onOpenQuiz={() => setQuizOpen(true)}
             className="w-[220px] shrink-0 sticky top-14 h-[calc(100vh-56px)] overflow-y-auto custom-scrollbar"
           />
         )}
@@ -162,6 +163,28 @@ const ResultsPage = () => {
                 );
               })}
             </>
+          ) : skillTags.length === 0 && results.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full px-6 text-center">
+              <Sparkles className="h-8 w-8 text-primary mb-4" />
+              <p className="text-foreground font-semibold mb-1">No skills added yet.</p>
+              <p className="text-sm text-muted-foreground mb-5 max-w-[240px]">
+                Search for a skill above, or take the quiz to discover yours.
+              </p>
+              <div className="flex gap-3 w-full max-w-[280px]">
+                <button
+                  onClick={() => setQuizOpen(true)}
+                  className="flex-1 h-10 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 transition-all"
+                >
+                  Take the quiz →
+                </button>
+                <button
+                  onClick={handleBrowseAll}
+                  className="flex-1 h-10 rounded-lg border border-[#E8E8E4] bg-white text-foreground font-semibold text-sm hover:border-primary/40 transition-colors"
+                >
+                  Browse all roles →
+                </button>
+              </div>
+            </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-full px-6 text-center">
               <p className="text-muted-foreground text-sm mb-3">
@@ -224,10 +247,18 @@ const ResultsPage = () => {
                 <X className="h-5 w-5 text-muted-foreground" />
               </button>
             </div>
-            <FilterSidebar filters={filters} onChange={setFilters} className="border-r-0" />
+            <FilterSidebar filters={filters} onChange={setFilters} onOpenQuiz={() => setQuizOpen(true)} className="border-r-0" />
           </div>
         </div>
       )}
+
+      {/* Quiz modal */}
+      <SkillQuiz
+        open={quizOpen}
+        onClose={() => setQuizOpen(false)}
+        onComplete={() => {}}
+        onQuizResults={handleQuizComplete}
+      />
     </div>
   );
 };
