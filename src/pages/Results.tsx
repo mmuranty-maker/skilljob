@@ -26,11 +26,12 @@ const ResultsPage = () => {
 
   const [skillTags, setSkillTags] = useState<string[]>(incoming?.skillTags ?? []);
   const [results, setResults] = useState<Job[]>(incoming?.results ?? []);
-  const [quizResults] = useState(incoming?.quizResults ?? undefined);
+  const [quizResults, setQuizResults] = useState(incoming?.quizResults ?? undefined);
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [selectedId, setSelectedId] = useState<string | null>(results.length > 0 ? results[0].id : null);
   const [showMobileDetail, setShowMobileDetail] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [quizOpen, setQuizOpen] = useState(false);
 
   const isQuizMode = !!quizResults;
 
