@@ -171,31 +171,34 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
             <div className="mt-10 max-w-xl animate-fade-up-delay-2">
               <h2 className="text-lg font-bold text-foreground mb-4">How would you like to get started?</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-card border border-border rounded-xl p-6 hover:border-primary/40 transition-all flex flex-col">
-                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                    <Search className="h-5 w-5 text-primary" />
-                  </div>
-                  <h3 className="font-bold text-foreground mb-1">I know my skills</h3>
-                  <p className="text-sm text-muted-foreground mb-5 flex-1">Search by what you can do and get matched to roles instantly.</p>
-                  <button
-                    onClick={() => setShowSearch(true)}
-                    className="w-full h-11 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 transition-all"
-                  >
-                    Search by skill →
-                  </button>
-                </div>
-
-                <div className="bg-card border border-border rounded-xl p-6 hover:border-primary/40 transition-all flex flex-col">
+                <div className="bg-card border-[1.5px] border-primary rounded-xl p-6 hover:border-primary/80 transition-all flex flex-col">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary-foreground bg-primary px-2.5 py-0.5 rounded-full w-fit mb-3">
+                    ★ Recommended
+                  </span>
                   <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                     <Sparkles className="h-5 w-5 text-primary" />
                   </div>
                   <h3 className="font-bold text-foreground mb-1">Help me discover my skills</h3>
-                  <p className="text-sm text-muted-foreground mb-5 flex-1">Answer 3 quick questions and we'll build your skill profile for you.</p>
+                  <p className="text-sm text-muted-foreground mb-5 flex-1">Most accurate results. Tell us what you do and we'll find roles you didn't know you qualified for.</p>
                   <button
                     onClick={() => setQuizOpen(true)}
-                    className="w-full h-11 rounded-lg border border-primary text-primary font-semibold text-sm hover:bg-primary/5 transition-all"
+                    className="w-full h-11 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 transition-all"
                   >
                     Start the quiz →
+                  </button>
+                </div>
+
+                <div className="bg-card border border-border rounded-xl p-6 hover:border-primary/40 transition-all flex flex-col">
+                  <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4 mt-[26px]">
+                    <Search className="h-5 w-5 text-primary" />
+                  </div>
+                  <h3 className="font-bold text-foreground mb-1">I know my skills</h3>
+                  <p className="text-sm text-muted-foreground mb-5 flex-1">Already know your skills? Search directly and get matched instantly.</p>
+                  <button
+                    onClick={() => setShowSearch(true)}
+                    className="w-full h-11 rounded-lg border border-primary text-primary font-semibold text-sm hover:bg-primary/5 transition-all"
+                  >
+                    Search by skill →
                   </button>
                 </div>
               </div>
