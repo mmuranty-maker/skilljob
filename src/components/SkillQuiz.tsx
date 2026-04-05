@@ -127,7 +127,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
 
   const handleSeeAll = () => {
     if (onQuizResults && userSkills && topMatches.length > 0) {
-      onQuizResults(userSkills, topMatches);
+      onQuizResults(userSkills, topMatches, !!(window as any).__skilljob_skippedQ3);
     } else if (userSkills && userSkills.length > 0) {
       onComplete(userSkills[0].name);
     }
