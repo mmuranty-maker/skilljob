@@ -207,6 +207,9 @@ const ResultsPage = () => {
             scored={selectedScored}
             query={skillTags.join(", ")}
             userSkills={quizResults?.userSkills}
+            allJobs={filteredResults}
+            allScored={isQuizMode ? quizResults!.topMatches : undefined}
+            onSelectJob={(id) => setSelectedId(id)}
           />
         )}
       </div>
@@ -226,6 +229,9 @@ const ResultsPage = () => {
               scored={selectedScored}
               query={skillTags.join(", ")}
               userSkills={quizResults?.userSkills}
+              allJobs={filteredResults}
+              allScored={isQuizMode ? quizResults!.topMatches : undefined}
+              onSelectJob={(id) => { setSelectedId(id); }}
             />
           </div>
           <div className="p-4 border-t border-[hsl(220,13%,91%)]">
