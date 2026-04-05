@@ -55,7 +55,7 @@ interface SkillQuizProps {
   open: boolean;
   onClose: () => void;
   onComplete: (topSkill: string) => void;
-  onQuizResults?: (userSkills: UserSkill[], topMatches: ScoredPosting[]) => void;
+  onQuizResults?: (userSkills: UserSkill[], topMatches: ScoredPosting[], skippedQ3?: boolean) => void;
 }
 
 export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQuizProps) {
@@ -107,10 +107,11 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
     setLoading(true);
     setStep(5);
 
+    const q3SkipRef = skipQ3;
     const start = Date.now();
 
     setTimeout(() => {
-      const result = runQuizScoring(q1Selections, q2Selection || "", skipQ3 ? "" : q3Answer, isStudent, industry);
+      const result = runQuizScoring(q1Selections, q2Selection || "", q3SkipRef ? "" : q3Answer, isStudent, industry);
       const elapsed = Date.now() - start;
       const remaining = Math.max(0, 1500 - elapsed);
 
@@ -118,6 +119,8 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
         setUserSkills(result.userSkills);
         setTopMatches(result.topMatches);
         setLoading(false);
+        // Store skip state for results page
+        (window as any).__skilljob_skippedQ3 = q3SkipRef;
       }, remaining);
     }, 100);
   };
@@ -385,13 +388,13 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                   </button>
                 </div>
                 <p className="text-xs text-muted-foreground italic text-center mt-4">
-                  Users who complete this step get 40% more accurate matches.
+                  People who complete this step get significantly more accurate matches.
                 </p>
                 <button
                   onClick={() => handleSubmit(true)}
-                  className="text-xs text-muted-foreground hover:text-foreground transition-colors text-center mt-1.5 underline underline-offset-2"
+                  className="text-[13px] text-muted-foreground hover:text-foreground transition-colors text-center mt-1.5 underline underline-offset-2"
                 >
-                  Skip this step — use my answers so far →
+                  Skip and use my answers so far →
                 </button>
               </div>
             </div>
