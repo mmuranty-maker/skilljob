@@ -88,7 +88,7 @@ export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPane
           </span>
         </div>
 
-        <hr className="my-6 border-[hsl(220,13%,91%)]" />
+        <hr className="my-6 border-[#F0F0EC]" />
 
         {/* Skills match */}
         <div>
@@ -106,7 +106,7 @@ export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPane
                   className={`inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-full border ${
                     isMatch
                       ? "border-primary/60 bg-primary/15 text-primary font-semibold"
-                      : "border-[hsl(220,13%,91%)] text-muted-foreground"
+                      : "border-[#F0F0EC] text-muted-foreground"
                   }`}
                 >
                   {isMatch && <Sparkles className="h-3 w-3" />}
@@ -141,7 +141,7 @@ export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPane
                     className={`text-sm px-3 py-1.5 rounded-full border ${
                       isMatch
                         ? "border-primary/40 bg-primary/10 text-primary font-medium"
-                        : "border-[hsl(220,13%,91%)] text-muted-foreground"
+                        : "border-[#F0F0EC] text-muted-foreground"
                     }`}
                   >
                     {skill}
@@ -152,7 +152,7 @@ export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPane
           </div>
         )}
 
-        <hr className="my-6 border-[hsl(220,13%,91%)]" />
+        <hr className="my-6 border-[#F0F0EC]" />
 
         {/* Gap section */}
         <div>
@@ -192,25 +192,25 @@ export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPane
           )}
         </div>
 
-        <hr className="my-6 border-[hsl(220,13%,91%)]" />
+        <hr className="my-6 border-[#F0F0EC]" />
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="rounded-lg border border-[hsl(220,13%,91%)] p-3 text-center">
+          <div className="rounded-lg border border-[#F0F0EC] p-3 text-center">
             <p className="text-lg font-bold text-primary">{job.skills.length}</p>
             <p className="text-[11px] text-muted-foreground mt-0.5">Skills Required</p>
           </div>
-          <div className="rounded-lg border border-[hsl(220,13%,91%)] p-3 text-center">
+          <div className="rounded-lg border border-[#F0F0EC] p-3 text-center">
             <p className="text-lg font-bold text-primary">{matchedCount}</p>
             <p className="text-[11px] text-muted-foreground mt-0.5">Your Matches</p>
           </div>
-          <div className="rounded-lg border border-[hsl(220,13%,91%)] p-3 text-center">
+          <div className="rounded-lg border border-[#F0F0EC] p-3 text-center">
             <p className="text-lg font-bold text-primary">{matchPercent}%</p>
             <p className="text-[11px] text-muted-foreground mt-0.5">Skill Match</p>
           </div>
         </div>
 
-        <hr className="my-6 border-[hsl(220,13%,91%)]" />
+        <hr className="my-6 border-[#F0F0EC]" />
 
         {/* Description */}
         <div>
