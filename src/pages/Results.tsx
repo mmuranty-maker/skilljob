@@ -140,7 +140,7 @@ const ResultsPage = () => {
         >
           {filteredResults.length > 0 ? (
             <>
-              <div className="px-4 py-2.5 border-b border-[hsl(220,13%,91%)]">
+              <div className="px-1 py-2.5">
                 <p className="text-xs text-muted-foreground">
                   Sorted by best skill match · {filteredResults.length} result{filteredResults.length !== 1 ? "s" : ""}
                 </p>

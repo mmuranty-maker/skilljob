@@ -24,7 +24,7 @@ interface JobDetailPanelProps {
 export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPanelProps) {
   if (!job) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-white min-h-[500px]">
+      <div className="flex-1 flex items-center justify-center bg-white border-l border-[#E8E8E4] shadow-[-2px_0_8px_rgba(0,0,0,0.04)] min-h-[500px]">
         <div className="text-center text-muted-foreground">
           <Briefcase className="h-12 w-12 mx-auto mb-3 opacity-30" />
           <p className="text-sm">Select a role to see details</p>
@@ -45,8 +45,8 @@ export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPane
     : Math.round((matchedCount / job.skills.length) * 100);
 
   return (
-    <div className="flex-1 bg-white overflow-y-auto custom-scrollbar">
-      <div className="p-8">
+    <div className="flex-1 bg-white border-l border-[#E8E8E4] shadow-[-2px_0_8px_rgba(0,0,0,0.04)] overflow-y-auto custom-scrollbar">
+      <div className="px-9 py-10">
         {/* Header */}
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-4">
