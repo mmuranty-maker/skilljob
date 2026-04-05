@@ -6,15 +6,6 @@ import { SkillQuiz } from "./SkillQuiz";
 import type { UserSkill, ScoredPosting } from "@/lib/quizScoring";
 import heroPeople from "@/assets/hero-people.jpg";
 
-const PLACEHOLDER_SKILLS = [
-  "Content Creation",
-  "Team Leadership",
-  "Conflict Resolution",
-  "Problem Solving",
-  "Customer Service",
-  "Strategic Planning",
-];
-
 const POPULAR_SKILLS = [
   "Communication",
   "Problem Solving",
@@ -28,7 +19,7 @@ const POPULAR_SKILLS = [
   "Teamwork",
 ];
 
-const MIN_SKILLS = 3;
+const MAX_SKILLS = 6;
 
 export interface HeroSearchHandle {
   triggerSearch: (skill: string) => void;
@@ -40,7 +31,6 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
   const [inputValue, setInputValue] = useState("");
   const [results, setResults] = useState<Job[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
-  const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [quizOpen, setQuizOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [quizResults, setQuizResults] = useState<{ userSkills: UserSkill[]; topMatches: ScoredPosting[] } | null>(null);
@@ -48,22 +38,23 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setPlaceholderIndex((i) => (i + 1) % PLACEHOLDER_SKILLS.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
     if (showSearch) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [showSearch]);
 
-  const addSkill = (skill: string) => {
-    const trimmed = skill.trim();
-    if (!trimmed || skillTags.some((s) => s.toLowerCase() === trimmed.toLowerCase())) return;
-    setSkillTags((prev) => [...prev, trimmed]);
+  const addSkills = (text: string) => {
+    const parts = text.split(",").map((s) => s.trim()).filter(Boolean);
+    setSkillTags((prev) => {
+      const next = [...prev];
+      for (const part of parts) {
+        if (next.length >= MAX_SKILLS) break;
+        if (!next.some((s) => s.toLowerCase() === part.toLowerCase())) {
+          next.push(part);
+        }
+      }
+      return next;
+    });
     setInputValue("");
   };
 
@@ -71,21 +62,64 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
     setSkillTags((prev) => prev.filter((s) => s !== skill));
   };
 
-  const handleSearch = () => {
-    if (skillTags.length < MIN_SKILLS) return;
+  const doSearch = (tags: string[]) => {
+    if (tags.length === 0) return;
     setQuizResults(null);
-    const matched = searchJobsBySkills(skillTags);
+    const matched = searchJobsBySkills(tags);
     setResults(matched);
     setHasSearched(true);
-    setTimeout(() => {
-      resultsRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
+    setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
+  };
+
+  const handleSearch = () => {
+    // Also commit any pending input text before searching
+    let tags = [...skillTags];
+    if (inputValue.trim()) {
+      const parts = inputValue.split(",").map((s) => s.trim()).filter(Boolean);
+      for (const part of parts) {
+        if (tags.length >= MAX_SKILLS) break;
+        if (!tags.some((s) => s.toLowerCase() === part.toLowerCase())) {
+          tags.push(part);
+        }
+      }
+      setSkillTags(tags);
+      setInputValue("");
+    }
+    doSearch(tags);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    // If comma typed, split and add as pills
+    if (val.includes(",")) {
+      addSkills(val);
+    } else {
+      setInputValue(val);
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent) => {
+    const pasted = e.clipboardData.getData("text");
+    if (pasted.includes(",")) {
+      e.preventDefault();
+      addSkills(pasted);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && inputValue.trim()) {
+    if (e.key === "Enter") {
       e.preventDefault();
-      addSkill(inputValue);
+      if (inputValue.trim()) {
+        addSkills(inputValue);
+      }
+      // Search with whatever pills exist (including just-added ones)
+      setTimeout(() => {
+        // Use functional approach to get latest tags
+        setSkillTags((current) => {
+          if (current.length > 0) doSearch(current);
+          return current;
+        });
+      }, 0);
     } else if (e.key === "Backspace" && !inputValue && skillTags.length > 0) {
       setSkillTags((prev) => prev.slice(0, -1));
     }
@@ -96,7 +130,6 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
     setSkillTags(newTags);
     setShowSearch(true);
     setQuizResults(null);
-    // For single-skill trigger (from skill bridge), search immediately
     const matched = searchJobsBySkills(newTags);
     setResults(matched);
     setHasSearched(true);
@@ -104,16 +137,9 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
   };
 
   const handlePopularClick = (skill: string) => {
+    if (skillTags.length >= MAX_SKILLS) return;
     if (!skillTags.some((s) => s.toLowerCase() === skill.toLowerCase())) {
-      const newTags = [...skillTags, skill];
-      setSkillTags(newTags);
-      if (newTags.length >= MIN_SKILLS) {
-        setQuizResults(null);
-        const matched = searchJobsBySkills(newTags);
-        setResults(matched);
-        setHasSearched(true);
-        setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 300);
-      }
+      setSkillTags((prev) => [...prev, skill]);
     }
   };
 
@@ -127,7 +153,13 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
 
   useImperativeHandle(ref, () => ({ triggerSearch, openQuiz: () => setQuizOpen(true) }));
 
-  const canSearch = skillTags.length >= MIN_SKILLS;
+  const canSearch = skillTags.length >= 1;
+
+  const getPlaceholder = () => {
+    if (skillTags.length === 0) return "Try Customer Service or Team Leadership...";
+    if (skillTags.length === 1) return "Add another skill or press Enter to search";
+    return "Press Enter to search";
+  };
 
   return (
     <>
@@ -186,26 +218,29 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
                       {skillTags.map((tag) => (
                         <span
                           key={tag}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[20px] bg-primary text-primary-foreground text-sm font-medium"
                         >
                           {tag}
                           <button
                             onClick={() => removeSkill(tag)}
-                            className="hover:bg-primary/20 rounded-full p-0.5 transition-colors"
+                            className="hover:bg-primary-foreground/20 rounded-full p-0.5 transition-colors"
                           >
                             <X className="h-3 w-3" />
                           </button>
                         </span>
                       ))}
-                      <input
-                        ref={inputRef}
-                        type="text"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        placeholder={skillTags.length === 0 ? `Try "${PLACEHOLDER_SKILLS[placeholderIndex]}"...` : skillTags.length < MIN_SKILLS ? `Add ${MIN_SKILLS - skillTags.length} more skill${MIN_SKILLS - skillTags.length > 1 ? "s" : ""}...` : "Add more or search..."}
-                        className="flex-1 min-w-[120px] h-8 bg-transparent text-foreground placeholder:text-muted-foreground text-base focus:outline-none"
-                      />
+                      {skillTags.length < MAX_SKILLS && (
+                        <input
+                          ref={inputRef}
+                          type="text"
+                          value={inputValue}
+                          onChange={handleInputChange}
+                          onKeyDown={handleKeyDown}
+                          onPaste={handlePaste}
+                          placeholder={getPlaceholder()}
+                          className="flex-1 min-w-[120px] h-8 bg-transparent text-foreground placeholder:text-muted-foreground text-base focus:outline-none"
+                        />
+                      )}
                     </div>
                     <button
                       onClick={handleSearch}
@@ -215,11 +250,6 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
                       Search
                     </button>
                   </div>
-                  {!canSearch && skillTags.length > 0 && (
-                    <p className="mt-2 text-xs text-muted-foreground">
-                      Add at least {MIN_SKILLS} skills to search · {MIN_SKILLS - skillTags.length} more needed
-                    </p>
-                  )}
                   <div className="mt-3 flex flex-wrap gap-2">
                     <span className="text-sm text-muted-foreground">Popular:</span>
                     {POPULAR_SKILLS.filter((s) => !skillTags.some((t) => t.toLowerCase() === s.toLowerCase())).map((skill) => (
