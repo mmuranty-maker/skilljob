@@ -1,8 +1,21 @@
 import { useState } from "react";
-import { X, Loader2, Briefcase, GraduationCap } from "lucide-react";
+import { X, Loader2, Briefcase, GraduationCap, UtensilsCrossed, ShoppingBag, Heart, Cpu, Building2, Megaphone, Palette, Landmark, BookOpen, Wrench } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { QuizResults } from "./QuizResults";
 import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
+
+const INDUSTRIES = [
+  { title: "Hospitality & Food Service", subtitle: "Hotels, restaurants, events", icon: UtensilsCrossed },
+  { title: "Retail & Customer Service", subtitle: "Shops, support, client-facing roles", icon: ShoppingBag },
+  { title: "Healthcare & Medicine", subtitle: "Hospitals, clinics, care roles", icon: Heart },
+  { title: "Technology & Engineering", subtitle: "Software, hardware, IT", icon: Cpu },
+  { title: "Business & Operations", subtitle: "Admin, logistics, management", icon: Building2 },
+  { title: "Sales & Marketing", subtitle: "Revenue, campaigns, outreach", icon: Megaphone },
+  { title: "Creative & Media", subtitle: "Design, content, film, music", icon: Palette },
+  { title: "Finance & Accounting", subtitle: "Banking, bookkeeping, auditing", icon: Landmark },
+  { title: "Education & Social Care", subtitle: "Teaching, training, community", icon: BookOpen },
+  { title: "Trades & Construction", subtitle: "Plumbing, electrical, building", icon: Wrench },
+];
 
 const ACTIVITIES = [
   "Talking to people",
@@ -46,6 +59,7 @@ interface SkillQuizProps {
 export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQuizProps) {
   const [step, setStep] = useState(0); // 0 = path selector
   const [isStudent, setIsStudent] = useState(false);
+  const [industry, setIndustry] = useState<string | null>(null);
   const [q1Selections, setQ1Selections] = useState<string[]>([]);
   const [q2Selection, setQ2Selection] = useState<string | null>(null);
   const [q3Answer, setQ3Answer] = useState("");
@@ -68,7 +82,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
 
   const handleSubmit = () => {
     setLoading(true);
-    setStep(4);
+    setStep(5);
 
     const start = Date.now();
 
@@ -97,6 +111,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
   const resetAndClose = () => {
     setStep(0);
     setIsStudent(false);
+    setIndustry(null);
     setQ1Selections([]);
     setQ2Selection(null);
     setQ3Answer("");
@@ -109,6 +124,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
   const handleStartOver = () => {
     setStep(0);
     setIsStudent(false);
+    setIndustry(null);
     setQ1Selections([]);
     setQ2Selection(null);
     setQ3Answer("");
@@ -117,7 +133,8 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
     setTopMatches([]);
   };
 
-  const progress = step >= 1 && step <= 3 ? (step / 3) * 100 : 100;
+  // Steps 1-4 are the quiz steps, 0 is path selector, 5 is results
+  const progress = step >= 1 && step <= 4 ? (step / 4) * 100 : 100;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -126,16 +143,16 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
         onClick={resetAndClose}
       />
 
-      <div className="relative z-10 w-full max-w-[560px] bg-card rounded-2xl shadow-2xl overflow-hidden animate-scale-in">
+      <div className="relative z-10 w-full max-w-[560px] bg-card rounded-2xl shadow-2xl overflow-hidden animate-scale-in max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="p-6 pb-0">
+        <div className="p-6 pb-0 shrink-0">
           <div className="flex items-center justify-between mb-4">
-            {step >= 1 && step <= 3 && (
+            {step >= 1 && step <= 4 && (
               <span className="text-sm font-medium text-muted-foreground">
-                Step {step} of 3
+                Step {step} of 4
               </span>
             )}
-            {(step === 0 || step === 4) && <span />}
+            {(step === 0 || step === 5) && <span />}
             <button
               onClick={resetAndClose}
               className="h-8 w-8 rounded-full flex items-center justify-center hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
@@ -143,13 +160,13 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
               <X className="h-4 w-4" />
             </button>
           </div>
-          {step >= 1 && step <= 3 && (
+          {step >= 1 && step <= 4 && (
             <Progress value={progress} className="h-1.5 mb-6" />
           )}
         </div>
 
         {/* Content */}
-        <div className="px-6 pb-6 min-h-[320px] flex flex-col">
+        <div className="px-6 pb-6 min-h-[320px] flex flex-col overflow-y-auto">
           {/* Step 0 — Path Selector */}
           {step === 0 && (
             <div className="animate-fade-in flex flex-col items-center flex-1 py-4">
@@ -157,7 +174,6 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                 First, which best describes you right now?
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-                {/* Professional Card */}
                 <div className="border border-border rounded-xl p-8 bg-card hover:border-primary/40 transition-all flex flex-col items-center text-center">
                   <Briefcase className="h-8 w-8 text-primary mb-4" />
                   <h4 className="font-semibold text-foreground text-base mb-1">I'm currently working</h4>
@@ -169,7 +185,6 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                     Start →
                   </button>
                 </div>
-                {/* Student Card */}
                 <div className="border border-border rounded-xl p-8 bg-card hover:border-primary/40 transition-all flex flex-col items-center text-center">
                   <GraduationCap className="h-8 w-8 text-primary mb-4" />
                   <h4 className="font-semibold text-foreground text-base mb-1">I'm a student or recent graduate</h4>
@@ -185,8 +200,50 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
             </div>
           )}
 
-          {/* Step 1 — Activities */}
+          {/* Step 1 — Industry Selection */}
           {step === 1 && (
+            <div className="animate-fade-in flex flex-col flex-1">
+              <h3 className="text-xl font-bold text-foreground">
+                {isStudent ? "What area interests you most?" : "What industry do you work in?"}
+              </h3>
+              <p className="text-sm text-muted-foreground mt-1 mb-6">
+                {isStudent
+                  ? "Pick the field you'd most like to work in — or already have experience in."
+                  : "Pick the one closest to your current role."}
+              </p>
+              <div className="grid grid-cols-2 gap-2 flex-1">
+                {INDUSTRIES.map(({ title, subtitle, icon: Icon }) => (
+                  <button
+                    key={title}
+                    onClick={() => setIndustry(title)}
+                    className={`px-3 py-3 rounded-xl text-left transition-all border flex items-start gap-2.5 ${
+                      industry === title
+                        ? "bg-primary/10 border-primary"
+                        : "bg-muted/50 border-border hover:border-primary/40"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                    <div className="min-w-0">
+                      <span className={`text-sm font-medium block ${industry === title ? "text-primary" : "text-foreground"}`}>
+                        {title}
+                      </span>
+                      <span className="text-xs text-muted-foreground block mt-0.5">{subtitle}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => setStep(2)}
+                disabled={!industry}
+                className="mt-6 w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                Next →
+              </button>
+            </div>
+          )}
+
+          {/* Step 2 — Activities */}
+          {step === 2 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">
                 {isStudent ? "What do you actually spend your time doing?" : "What do you actually do at work?"}
@@ -216,18 +273,26 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                   </button>
                 ))}
               </div>
-              <button
-                onClick={() => setStep(2)}
-                disabled={q1Selections.length === 0}
-                className="mt-6 w-full h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-              >
-                Next →
-              </button>
+              <div className="flex gap-3 mt-6">
+                <button
+                  onClick={() => setStep(1)}
+                  className="h-12 px-6 rounded-xl border border-border text-foreground font-medium hover:bg-muted transition-all"
+                >
+                  Back
+                </button>
+                <button
+                  onClick={() => setStep(3)}
+                  disabled={q1Selections.length === 0}
+                  className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  Next →
+                </button>
+              </div>
             </div>
           )}
 
-          {/* Step 2 — Good day (single-select) */}
-          {step === 2 && (
+          {/* Step 3 — Good day (single-select) */}
+          {step === 3 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">
                 {isStudent ? "What does a great day look like for you?" : "What does a good day at work look like for you?"}
@@ -254,13 +319,13 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
               </div>
               <div className="flex gap-3 mt-6">
                 <button
-                  onClick={() => setStep(1)}
+                  onClick={() => setStep(2)}
                   className="h-12 px-6 rounded-xl border border-border text-foreground font-medium hover:bg-muted transition-all"
                 >
                   Back
                 </button>
                 <button
-                  onClick={() => setStep(3)}
+                  onClick={() => setStep(4)}
                   disabled={!q2Selection}
                   className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
@@ -270,8 +335,8 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
             </div>
           )}
 
-          {/* Step 3 — Proud moment */}
-          {step === 3 && (
+          {/* Step 4 — Proud moment */}
+          {step === 4 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">
                 {isStudent ? "Tell us about something you've done that you're proud of" : "Tell us about something you're proud of"}
@@ -295,7 +360,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
               <div className="flex-1" />
               <div className="flex gap-3 mt-6">
                 <button
-                  onClick={() => setStep(2)}
+                  onClick={() => setStep(3)}
                   className="h-12 px-6 rounded-xl border border-border text-foreground font-medium hover:bg-muted transition-all"
                 >
                   Back
@@ -312,7 +377,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
           )}
 
           {/* Loading / Results */}
-          {step === 4 && (
+          {step === 5 && (
             <div className="flex flex-col items-center justify-center flex-1">
               {loading ? (
                 <div className="animate-fade-in flex flex-col items-center py-8">
