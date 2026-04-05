@@ -3,6 +3,7 @@ import { X, Loader2, Briefcase, GraduationCap, UtensilsCrossed, ShoppingBag, Hea
 import { Progress } from "@/components/ui/progress";
 import { QuizResults } from "./QuizResults";
 import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
+import { getIndustryConfig, getIndustryQ2Tiles } from "@/lib/industryMapping";
 
 const INDUSTRIES = [
   { title: "Hospitality & Food Service", subtitle: "Hotels, restaurants, events", icon: UtensilsCrossed },
@@ -39,7 +40,8 @@ const STUDENT_SUBTEXTS: Record<string, string> = {
   "Building or fixing things": "e.g. hackathons, lab work, DIY projects",
 };
 
-const Q2_TILES = [
+// Generic fallback Q2 tiles (used if industry not found)
+const GENERIC_Q2_TILES = [
   "I solved something that had everyone else stuck",
   "I helped someone through a difficult situation",
   "I organised chaos and made things run smoothly",
@@ -57,7 +59,7 @@ interface SkillQuizProps {
 }
 
 export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQuizProps) {
-  const [step, setStep] = useState(0); // 0 = path selector
+  const [step, setStep] = useState(0);
   const [isStudent, setIsStudent] = useState(false);
   const [industry, setIndustry] = useState<string | null>(null);
   const [q1Selections, setQ1Selections] = useState<string[]>([]);
@@ -68,6 +70,27 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
   const [topMatches, setTopMatches] = useState<ScoredPosting[]>([]);
 
   if (!open) return null;
+
+  const industryConfig = getIndustryConfig(industry);
+
+  // Get Q2 tiles — industry-specific or generic fallback
+  const q2Tiles = industry ? getIndustryQ2Tiles(industry) : [];
+  const activeQ2Tiles = q2Tiles.length > 0 ? q2Tiles : GENERIC_Q2_TILES;
+
+  // Get Q2/Q3 headings from industry config or use generic
+  const q2Heading = industryConfig?.q2.heading
+    ?? (isStudent ? "What does a great day look like for you?" : "What does a good day at work look like for you?");
+  const q2Subtitle = industryConfig?.q2.subtitle
+    ?? (isStudent ? "At uni, at work, or anywhere — pick the one that sounds most like you." : "Pick the one that sounds most like you.");
+
+  const q3Heading = industryConfig?.q3.heading
+    ?? (isStudent ? "Tell us about something you've done that you're proud of" : "Tell us about something you're proud of");
+  const q3Subtitle = industryConfig?.q3.subtitle
+    ?? (isStudent ? "A project, a job, a society role, anything — big or small." : "At work, big or small — what's something you did that you felt good about?");
+  const q3Placeholder = industryConfig?.q3.placeholder
+    ?? (isStudent
+      ? "e.g. I led our university charity campaign and raised £3,000, I built an app for my final year project, I managed social media for our student union..."
+      : "e.g. I trained 3 new starters, I reorganised how we handle complaints, I hit my sales target during a really tough month…");
 
   const toggleActivity = (a: string) => {
     setQ1Selections((prev) =>
@@ -87,7 +110,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
     const start = Date.now();
 
     setTimeout(() => {
-      const result = runQuizScoring(q1Selections, q2Selection || "", q3Answer, isStudent);
+      const result = runQuizScoring(q1Selections, q2Selection || "", q3Answer, isStudent, industry);
       const elapsed = Date.now() - start;
       const remaining = Math.max(0, 1500 - elapsed);
 
@@ -133,7 +156,6 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
     setTopMatches([]);
   };
 
-  // Steps 1-4 are the quiz steps, 0 is path selector, 5 is results
   const progress = step >= 1 && step <= 4 ? (step / 4) * 100 : 100;
 
   return (
@@ -215,7 +237,11 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                 {INDUSTRIES.map(({ title, subtitle, icon: Icon }) => (
                   <button
                     key={title}
-                    onClick={() => setIndustry(title)}
+                    onClick={() => {
+                      setIndustry(title);
+                      // Reset Q2 selection when industry changes since tiles change
+                      setQ2Selection(null);
+                    }}
                     className={`px-3 py-3 rounded-xl text-left transition-all border flex items-start gap-2.5 ${
                       industry === title
                         ? "bg-primary/10 border-primary"
@@ -242,7 +268,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
             </div>
           )}
 
-          {/* Step 2 — Activities */}
+          {/* Step 2 — Activities (Q1) */}
           {step === 2 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">
@@ -291,19 +317,13 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
             </div>
           )}
 
-          {/* Step 3 — Good day (single-select) */}
+          {/* Step 3 — Good day / Q2 (single-select, industry-specific tiles) */}
           {step === 3 && (
             <div className="animate-fade-in flex flex-col flex-1">
-              <h3 className="text-xl font-bold text-foreground">
-                {isStudent ? "What does a great day look like for you?" : "What does a good day at work look like for you?"}
-              </h3>
-              <p className="text-sm text-muted-foreground mt-1 mb-6">
-                {isStudent
-                  ? "At uni, at work, or anywhere — pick the one that sounds most like you."
-                  : "Pick the one that sounds most like you."}
-              </p>
+              <h3 className="text-xl font-bold text-foreground">{q2Heading}</h3>
+              <p className="text-sm text-muted-foreground mt-1 mb-6">{q2Subtitle}</p>
               <div className="space-y-2 flex-1">
-                {Q2_TILES.map((tile) => (
+                {activeQ2Tiles.map((tile) => (
                   <button
                     key={tile}
                     onClick={() => setQ2Selection(tile)}
@@ -335,26 +355,16 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
             </div>
           )}
 
-          {/* Step 4 — Proud moment */}
+          {/* Step 4 — Proud moment / Q3 (industry-specific copy) */}
           {step === 4 && (
             <div className="animate-fade-in flex flex-col flex-1">
-              <h3 className="text-xl font-bold text-foreground">
-                {isStudent ? "Tell us about something you've done that you're proud of" : "Tell us about something you're proud of"}
-              </h3>
-              <p className="text-sm text-muted-foreground mt-1 mb-6">
-                {isStudent
-                  ? "A project, a job, a society role, anything — big or small."
-                  : "At work, big or small — what's something you did that you felt good about?"}
-              </p>
+              <h3 className="text-xl font-bold text-foreground">{q3Heading}</h3>
+              <p className="text-sm text-muted-foreground mt-1 mb-6">{q3Subtitle}</p>
               <textarea
                 value={q3Answer}
                 onChange={(e) => setQ3Answer(e.target.value)}
                 rows={3}
-                placeholder={
-                  isStudent
-                    ? "e.g. I led our university charity campaign and raised £3,000, I built an app for my final year project, I managed social media for our student union..."
-                    : "e.g. I trained 3 new starters, I reorganised how we handle complaints, I hit my sales target during a really tough month…"
-                }
+                placeholder={q3Placeholder}
                 className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm resize-none"
               />
               <div className="flex-1" />
