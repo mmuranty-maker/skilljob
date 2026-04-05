@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { HeroSearch, type HeroSearchHandle } from "@/components/HeroSearch";
 import { SkillBridge } from "@/components/SkillBridge";
 import { HowItWorks } from "@/components/HowItWorks";
@@ -6,6 +7,15 @@ import { Navbar } from "@/components/Navbar";
 
 const Index = () => {
   const heroRef = useRef<HeroSearchHandle>(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    if ((location.state as any)?.openQuiz) {
+      heroRef.current?.openQuiz();
+      // Clear state so refresh doesn't re-open
+      window.history.replaceState({}, "");
+    }
+  }, [location.state]);
 
   return (
     <main className="min-h-screen">
