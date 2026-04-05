@@ -207,6 +207,9 @@ const ResultsPage = () => {
             scored={selectedScored}
             query={skillTags.join(", ")}
             userSkills={quizResults?.userSkills}
+            allJobs={filteredResults}
+            allScored={isQuizMode ? quizResults!.topMatches : undefined}
+            onSelectJob={(id) => setSelectedId(id)}
           />
         )}
       </div>
