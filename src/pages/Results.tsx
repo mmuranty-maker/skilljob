@@ -78,22 +78,21 @@ const ResultsPage = () => {
     if (isMobile) setShowMobileDetail(true);
   };
 
-  // Redirect to home if no state
-  if (!incoming) {
-    return (
-      <div className="min-h-screen bg-[hsl(40,14%,96%)] flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-muted-foreground mb-4">No search results to display.</p>
-          <button
-            onClick={() => navigate("/")}
-            className="h-10 px-6 rounded-lg bg-primary text-primary-foreground font-semibold text-sm"
-          >
-            Go to homepage
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const handleQuizComplete = (userSkills: UserSkill[], topMatches: ScoredPosting[]) => {
+    setQuizResults({ userSkills, topMatches });
+    setResults(topMatches);
+    setSkillTags(userSkills.map((s) => s.name));
+    setFilters(defaultFilters);
+    if (topMatches.length > 0) setSelectedId(topMatches[0].id);
+    setQuizOpen(false);
+  };
+
+  const handleBrowseAll = () => {
+    setResults(jobs);
+    setSkillTags([]);
+    setFilters(defaultFilters);
+    if (jobs.length > 0) setSelectedId(jobs[0].id);
+  };
 
   return (
     <div className="min-h-screen bg-[hsl(40,14%,96%)] flex flex-col">
