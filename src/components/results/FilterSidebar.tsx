@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ChevronDown, ChevronUp, X, Sparkles } from "lucide-react";
 
 export interface Filters {
   jobTypes: string[];
@@ -239,6 +240,9 @@ export function FilterSidebar({ filters, onChange, className = "" }: FilterSideb
           Clear all filters
         </button>
       )}
+
+      {/* Quiz nudge */}
+      <QuizNudge />
     </aside>
   );
 }
