@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SlidersHorizontal, ArrowLeft, X, Sparkles } from "lucide-react";
+import { ApplicationModal } from "@/components/results/ApplicationModal";
 import type { Job } from "@/data/jobs";
 import type { UserSkill, ScoredPosting } from "@/lib/quizScoring";
 import { ResultsTopBar } from "@/components/results/ResultsTopBar";
@@ -32,6 +33,7 @@ const ResultsPage = () => {
   const [showMobileDetail, setShowMobileDetail] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
+  const [applyOpen, setApplyOpen] = useState(false);
 
   const isQuizMode = !!quizResults;
 
@@ -210,6 +212,7 @@ const ResultsPage = () => {
             allJobs={filteredResults}
             allScored={isQuizMode ? quizResults!.topMatches : undefined}
             onSelectJob={(id) => setSelectedId(id)}
+            onApply={() => setApplyOpen(true)}
           />
         )}
       </div>
@@ -232,10 +235,11 @@ const ResultsPage = () => {
               allJobs={filteredResults}
               allScored={isQuizMode ? quizResults!.topMatches : undefined}
               onSelectJob={(id) => { setSelectedId(id); }}
+              onApply={() => setApplyOpen(true)}
             />
           </div>
           <div className="p-4 border-t border-[hsl(220,13%,91%)]">
-            <button className="w-full h-12 rounded-lg bg-primary text-primary-foreground font-bold text-sm">
+            <button onClick={() => setApplyOpen(true)} className="w-full h-12 rounded-lg bg-primary text-primary-foreground font-bold text-sm">
               Apply Now
             </button>
           </div>
@@ -265,6 +269,16 @@ const ResultsPage = () => {
         onComplete={() => {}}
         onQuizResults={handleQuizComplete}
       />
+
+      {/* Application modal */}
+      {applyOpen && selectedJob && (
+        <ApplicationModal
+          job={selectedJob}
+          scored={selectedScored}
+          querySkills={skillTags.map((s) => s.toLowerCase())}
+          onClose={() => setApplyOpen(false)}
+        />
+      )}
     </div>
   );
 };
