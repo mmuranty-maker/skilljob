@@ -83,7 +83,7 @@ function FilterGroup({
     </div>
   );
 }
-export function FilterSidebar({ filters, onChange, className = "" }: FilterSidebarProps) {
+export function FilterSidebar({ filters, onChange, onOpenQuiz, className = "" }: FilterSidebarProps) {
   const toggleArray = (arr: string[], value: string) =>
     arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value];
 
