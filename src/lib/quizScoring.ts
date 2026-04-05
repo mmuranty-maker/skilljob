@@ -249,7 +249,6 @@ function scorePostings(
       const matchedSkills = posting.skills.filter((skill) =>
         userSkillNormalised.includes(normaliseSkill(skill))
       );
-      );
 
       let matchScore = posting.skills.length > 0
         ? matchedSkills.length / posting.skills.length
