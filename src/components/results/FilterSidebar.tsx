@@ -83,25 +83,6 @@ function FilterGroup({
     </div>
   );
 }
-
-function QuizNudge() {
-  const navigate = useNavigate();
-  return (
-    <button
-      onClick={() => navigate("/", { state: { openQuiz: true } })}
-      className="mt-5 w-full rounded-lg border border-[#B8E0D2] bg-[#E8F7F2] p-3 text-left hover:border-primary/50 transition-colors"
-    >
-      <div className="flex items-start gap-2">
-        <Sparkles className="h-3.5 w-3.5 text-[#0F6E56] mt-0.5 shrink-0" />
-        <div>
-          <p className="text-xs font-semibold text-[#0F6E56]">Not sure about your skills?</p>
-          <p className="text-xs text-[#0F6E56] mt-0.5">Try the quiz instead →</p>
-        </div>
-      </div>
-    </button>
-  );
-}
-
 export function FilterSidebar({ filters, onChange, className = "" }: FilterSidebarProps) {
   const toggleArray = (arr: string[], value: string) =>
     arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value];
