@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SlidersHorizontal, ArrowLeft, X, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
 import { ApplicationModal } from "@/components/results/ApplicationModal";
 import type { Job } from "@/data/jobs";
-import type { UserSkill, ScoredPosting } from "@/lib/quizScoring";
+import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
 import { ResultsTopBar } from "@/components/results/ResultsTopBar";
 import { FilterSidebar, type Filters, defaultFilters } from "@/components/results/FilterSidebar";
 import { JobListCard } from "@/components/results/JobListCard";
@@ -174,8 +174,6 @@ const ResultsPage = () => {
                       <button
                         disabled={proudMomentText.length < 15}
                         onClick={() => {
-                          // Re-run scoring with the proud moment included
-                          const { runQuizScoring } = require("@/lib/quizScoring");
                           const result = runQuizScoring(
                             skillTags,
                             "",
@@ -185,7 +183,7 @@ const ResultsPage = () => {
                           );
                           setQuizResults({ userSkills: result.userSkills, topMatches: result.topMatches });
                           setResults(result.topMatches);
-                          setSkillTags(result.userSkills.map((s: UserSkill) => s.name));
+                          setSkillTags(result.userSkills.map((s) => s.name));
                           if (result.topMatches.length > 0) setSelectedId(result.topMatches[0].id);
                           setSkippedQ3(false);
                           setProudMomentOpen(false);
