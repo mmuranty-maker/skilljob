@@ -1,0 +1,798 @@
+{
+  "mapping_version": "3.0",
+  "description": "Industry-aware Q2 and Q3 questions with skill mapping. Each industry gets tailored motivation tiles (Q2) and story patterns (Q3) that extract more precise skills than generic questions. The industry context also filters job postings and weights skills differently.",
+
+  "industries": {
+
+    "Hospitality & Food Service": {
+      "job_titles": ["Waiter / Server", "Barista", "Chef", "Flight Attendant"],
+      "posting_categories": ["Trade"],
+      "seniority_filter": ["Junior", "Mid"],
+
+      "q2": {
+        "heading": "What makes a great shift for you?",
+        "subtitle": "Pick the one that sounds most like you.",
+        "tiles": {
+          "Every table left happy — even the difficult ones": {
+            "maps_to_skills": ["Customer service", "Conflict resolution", "Emotional intelligence", "Empathy", "Composure under pressure"],
+            "personality_signal": "service_excellence",
+            "amplifies_q1_tiles": ["Talking to people", "Caring for or supporting people"],
+            "suggested_titles": ["Customer Service Rep", "Customer Success Manager", "Account Manager"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I ran the section and nothing fell through the cracks": {
+            "maps_to_skills": ["Time management", "Multitasking", "Prioritization", "Operational efficiency", "Attention to detail"],
+            "personality_signal": "operational_excellence",
+            "amplifies_q1_tiles": ["Managing tasks & schedules", "Organising processes"],
+            "suggested_titles": ["Operations Manager", "Logistics Coordinator", "Project Manager"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I upsold something and the guest genuinely loved it": {
+            "maps_to_skills": ["Upselling", "Persuasion", "Product knowledge", "Relationship building", "Active listening"],
+            "personality_signal": "natural_seller",
+            "amplifies_q1_tiles": ["Selling or persuading", "Talking to people"],
+            "suggested_titles": ["Sales Representative", "Account Manager", "Retail Team Lead"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I trained or helped a new team member get up to speed": {
+            "maps_to_skills": ["Mentoring", "Communication", "Patience", "Onboarding", "Team leadership"],
+            "personality_signal": "natural_coach",
+            "amplifies_q1_tiles": ["Leading or coaching others", "Teaching or explaining"],
+            "suggested_titles": ["HR Manager", "L&D Coordinator", "Operations Manager"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I created something — a dish, a menu, a concept — that worked": {
+            "maps_to_skills": ["Creativity", "Menu planning", "Food innovation", "Attention to detail", "Initiative"],
+            "personality_signal": "creative_maker",
+            "amplifies_q1_tiles": ["Creating content or designs"],
+            "suggested_titles": ["Chef", "Brand Manager", "Product Manager"],
+            "boost_posting_categories": ["Creative"]
+          },
+          "I kept calm when everything got chaotic": {
+            "maps_to_skills": ["Resilience", "Stress management", "Decision making", "Prioritization", "Composure under pressure"],
+            "personality_signal": "calm_under_fire",
+            "amplifies_q1_tiles": ["Solving problems", "Managing tasks & schedules"],
+            "suggested_titles": ["Operations Manager", "Paramedic", "Project Manager"],
+            "boost_posting_categories": ["Business", "Healthcare"]
+          },
+          "I made a real connection with a regular or a guest": {
+            "maps_to_skills": ["Relationship building", "Empathy", "Active listening", "Customer retention", "Communication"],
+            "personality_signal": "relationship_builder",
+            "amplifies_q1_tiles": ["Talking to people", "Caring for or supporting people"],
+            "suggested_titles": ["Account Manager", "Customer Success Manager", "HR Manager"],
+            "boost_posting_categories": ["Business"]
+          }
+        }
+      },
+
+      "q3": {
+        "heading": "Tell us about something you're proud of from work",
+        "subtitle": "A shift, a moment with a customer, something you handled well — big or small.",
+        "placeholder": "e.g. I handled a fully booked Friday service on my own, I turned a complaint into a 5-star review, I trained 3 new starters who all stayed...",
+        "ai_context": "The user works in hospitality or food service (restaurant, cafe, hotel, or travel). Interpret their story through this lens — 'managing a section' means operational coordination, 'dealing with a difficult table' means conflict resolution and composure, 'upselling' means persuasion and product knowledge. Extract transferable professional skills that would resonate with employers outside hospitality.",
+        "story_patterns": [
+          { "pattern": "handled a difficult or angry customer", "extracts": ["Conflict resolution", "De-escalation", "Empathy", "Composure under pressure", "Customer retention"] },
+          { "pattern": "ran a busy service or shift alone", "extracts": ["Multitasking", "Prioritization", "Operational efficiency", "Decision making", "Resilience"] },
+          { "pattern": "trained new staff", "extracts": ["Mentoring", "Communication", "Patience", "Onboarding", "Team leadership"] },
+          { "pattern": "upsold or recommended products", "extracts": ["Upselling", "Persuasion", "Active listening", "Product knowledge", "Relationship building"] },
+          { "pattern": "managed a complaint that turned into a positive", "extracts": ["Conflict resolution", "Problem solving", "Empathy", "Follow-through", "Customer retention"] },
+          { "pattern": "organised or reorganised a process", "extracts": ["Process optimization", "Initiative", "Attention to detail", "Operational thinking", "Communication"] }
+        ]
+      }
+    },
+
+    "Retail & Customer Service": {
+      "job_titles": ["Cashier", "Customer Service Rep", "Sales Representative", "Retail Team Lead"],
+      "posting_categories": ["Business", "Trade"],
+      "seniority_filter": ["Junior", "Mid"],
+
+      "q2": {
+        "heading": "What makes a great day on the floor?",
+        "subtitle": "Pick the one that sounds most like you.",
+        "tiles": {
+          "I solved a problem for a customer that no one else could fix": {
+            "maps_to_skills": ["Problem solving", "Customer service", "Empathy", "Persistence", "Critical thinking"],
+            "personality_signal": "problem_solver",
+            "amplifies_q1_tiles": ["Solving problems", "Talking to people"],
+            "suggested_titles": ["Customer Success Manager", "Business Analyst", "IT Support Specialist"],
+            "boost_posting_categories": ["Business", "Technology"]
+          },
+          "I hit or smashed a sales target": {
+            "maps_to_skills": ["Sales", "Target-driven mindset", "Resilience", "Negotiation", "Persuasion"],
+            "personality_signal": "target_achiever",
+            "amplifies_q1_tiles": ["Selling or persuading"],
+            "suggested_titles": ["Sales Representative", "Account Manager", "Business Development"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I kept a customer who was about to leave or complain": {
+            "maps_to_skills": ["Customer retention", "Active listening", "Conflict resolution", "Empathy", "Communication"],
+            "personality_signal": "retention_expert",
+            "amplifies_q1_tiles": ["Talking to people", "Caring for or supporting people"],
+            "suggested_titles": ["Customer Success Manager", "Account Manager", "HR Manager"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I kept the team or the floor running smoothly": {
+            "maps_to_skills": ["Team coordination", "Prioritization", "Communication", "Leadership", "Organisation"],
+            "personality_signal": "team_anchor",
+            "amplifies_q1_tiles": ["Leading or coaching others", "Managing tasks & schedules"],
+            "suggested_titles": ["Operations Manager", "Team Leader", "Project Manager"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I learned something new about a product and used it to help someone": {
+            "maps_to_skills": ["Product knowledge", "Curiosity", "Communication", "Consultative selling", "Active listening"],
+            "personality_signal": "knowledge_applier",
+            "amplifies_q1_tiles": ["Teaching or explaining", "Talking to people"],
+            "suggested_titles": ["Technical Sales", "Customer Success", "Product Specialist"],
+            "boost_posting_categories": ["Business", "Technology"]
+          },
+          "I handled a really difficult situation without losing my cool": {
+            "maps_to_skills": ["Composure under pressure", "Conflict resolution", "Emotional intelligence", "Resilience", "De-escalation"],
+            "personality_signal": "calm_under_fire",
+            "amplifies_q1_tiles": ["Solving problems", "Caring for or supporting people"],
+            "suggested_titles": ["Customer Success Manager", "HR Manager", "Operations Manager"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I organised or improved how something worked on the floor": {
+            "maps_to_skills": ["Process improvement", "Initiative", "Attention to detail", "Operational thinking", "Communication"],
+            "personality_signal": "systems_thinker",
+            "amplifies_q1_tiles": ["Organising processes", "Managing tasks & schedules"],
+            "suggested_titles": ["Operations Manager", "Business Analyst", "Logistics Coordinator"],
+            "boost_posting_categories": ["Business"]
+          }
+        }
+      },
+
+      "q3": {
+        "heading": "Tell us about something you handled really well",
+        "subtitle": "A customer situation, a tough shift, something you solved — big or small.",
+        "placeholder": "e.g. I de-escalated an angry customer and kept them as a regular, I reorganised the stockroom and cut pick time in half, I hit 130% of my sales target during the quietest month of the year...",
+        "ai_context": "The user works in retail or customer service. 'Handling a difficult customer' signals conflict resolution and empathy. 'Hitting targets' signals sales ability and resilience. 'Organising the shop floor' signals operational thinking. Extract transferable professional skills that show their value beyond a retail context.",
+        "story_patterns": [
+          { "pattern": "dealt with a difficult customer or complaint", "extracts": ["Conflict resolution", "Empathy", "De-escalation", "Customer retention", "Composure under pressure"] },
+          { "pattern": "hit or exceeded a sales target", "extracts": ["Sales", "Resilience", "Persuasion", "Target-driven mindset", "Self-motivation"] },
+          { "pattern": "organised or improved a store process", "extracts": ["Process optimization", "Initiative", "Attention to detail", "Operational thinking", "Communication"] },
+          { "pattern": "trained or mentored a colleague", "extracts": ["Mentoring", "Communication", "Patience", "Knowledge transfer", "Leadership"] },
+          { "pattern": "solved a problem no one else could fix", "extracts": ["Problem solving", "Critical thinking", "Persistence", "Customer service", "Creativity"] }
+        ]
+      }
+    },
+
+    "Healthcare & Medicine": {
+      "job_titles": ["Nurse", "Physician", "Pharmacist", "Pharmacist Tech", "Dental Hygienist", "Dental Assistant", "Physical Therapist", "Occupational Therapist", "Speech Therapist", "Radiographer", "Paramedic", "Psychologist", "Dietitian", "Nutritionist", "Optometrist", "Social Worker", "Veterinarian"],
+      "posting_categories": ["Healthcare"],
+      "seniority_filter": ["Junior", "Mid", "Senior"],
+
+      "q2": {
+        "heading": "What makes a great day on the ward or in clinic?",
+        "subtitle": "Pick the one that sounds most like you.",
+        "tiles": {
+          "I made a real difference to a patient's outcome or experience": {
+            "maps_to_skills": ["Patient care", "Clinical empathy", "Outcome focus", "Communication", "Advocacy"],
+            "personality_signal": "patient_champion",
+            "amplifies_q1_tiles": ["Caring for or supporting people", "Talking to people"],
+            "suggested_titles": ["Social Worker", "Patient Advocate", "Customer Success Manager"],
+            "boost_posting_categories": ["Healthcare", "Business"]
+          },
+          "I spotted something others missed and acted on it": {
+            "maps_to_skills": ["Clinical assessment", "Critical thinking", "Attention to detail", "Decision making", "Analytical thinking"],
+            "personality_signal": "diagnostic_thinker",
+            "amplifies_q1_tiles": ["Solving problems", "Working with data or numbers"],
+            "suggested_titles": ["Clinical Analyst", "Quality Assurance", "Business Analyst"],
+            "boost_posting_categories": ["Healthcare", "Business", "Technology"]
+          },
+          "I explained something complex clearly to a patient or family": {
+            "maps_to_skills": ["Patient education", "Communication", "Empathy", "Simplification", "Active listening"],
+            "personality_signal": "clear_communicator",
+            "amplifies_q1_tiles": ["Teaching or explaining", "Talking to people"],
+            "suggested_titles": ["Health Educator", "Medical Writer", "Customer Success Manager"],
+            "boost_posting_categories": ["Healthcare", "Business"]
+          },
+          "I coordinated a team through a difficult or complex case": {
+            "maps_to_skills": ["Multi-disciplinary teamwork", "Coordination", "Leadership", "Communication", "Crisis management"],
+            "personality_signal": "team_coordinator",
+            "amplifies_q1_tiles": ["Leading or coaching others", "Organising processes"],
+            "suggested_titles": ["Operations Manager", "Project Manager", "Ward Manager"],
+            "boost_posting_categories": ["Business", "Healthcare"]
+          },
+          "I supported someone through something emotionally very difficult": {
+            "maps_to_skills": ["Empathy", "Emotional intelligence", "Active listening", "Resilience", "Psychological safety"],
+            "personality_signal": "emotional_supporter",
+            "amplifies_q1_tiles": ["Caring for or supporting people", "Talking to people"],
+            "suggested_titles": ["Social Worker", "HR Manager", "Counsellor", "Psychologist"],
+            "boost_posting_categories": ["Healthcare", "Business"]
+          },
+          "I improved a process or system on the ward or in clinic": {
+            "maps_to_skills": ["Process improvement", "Initiative", "Clinical governance", "Documentation", "Quality improvement"],
+            "personality_signal": "systems_improver",
+            "amplifies_q1_tiles": ["Organising processes", "Writing or researching"],
+            "suggested_titles": ["Clinical Quality Manager", "Operations Manager", "Business Analyst"],
+            "boost_posting_categories": ["Business", "Healthcare"]
+          },
+          "I trained or mentored a junior colleague": {
+            "maps_to_skills": ["Clinical education", "Mentoring", "Communication", "Patience", "Leadership"],
+            "personality_signal": "clinical_educator",
+            "amplifies_q1_tiles": ["Teaching or explaining", "Leading or coaching others"],
+            "suggested_titles": ["Clinical Trainer", "Lecturer", "HR Manager"],
+            "boost_posting_categories": ["Education", "Healthcare"]
+          }
+        }
+      },
+
+      "q3": {
+        "heading": "Tell us about something you're proud of clinically or professionally",
+        "subtitle": "A patient outcome, a difficult situation, something you did that made a difference.",
+        "placeholder": "e.g. I caught a medication error before it reached a patient, I supported a family through a really difficult diagnosis, I redesigned a handover process that reduced errors on our ward...",
+        "ai_context": "The user works in healthcare or medicine. Clinical stories contain rich transferable skills — 'catching a medication error' means attention to detail and clinical governance, 'supporting a patient through a difficult diagnosis' means empathy and emotional intelligence, 'coordinating a complex discharge' means project management and multi-agency working. Extract the professional and transferable skills behind the clinical story.",
+        "story_patterns": [
+          { "pattern": "caught an error or prevented harm", "extracts": ["Attention to detail", "Clinical governance", "Critical thinking", "Accountability", "Risk assessment"] },
+          { "pattern": "supported a patient or family through something difficult", "extracts": ["Empathy", "Emotional intelligence", "Active listening", "Communication", "Resilience"] },
+          { "pattern": "diagnosed or identified something others missed", "extracts": ["Critical thinking", "Clinical assessment", "Analytical thinking", "Attention to detail", "Decision making"] },
+          { "pattern": "improved a ward or clinic process", "extracts": ["Process improvement", "Initiative", "Documentation", "Communication", "Quality improvement"] },
+          { "pattern": "coordinated care across multiple teams", "extracts": ["Multi-disciplinary working", "Coordination", "Communication", "Leadership", "Problem solving"] },
+          { "pattern": "trained or educated a colleague or patient", "extracts": ["Teaching", "Communication", "Patience", "Knowledge transfer", "Mentoring"] }
+        ]
+      }
+    },
+
+    "Technology & Engineering": {
+      "job_titles": ["Software Engineer", "Full Stack Developer", "Web Developer", "DevOps Engineer", "Data Scientist", "Data Analyst", "Machine Learning Engineer", "Cybersecurity Analyst", "Cloud Architect", "System Administrator", "IT Support Specialist", "IT Project Manager", "Mechanical Engineer", "Civil Engineer", "Biomedical Engineer", "Environmental Scientist", "Game Developer", "Penetration Tester"],
+      "posting_categories": ["Technology"],
+      "seniority_filter": ["Junior", "Mid", "Senior"],
+
+      "q2": {
+        "heading": "What makes a great day at your desk?",
+        "subtitle": "Pick the one that sounds most like you.",
+        "tiles": {
+          "I solved a problem that had been blocking everyone": {
+            "maps_to_skills": ["Problem solving", "Debugging", "Critical thinking", "Persistence", "Technical depth"],
+            "personality_signal": "deep_problem_solver",
+            "amplifies_q1_tiles": ["Solving problems", "Building or fixing things"],
+            "suggested_titles": ["Software Engineer", "DevOps Engineer", "IT Support Specialist"],
+            "boost_posting_categories": ["Technology"]
+          },
+          "I shipped something that worked and users actually used": {
+            "maps_to_skills": ["Delivery focus", "Product thinking", "Attention to detail", "Collaboration", "Initiative"],
+            "personality_signal": "builder_shipper",
+            "amplifies_q1_tiles": ["Building or fixing things", "Creating content or designs"],
+            "suggested_titles": ["Full Stack Developer", "Product Manager", "Software Engineer"],
+            "boost_posting_categories": ["Technology", "Business"]
+          },
+          "I found a pattern or insight in data that changed how we did something": {
+            "maps_to_skills": ["Data analysis", "Pattern recognition", "Statistical thinking", "Communication of insights", "Curiosity"],
+            "personality_signal": "data_insight_finder",
+            "amplifies_q1_tiles": ["Working with data or numbers", "Solving problems"],
+            "suggested_titles": ["Data Analyst", "Data Scientist", "Business Analyst"],
+            "boost_posting_categories": ["Technology", "Business"]
+          },
+          "I made a system or process significantly faster or more reliable": {
+            "maps_to_skills": ["Performance optimization", "Systems thinking", "Automation", "Attention to detail", "Engineering discipline"],
+            "personality_signal": "optimizer",
+            "amplifies_q1_tiles": ["Building or fixing things", "Organising processes"],
+            "suggested_titles": ["DevOps Engineer", "Cloud Architect", "System Administrator"],
+            "boost_posting_categories": ["Technology"]
+          },
+          "I explained something technical to a non-technical person and they got it": {
+            "maps_to_skills": ["Technical communication", "Simplification", "Empathy", "Documentation", "Stakeholder management"],
+            "personality_signal": "technical_translator",
+            "amplifies_q1_tiles": ["Teaching or explaining", "Talking to people"],
+            "suggested_titles": ["IT Project Manager", "Product Manager", "Technical Writer"],
+            "boost_posting_categories": ["Technology", "Business"]
+          },
+          "I learned a new technology and applied it quickly": {
+            "maps_to_skills": ["Adaptability", "Self-directed learning", "Curiosity", "Technical breadth", "Initiative"],
+            "personality_signal": "fast_learner",
+            "amplifies_q1_tiles": ["Working with data or numbers", "Building or fixing things"],
+            "suggested_titles": ["Software Engineer", "Data Scientist", "Machine Learning Engineer"],
+            "boost_posting_categories": ["Technology"]
+          },
+          "I spotted a security or architecture risk before it became a problem": {
+            "maps_to_skills": ["Risk assessment", "Security thinking", "Attention to detail", "Critical thinking", "Preventive mindset"],
+            "personality_signal": "risk_spotter",
+            "amplifies_q1_tiles": ["Solving problems", "Working with data or numbers"],
+            "suggested_titles": ["Cybersecurity Analyst", "Cloud Architect", "Penetration Tester"],
+            "boost_posting_categories": ["Technology"]
+          }
+        }
+      },
+
+      "q3": {
+        "heading": "Tell us about something you built or solved that you're proud of",
+        "subtitle": "A project, a bug fix, a system — technical or otherwise.",
+        "placeholder": "e.g. I built a feature solo that shipped on time, I reduced deployment time by 40%, I diagnosed a production issue at 2am and fixed it before users noticed, I migrated a legacy system to cloud with zero downtime...",
+        "ai_context": "The user works in technology or engineering. Extract both technical and soft skills from their story. 'Fixed a production bug' signals debugging, systems thinking, and resilience under pressure. 'Migrated to cloud' signals cloud architecture, project management, and risk management. 'Explained to stakeholders' signals technical communication. Look for the professional skills that make this person valuable beyond just their technical stack.",
+        "story_patterns": [
+          { "pattern": "built or shipped a feature or product", "extracts": ["Software development", "Delivery focus", "Collaboration", "Attention to detail", "Initiative"] },
+          { "pattern": "fixed a critical or difficult bug", "extracts": ["Debugging", "Problem solving", "Persistence", "Critical thinking", "Systems thinking"] },
+          { "pattern": "improved performance or reduced costs", "extracts": ["Optimization", "Engineering discipline", "Analytical thinking", "Initiative", "Attention to detail"] },
+          { "pattern": "led or coordinated a technical project", "extracts": ["Technical leadership", "Project management", "Communication", "Risk management", "Stakeholder management"] },
+          { "pattern": "migrated or modernised a system", "extracts": ["Cloud architecture", "Risk management", "Planning", "Technical depth", "Problem solving"] },
+          { "pattern": "mentored or helped a colleague technically", "extracts": ["Technical mentoring", "Communication", "Patience", "Leadership", "Knowledge sharing"] }
+        ]
+      }
+    },
+
+    "Business & Operations": {
+      "job_titles": ["Project Manager", "Operations Manager", "Business Analyst", "Logistics Coordinator", "Supply Chain Manager", "Procurement Manager", "Administrative Assistant", "Compliance Officer", "HR Manager", "Recruiter"],
+      "posting_categories": ["Business"],
+      "seniority_filter": ["Junior", "Mid", "Senior"],
+
+      "q2": {
+        "heading": "What does a great day at work feel like for you?",
+        "subtitle": "Pick the one that sounds most like you.",
+        "tiles": {
+          "I delivered something on time that everyone said couldn't be done": {
+            "maps_to_skills": ["Project delivery", "Resilience", "Planning", "Stakeholder management", "Determination"],
+            "personality_signal": "delivery_focused",
+            "amplifies_q1_tiles": ["Managing tasks & schedules", "Organising processes"],
+            "suggested_titles": ["Project Manager", "Operations Manager", "IT Project Manager"],
+            "boost_posting_categories": ["Business", "Technology"]
+          },
+          "I spotted a process that was broken and fixed it": {
+            "maps_to_skills": ["Process improvement", "Initiative", "Analytical thinking", "Communication", "Problem solving"],
+            "personality_signal": "process_fixer",
+            "amplifies_q1_tiles": ["Solving problems", "Organising processes"],
+            "suggested_titles": ["Business Analyst", "Operations Manager", "Consultant"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I got a difficult group of stakeholders aligned": {
+            "maps_to_skills": ["Stakeholder management", "Negotiation", "Communication", "Diplomacy", "Influencing"],
+            "personality_signal": "consensus_builder",
+            "amplifies_q1_tiles": ["Talking to people", "Leading or coaching others"],
+            "suggested_titles": ["Project Manager", "Product Manager", "HR Manager"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I reduced costs or found a smarter way to use our resources": {
+            "maps_to_skills": ["Cost reduction", "Analytical thinking", "Negotiation", "Resource management", "Initiative"],
+            "personality_signal": "efficiency_driver",
+            "amplifies_q1_tiles": ["Working with data or numbers", "Organising processes"],
+            "suggested_titles": ["Procurement Manager", "Supply Chain Manager", "Operations Manager"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I helped a team or person through a difficult change": {
+            "maps_to_skills": ["Change management", "Empathy", "Communication", "Leadership", "Resilience"],
+            "personality_signal": "change_navigator",
+            "amplifies_q1_tiles": ["Leading or coaching others", "Caring for or supporting people"],
+            "suggested_titles": ["HR Manager", "Project Manager", "Operations Manager"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I turned messy data or information into a clear decision": {
+            "maps_to_skills": ["Data analysis", "Critical thinking", "Communication", "Reporting", "Decision support"],
+            "personality_signal": "clarity_maker",
+            "amplifies_q1_tiles": ["Working with data or numbers", "Writing or researching"],
+            "suggested_titles": ["Business Analyst", "Data Analyst", "Financial Analyst"],
+            "boost_posting_categories": ["Business", "Technology"]
+          },
+          "I recruited or developed someone who went on to do great things": {
+            "maps_to_skills": ["Talent identification", "Mentoring", "Interviewing", "Coaching", "Leadership"],
+            "personality_signal": "talent_developer",
+            "amplifies_q1_tiles": ["Leading or coaching others", "Talking to people"],
+            "suggested_titles": ["HR Manager", "Recruiter", "Operations Manager"],
+            "boost_posting_categories": ["Business"]
+          }
+        }
+      },
+
+      "q3": {
+        "heading": "Tell us about something you delivered or improved at work",
+        "subtitle": "A project, a process, a result — anything you feel good about.",
+        "placeholder": "e.g. I implemented a new reporting system that saved 5 hours a week, I coordinated a team through a difficult product launch, I reduced supplier costs by 15% through renegotiation...",
+        "ai_context": "The user works in business, operations, HR, procurement, or administration. Their stories contain rich operational and strategic skills. 'Coordinating a project launch' signals project management and stakeholder communication. 'Renegotiating a contract' signals negotiation and commercial acumen. 'Fixing a broken process' signals analytical thinking and initiative. Extract the professional skills at the core of each story.",
+        "story_patterns": [
+          { "pattern": "delivered a project on time or under budget", "extracts": ["Project management", "Planning", "Stakeholder management", "Communication", "Resilience"] },
+          { "pattern": "improved or redesigned a process", "extracts": ["Process improvement", "Analytical thinking", "Initiative", "Communication", "Problem solving"] },
+          { "pattern": "negotiated a better deal or outcome", "extracts": ["Negotiation", "Commercial acumen", "Preparation", "Persuasion", "Relationship management"] },
+          { "pattern": "led or managed people through change", "extracts": ["Change management", "Leadership", "Empathy", "Communication", "Resilience"] },
+          { "pattern": "turned data into a decision or recommendation", "extracts": ["Data analysis", "Critical thinking", "Reporting", "Communication", "Decision support"] },
+          { "pattern": "hired or developed a team member", "extracts": ["Recruitment", "Mentoring", "Judgment", "Coaching", "Leadership"] }
+        ]
+      }
+    },
+
+    "Sales & Marketing": {
+      "job_titles": ["Sales Representative", "Account Manager", "Marketing Manager", "Marketing Analyst", "Social Media Manager", "Brand Manager", "SEO Specialist", "Copywriter", "Content Writer", "PR Specialist", "Real Estate Agent", "Mortgage Broker", "Recruiter"],
+      "posting_categories": ["Business", "Creative"],
+      "seniority_filter": ["Junior", "Mid", "Senior"],
+
+      "q2": {
+        "heading": "What makes a great day in your role?",
+        "subtitle": "Pick the one that sounds most like you.",
+        "tiles": {
+          "I closed a deal or hit a target I wasn't sure I'd reach": {
+            "maps_to_skills": ["Closing", "Resilience", "Negotiation", "Target-driven mindset", "Persistence"],
+            "personality_signal": "closer",
+            "amplifies_q1_tiles": ["Selling or persuading"],
+            "suggested_titles": ["Sales Representative", "Business Development", "Account Manager"],
+            "boost_posting_categories": ["Business"]
+          },
+          "A campaign or piece of content I made actually performed": {
+            "maps_to_skills": ["Campaign management", "Copywriting", "Analytics", "Creativity", "Attention to detail"],
+            "personality_signal": "creative_performer",
+            "amplifies_q1_tiles": ["Creating content or designs", "Working with data or numbers"],
+            "suggested_titles": ["Marketing Manager", "Content Writer", "Brand Manager"],
+            "boost_posting_categories": ["Business", "Creative"]
+          },
+          "I grew or retained an account that was at risk": {
+            "maps_to_skills": ["Account management", "Relationship building", "Negotiation", "Customer retention", "Strategic thinking"],
+            "personality_signal": "relationship_grower",
+            "amplifies_q1_tiles": ["Talking to people", "Selling or persuading"],
+            "suggested_titles": ["Account Manager", "Customer Success Manager", "Business Development"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I spotted a trend or insight and acted on it before others did": {
+            "maps_to_skills": ["Market awareness", "Strategic thinking", "Initiative", "Analytical thinking", "Decisiveness"],
+            "personality_signal": "trend_spotter",
+            "amplifies_q1_tiles": ["Working with data or numbers", "Writing or researching"],
+            "suggested_titles": ["Marketing Analyst", "Brand Manager", "Product Manager"],
+            "boost_posting_categories": ["Business"]
+          },
+          "I built something from scratch — a pipeline, an audience, a channel": {
+            "maps_to_skills": ["Growth mindset", "Initiative", "Strategy", "Execution", "Creativity"],
+            "personality_signal": "builder",
+            "amplifies_q1_tiles": ["Creating content or designs", "Organising processes"],
+            "suggested_titles": ["Marketing Manager", "Sales Representative", "Brand Manager"],
+            "boost_posting_categories": ["Business", "Creative"]
+          },
+          "I convinced someone to see things differently": {
+            "maps_to_skills": ["Persuasion", "Storytelling", "Communication", "Empathy", "Negotiation"],
+            "personality_signal": "persuader",
+            "amplifies_q1_tiles": ["Selling or persuading", "Talking to people"],
+            "suggested_titles": ["Sales Representative", "PR Specialist", "Copywriter"],
+            "boost_posting_categories": ["Business", "Creative"]
+          },
+          "I reported on results and used them to improve what we did next": {
+            "maps_to_skills": ["Analytics", "Reporting", "Iterative thinking", "Data-driven decision making", "Communication"],
+            "personality_signal": "data_driven_marketer",
+            "amplifies_q1_tiles": ["Working with data or numbers", "Writing or researching"],
+            "suggested_titles": ["Marketing Analyst", "Data Analyst", "Business Analyst"],
+            "boost_posting_categories": ["Business", "Technology"]
+          }
+        }
+      },
+
+      "q3": {
+        "heading": "Tell us about a result you're proud of",
+        "subtitle": "A deal, a campaign, a target — anything that shows what you're capable of.",
+        "placeholder": "e.g. I closed our biggest deal of the quarter after 3 months of nurturing, I ran a campaign that doubled email open rates, I hit 120% of my annual target during a market downturn...",
+        "ai_context": "The user works in sales or marketing. 'Closing a deal' signals negotiation, persuasion, and resilience. 'A campaign that performed' signals creativity, analytics, and execution. 'Growing an account' signals relationship management and strategic thinking. Extract the professional skills that transfer beyond their specific sales or marketing context.",
+        "story_patterns": [
+          { "pattern": "closed a deal or won new business", "extracts": ["Negotiation", "Closing", "Persuasion", "Resilience", "Relationship building"] },
+          { "pattern": "ran a campaign that exceeded targets", "extracts": ["Campaign management", "Analytics", "Creativity", "Execution", "Attention to detail"] },
+          { "pattern": "grew or retained an account", "extracts": ["Account management", "Relationship building", "Strategic thinking", "Negotiation", "Communication"] },
+          { "pattern": "built a pipeline or audience from scratch", "extracts": ["Growth mindset", "Strategy", "Initiative", "Prospecting", "Persistence"] },
+          { "pattern": "used data to improve performance", "extracts": ["Analytics", "Data-driven thinking", "Reporting", "Iterative improvement", "Critical thinking"] }
+        ]
+      }
+    },
+
+    "Creative & Media": {
+      "job_titles": ["Graphic Designer", "UX Designer", "UX Researcher", "Video Editor", "Photographer", "Animator", "Fashion Designer", "Interior Designer", "Translator", "Music Producer", "Makeup Artist", "Content Writer", "Copywriter", "Social Media Manager"],
+      "posting_categories": ["Creative"],
+      "seniority_filter": ["Junior", "Mid", "Senior"],
+
+      "q2": {
+        "heading": "What makes a great creative day for you?",
+        "subtitle": "Pick the one that sounds most like you.",
+        "tiles": {
+          "I made something I'm genuinely proud of from start to finish": {
+            "maps_to_skills": ["Creative ownership", "Attention to detail", "Craft", "Initiative", "Creativity"],
+            "personality_signal": "craft_focused",
+            "amplifies_q1_tiles": ["Creating content or designs"],
+            "suggested_titles": ["Graphic Designer", "Video Editor", "Photographer"],
+            "boost_posting_categories": ["Creative"]
+          },
+          "I solved a creative brief that seemed impossible": {
+            "maps_to_skills": ["Creative problem solving", "Adaptability", "Resourcefulness", "Lateral thinking", "Resilience"],
+            "personality_signal": "creative_solver",
+            "amplifies_q1_tiles": ["Solving problems", "Creating content or designs"],
+            "suggested_titles": ["UX Designer", "Art Director", "Copywriter"],
+            "boost_posting_categories": ["Creative", "Business"]
+          },
+          "I got feedback that my work really landed with the audience": {
+            "maps_to_skills": ["Audience understanding", "Communication", "Empathy", "Iteration", "User focus"],
+            "personality_signal": "audience_focused",
+            "amplifies_q1_tiles": ["Creating content or designs", "Writing or researching"],
+            "suggested_titles": ["UX Researcher", "Content Writer", "Brand Manager"],
+            "boost_posting_categories": ["Creative", "Business"]
+          },
+          "I managed a difficult client or stakeholder and delivered anyway": {
+            "maps_to_skills": ["Client management", "Communication", "Resilience", "Negotiation", "Professionalism"],
+            "personality_signal": "client_handler",
+            "amplifies_q1_tiles": ["Talking to people", "Organising processes"],
+            "suggested_titles": ["Account Manager", "Project Manager", "Creative Director"],
+            "boost_posting_categories": ["Business", "Creative"]
+          },
+          "I learned a new tool or style and applied it fast": {
+            "maps_to_skills": ["Adaptability", "Self-directed learning", "Technical breadth", "Curiosity", "Initiative"],
+            "personality_signal": "fast_adapter",
+            "amplifies_q1_tiles": ["Creating content or designs", "Building or fixing things"],
+            "suggested_titles": ["UX Designer", "Motion Designer", "Web Developer"],
+            "boost_posting_categories": ["Creative", "Technology"]
+          },
+          "I translated someone else's vague idea into something real": {
+            "maps_to_skills": ["Brief interpretation", "Active listening", "Creativity", "Communication", "Problem solving"],
+            "personality_signal": "idea_translator",
+            "amplifies_q1_tiles": ["Talking to people", "Creating content or designs"],
+            "suggested_titles": ["UX Designer", "Copywriter", "Brand Strategist"],
+            "boost_posting_categories": ["Creative", "Business"]
+          },
+          "I delivered a big project under a very tight deadline": {
+            "maps_to_skills": ["Deadline management", "Prioritization", "Resilience", "Time management", "Focus"],
+            "personality_signal": "deadline_driver",
+            "amplifies_q1_tiles": ["Managing tasks & schedules", "Creating content or designs"],
+            "suggested_titles": ["Project Manager", "Creative Director", "Video Editor"],
+            "boost_posting_categories": ["Creative", "Business"]
+          }
+        }
+      },
+
+      "q3": {
+        "heading": "Tell us about something you created that you're proud of",
+        "subtitle": "A project, a piece of work, a creative challenge you solved.",
+        "placeholder": "e.g. I designed a brand identity that got picked up in a trade magazine, I edited a video that went viral, I wrote a campaign that converted 3x better than the previous one, I delivered a full shoot in conditions that nearly made it impossible...",
+        "ai_context": "The user works in a creative or media field. Creative stories contain strong transferable skills — 'delivering under a tight deadline' means time management and resilience, 'managing a difficult client' means communication and stakeholder management, 'redesigning something that underperformed' means analytical thinking and creative problem solving. Extract both the creative and the professional skills embedded in the story.",
+        "story_patterns": [
+          { "pattern": "created something that got recognition or performed well", "extracts": ["Creativity", "Craft", "Attention to detail", "Audience understanding", "Initiative"] },
+          { "pattern": "delivered under a tight deadline or difficult conditions", "extracts": ["Deadline management", "Resilience", "Prioritization", "Focus", "Professionalism"] },
+          { "pattern": "managed a difficult client or stakeholder", "extracts": ["Client management", "Communication", "Negotiation", "Resilience", "Diplomacy"] },
+          { "pattern": "solved a brief that seemed impossible", "extracts": ["Creative problem solving", "Lateral thinking", "Resourcefulness", "Adaptability", "Persistence"] },
+          { "pattern": "translated a vague brief into a clear output", "extracts": ["Brief interpretation", "Active listening", "Communication", "Creativity", "Initiative"] }
+        ]
+      }
+    },
+
+    "Finance & Accounting": {
+      "job_titles": ["Accountant", "Accountancy Manager", "Financial Analyst", "Investment Banker", "Tax Advisor", "Actuary", "Auditor", "Payroll Specialist", "Economist", "Mortgage Broker", "Insurance Underwriter"],
+      "posting_categories": ["Finance"],
+      "seniority_filter": ["Junior", "Mid", "Senior"],
+
+      "q2": {
+        "heading": "What makes a great day in finance feel like?",
+        "subtitle": "Pick the one that sounds most like you.",
+        "tiles": {
+          "I found something in the numbers that no one else had spotted": {
+            "maps_to_skills": ["Analytical thinking", "Attention to detail", "Financial acumen", "Critical thinking", "Curiosity"],
+            "personality_signal": "numbers_detective",
+            "amplifies_q1_tiles": ["Working with data or numbers", "Solving problems"],
+            "suggested_titles": ["Financial Analyst", "Auditor", "Data Analyst"],
+            "boost_posting_categories": ["Finance", "Business"]
+          },
+          "I explained a complex financial situation to someone non-financial": {
+            "maps_to_skills": ["Financial communication", "Simplification", "Empathy", "Stakeholder management", "Clarity"],
+            "personality_signal": "financial_translator",
+            "amplifies_q1_tiles": ["Talking to people", "Teaching or explaining"],
+            "suggested_titles": ["Financial Advisor", "Tax Advisor", "Business Analyst"],
+            "boost_posting_categories": ["Finance", "Business"]
+          },
+          "I completed something complex accurately under serious time pressure": {
+            "maps_to_skills": ["Accuracy under pressure", "Time management", "Resilience", "Attention to detail", "Focus"],
+            "personality_signal": "precision_performer",
+            "amplifies_q1_tiles": ["Working with data or numbers", "Managing tasks & schedules"],
+            "suggested_titles": ["Accountant", "Payroll Specialist", "Auditor"],
+            "boost_posting_categories": ["Finance"]
+          },
+          "I saved the company money or identified a financial risk": {
+            "maps_to_skills": ["Cost management", "Risk assessment", "Financial modelling", "Commercial acumen", "Initiative"],
+            "personality_signal": "value_protector",
+            "amplifies_q1_tiles": ["Solving problems", "Working with data or numbers"],
+            "suggested_titles": ["Financial Analyst", "Procurement Manager", "Risk Manager"],
+            "boost_posting_categories": ["Finance", "Business"]
+          },
+          "I closed a deal or negotiated a better financial outcome": {
+            "maps_to_skills": ["Negotiation", "Commercial acumen", "Persuasion", "Relationship management", "Strategic thinking"],
+            "personality_signal": "deal_maker",
+            "amplifies_q1_tiles": ["Selling or persuading", "Talking to people"],
+            "suggested_titles": ["Investment Banker", "Mortgage Broker", "Procurement Manager"],
+            "boost_posting_categories": ["Finance", "Business"]
+          },
+          "I identified a compliance issue before it became a problem": {
+            "maps_to_skills": ["Regulatory compliance", "Risk awareness", "Attention to detail", "Judgment", "Proactive thinking"],
+            "personality_signal": "compliance_guardian",
+            "amplifies_q1_tiles": ["Organising processes", "Writing or researching"],
+            "suggested_titles": ["Compliance Officer", "Auditor", "Risk Manager"],
+            "boost_posting_categories": ["Finance", "Legal"]
+          },
+          "I built a model or report that changed how leadership made decisions": {
+            "maps_to_skills": ["Financial modelling", "Data storytelling", "Excel", "Strategic thinking", "Communication"],
+            "personality_signal": "insight_builder",
+            "amplifies_q1_tiles": ["Working with data or numbers", "Writing or researching"],
+            "suggested_titles": ["Financial Analyst", "Data Analyst", "Business Analyst"],
+            "boost_posting_categories": ["Finance", "Business", "Technology"]
+          }
+        }
+      },
+
+      "q3": {
+        "heading": "Tell us about something you spotted or delivered that made a difference",
+        "subtitle": "A financial insight, a project, a process you improved.",
+        "placeholder": "e.g. I identified a tax saving that saved the company £40k, I completed year-end two weeks early, I built a financial model that changed a major investment decision, I caught a fraud risk before it was exploited...",
+        "ai_context": "The user works in finance or accounting. Extract both technical and soft skills — 'identifying a tax saving' signals analytical thinking, financial acumen, and initiative. 'Completing year-end early' signals time management, accuracy, and resilience under pressure. 'Explaining a complex financial position to a board' signals financial communication and stakeholder management. Look beyond the numbers to the professional skills.",
+        "story_patterns": [
+          { "pattern": "found a financial saving or identified a risk", "extracts": ["Analytical thinking", "Financial acumen", "Initiative", "Attention to detail", "Commercial awareness"] },
+          { "pattern": "completed a complex process under time pressure", "extracts": ["Accuracy", "Time management", "Resilience", "Focus", "Attention to detail"] },
+          { "pattern": "built a model or report that influenced a decision", "extracts": ["Financial modelling", "Data storytelling", "Excel", "Communication", "Strategic thinking"] },
+          { "pattern": "caught a compliance or fraud issue", "extracts": ["Risk assessment", "Attention to detail", "Regulatory knowledge", "Judgment", "Integrity"] },
+          { "pattern": "negotiated or closed a financial deal", "extracts": ["Negotiation", "Commercial acumen", "Persuasion", "Relationship management", "Strategic thinking"] }
+        ]
+      }
+    },
+
+    "Education & Social Care": {
+      "job_titles": ["Teacher", "Lecturer", "Childcare Worker", "Social Worker", "Psychologist", "Occupational Therapist", "Speech Therapist", "Dietitian", "Nutritionist"],
+      "posting_categories": ["Education", "Healthcare"],
+      "seniority_filter": ["Junior", "Mid", "Senior"],
+
+      "q2": {
+        "heading": "What makes a great day with the people you support?",
+        "subtitle": "Pick the one that sounds most like you.",
+        "tiles": {
+          "I saw someone finally understand something they'd been struggling with": {
+            "maps_to_skills": ["Teaching", "Patience", "Communication", "Empathy", "Adaptability"],
+            "personality_signal": "breakthrough_enabler",
+            "amplifies_q1_tiles": ["Teaching or explaining", "Caring for or supporting people"],
+            "suggested_titles": ["Teacher", "Trainer", "Learning & Development"],
+            "boost_posting_categories": ["Education", "Business"]
+          },
+          "I advocated for someone and got them something they needed": {
+            "maps_to_skills": ["Advocacy", "Communication", "Persistence", "Empathy", "Negotiation"],
+            "personality_signal": "advocate",
+            "amplifies_q1_tiles": ["Caring for or supporting people", "Talking to people"],
+            "suggested_titles": ["Social Worker", "HR Manager", "Patient Advocate"],
+            "boost_posting_categories": ["Healthcare", "Business"]
+          },
+          "I handled a really difficult or sensitive situation with care": {
+            "maps_to_skills": ["Safeguarding", "Emotional intelligence", "Judgment", "Empathy", "Professionalism"],
+            "personality_signal": "sensitive_handler",
+            "amplifies_q1_tiles": ["Caring for or supporting people", "Solving problems"],
+            "suggested_titles": ["Social Worker", "HR Manager", "Counsellor"],
+            "boost_posting_categories": ["Healthcare", "Business"]
+          },
+          "I designed or delivered a session that really worked": {
+            "maps_to_skills": ["Curriculum design", "Facilitation", "Creativity", "Communication", "Audience awareness"],
+            "personality_signal": "session_designer",
+            "amplifies_q1_tiles": ["Teaching or explaining", "Creating content or designs"],
+            "suggested_titles": ["Trainer", "Teacher", "L&D Specialist"],
+            "boost_posting_categories": ["Education", "Business"]
+          },
+          "I supported someone through a crisis or turning point": {
+            "maps_to_skills": ["Crisis intervention", "Empathy", "Active listening", "Resilience", "Emotional intelligence"],
+            "personality_signal": "crisis_supporter",
+            "amplifies_q1_tiles": ["Caring for or supporting people", "Solving problems"],
+            "suggested_titles": ["Social Worker", "Psychologist", "HR Manager"],
+            "boost_posting_categories": ["Healthcare", "Business"]
+          },
+          "I worked across multiple agencies or teams to get the right outcome": {
+            "maps_to_skills": ["Multi-agency working", "Communication", "Coordination", "Relationship management", "Problem solving"],
+            "personality_signal": "network_coordinator",
+            "amplifies_q1_tiles": ["Organising processes", "Talking to people"],
+            "suggested_titles": ["Project Manager", "Operations Manager", "Social Worker"],
+            "boost_posting_categories": ["Business", "Healthcare"]
+          },
+          "I adapted my approach completely for one person and it made all the difference": {
+            "maps_to_skills": ["Adaptability", "Person-centred practice", "Creativity", "Empathy", "Flexibility"],
+            "personality_signal": "adaptor",
+            "amplifies_q1_tiles": ["Caring for or supporting people", "Teaching or explaining"],
+            "suggested_titles": ["Social Worker", "Teacher", "L&D Specialist"],
+            "boost_posting_categories": ["Healthcare", "Education"]
+          }
+        }
+      },
+
+      "q3": {
+        "heading": "Tell us about something you did that made a real difference",
+        "subtitle": "A student, a client, a moment — big or small.",
+        "placeholder": "e.g. I helped a struggling student pass their exams after months of extra support, I advocated for a client and got them housing they'd been denied for years, I designed a group session that finally worked for a class that had been disengaged all year...",
+        "ai_context": "The user works in education or social care. Their stories contain deep transferable skills — 'helping a struggling student' signals patience, differentiated communication, and resilience. 'Advocating for a client' signals negotiation, empathy, and persistence. 'Managing a complex safeguarding case' signals risk assessment, multi-agency working, and documentation. Extract the professional transferable skills that would resonate with employers beyond education and social care.",
+        "story_patterns": [
+          { "pattern": "helped someone achieve something they were struggling with", "extracts": ["Patience", "Communication", "Empathy", "Adaptability", "Mentoring"] },
+          { "pattern": "advocated for someone and got results", "extracts": ["Advocacy", "Negotiation", "Persistence", "Communication", "Empathy"] },
+          { "pattern": "handled a safeguarding or sensitive situation", "extracts": ["Safeguarding", "Judgment", "Emotional intelligence", "Risk assessment", "Professionalism"] },
+          { "pattern": "designed or delivered a programme or session", "extracts": ["Curriculum design", "Facilitation", "Communication", "Creativity", "Audience awareness"] },
+          { "pattern": "worked across teams or agencies to get an outcome", "extracts": ["Multi-agency working", "Communication", "Coordination", "Relationship management", "Problem solving"] }
+        ]
+      }
+    },
+
+    "Trades & Construction": {
+      "job_titles": ["Electrician", "Plumber", "Carpenter", "Construction Manager", "Warehouse Operative", "Personal Trainer"],
+      "posting_categories": ["Trade"],
+      "seniority_filter": ["Junior", "Mid", "Senior"],
+
+      "q2": {
+        "heading": "What makes a great day on site or on the job?",
+        "subtitle": "Pick the one that sounds most like you.",
+        "tiles": {
+          "I diagnosed a fault or problem others couldn't figure out": {
+            "maps_to_skills": ["Fault diagnosis", "Problem solving", "Technical depth", "Analytical thinking", "Persistence"],
+            "personality_signal": "technical_detective",
+            "amplifies_q1_tiles": ["Solving problems", "Building or fixing things"],
+            "suggested_titles": ["IT Support Specialist", "Maintenance Manager", "Technical Specialist"],
+            "boost_posting_categories": ["Technology", "Trade"]
+          },
+          "I completed a complex job to a standard I was genuinely proud of": {
+            "maps_to_skills": ["Craftsmanship", "Attention to detail", "Quality standards", "Pride in work", "Technical skill"],
+            "personality_signal": "quality_focused",
+            "amplifies_q1_tiles": ["Building or fixing things", "Creating content or designs"],
+            "suggested_titles": ["Construction Manager", "Quality Inspector", "Technical Specialist"],
+            "boost_posting_categories": ["Trade"]
+          },
+          "I kept a job or site running safely when things went wrong": {
+            "maps_to_skills": ["Health & safety", "Risk management", "Decision making", "Composure under pressure", "Leadership"],
+            "personality_signal": "safety_anchor",
+            "amplifies_q1_tiles": ["Solving problems", "Leading or coaching others"],
+            "suggested_titles": ["Site Manager", "Health & Safety Officer", "Operations Manager"],
+            "boost_posting_categories": ["Trade", "Business"]
+          },
+          "I communicated clearly with a client and they trusted the outcome": {
+            "maps_to_skills": ["Client communication", "Trust building", "Professionalism", "Listening", "Reliability"],
+            "personality_signal": "client_trusted",
+            "amplifies_q1_tiles": ["Talking to people", "Caring for or supporting people"],
+            "suggested_titles": ["Account Manager", "Site Manager", "Customer Success"],
+            "boost_posting_categories": ["Business", "Trade"]
+          },
+          "I coordinated multiple trades or contractors without it falling apart": {
+            "maps_to_skills": ["Coordination", "Planning", "Communication", "Leadership", "Problem solving"],
+            "personality_signal": "site_coordinator",
+            "amplifies_q1_tiles": ["Leading or coaching others", "Managing tasks & schedules"],
+            "suggested_titles": ["Construction Manager", "Project Manager", "Operations Manager"],
+            "boost_posting_categories": ["Trade", "Business"]
+          },
+          "I trained or mentored someone who is now doing the job well": {
+            "maps_to_skills": ["Mentoring", "Technical training", "Patience", "Communication", "Leadership"],
+            "personality_signal": "skills_passer",
+            "amplifies_q1_tiles": ["Teaching or explaining", "Leading or coaching others"],
+            "suggested_titles": ["Site Manager", "Trainer", "Operations Manager"],
+            "boost_posting_categories": ["Trade", "Business"]
+          },
+          "I found a smarter or faster way to do something on the job": {
+            "maps_to_skills": ["Initiative", "Process improvement", "Problem solving", "Innovation", "Efficiency"],
+            "personality_signal": "efficiency_finder",
+            "amplifies_q1_tiles": ["Solving problems", "Organising processes"],
+            "suggested_titles": ["Operations Manager", "Site Manager", "Business Analyst"],
+            "boost_posting_categories": ["Trade", "Business"]
+          }
+        }
+      },
+
+      "q3": {
+        "heading": "Tell us about something on the job you're proud of",
+        "subtitle": "A difficult job, a problem you solved, something you built or fixed.",
+        "placeholder": "e.g. I diagnosed an electrical fault that three other electricians had missed, I delivered a full kitchen fit-out two days early, I coordinated 6 different trades on a complex renovation without a single delay...",
+        "ai_context": "The user works in trades or construction. Their stories contain rich professional skills often undervalued — 'diagnosing a fault others missed' signals analytical thinking, technical depth, and persistence. 'Coordinating multiple contractors' signals project management and communication. 'Delivering a job early' signals planning and client management. Extract transferable professional skills that translate beyond the specific trade.",
+        "story_patterns": [
+          { "pattern": "diagnosed a fault or problem others couldn't solve", "extracts": ["Fault diagnosis", "Analytical thinking", "Technical depth", "Persistence", "Problem solving"] },
+          { "pattern": "completed a complex job to a high standard", "extracts": ["Attention to detail", "Quality standards", "Craftsmanship", "Technical skill", "Pride in work"] },
+          { "pattern": "coordinated or managed a site or team", "extracts": ["Project management", "Coordination", "Communication", "Leadership", "Planning"] },
+          { "pattern": "communicated with a client and managed their expectations", "extracts": ["Client communication", "Trust building", "Professionalism", "Negotiation", "Reliability"] },
+          { "pattern": "found a smarter or faster way to do something", "extracts": ["Initiative", "Process improvement", "Problem solving", "Innovation", "Efficiency"] },
+          { "pattern": "trained or mentored someone", "extracts": ["Technical training", "Mentoring", "Patience", "Communication", "Leadership"] }
+        ]
+      }
+    }
+  },
+
+  "scoring_impact": {
+    "description": "How industry selection changes the matching engine",
+    "changes": [
+      {
+        "change": "Category filter on job postings",
+        "detail": "Results are pre-filtered to postings in the industry's posting_categories before scoring. A Healthcare user won't see Technology postings unless their skills also match. This prevents irrelevant matches."
+      },
+      {
+        "change": "Seniority filter",
+        "detail": "Student path users also filter by seniority_filter from their industry. Healthcare students won't see Senior clinical roles."
+      },
+      {
+        "change": "AI context injection",
+        "detail": "The Q3 Claude API call includes the ai_context string, so identical stories from different industries extract different skills. 'I managed a difficult situation' means conflict resolution for hospitality but clinical governance for healthcare."
+      },
+      {
+        "change": "Q2 amplification boost",
+        "detail": "Industry-specific Q2 tiles have different amplifies_q1_tiles arrays than the generic version. The overlap check is now more precise — a hospitality user who selects 'I kept calm when everything got chaotic' amplifies different Q1 tiles than a finance user who selects 'I completed something complex accurately under pressure'."
+      },
+      {
+        "change": "Suggested titles weighting",
+        "detail": "Each Q2 tile now includes suggested_titles and boost_posting_categories specific to the industry context. These get the +0.1 score bonus on top of the base match score."
+      }
+    ]
+  }
+}
