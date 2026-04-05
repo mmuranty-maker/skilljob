@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, Sparkles, X } from "lucide-react";
 import { searchJobsBySkills, type Job } from "@/data/jobs";
-import { JobResults } from "./JobResults";
 import { SkillQuiz } from "./SkillQuiz";
 import type { UserSkill, ScoredPosting } from "@/lib/quizScoring";
 import heroPeople from "@/assets/hero-people.jpg";
