@@ -33,6 +33,149 @@ const ACTIVITIES = [
   "Organising processes",
 ];
 
+const Q1_TILES_BY_INDUSTRY: Record<string, string[]> = {
+  "Hospitality & Food Service": [
+    "Serving and looking after guests",
+    "Handling complaints and difficult situations",
+    "Upselling and recommending to customers",
+    "Training and supporting new team members",
+    "Managing a section or station under pressure",
+    "Coordinating with kitchen or back-of-house",
+    "Creating menus, specials or experiences",
+    "Keeping stock, prep and inventory organised",
+    "Leading a shift or running a team",
+    "Maintaining hygiene and safety standards",
+    "Building regulars and loyal customers",
+    "Working fast and accurately at high volume",
+  ],
+  "Retail & Customer Service": [
+    "Serving customers and handling enquiries",
+    "Resolving complaints and difficult situations",
+    "Selling, upselling and hitting targets",
+    "Training or supporting colleagues",
+    "Managing stock, displays or floor layout",
+    "Operating tills, systems and admin",
+    "Leading a team or shift",
+    "Keeping the shop floor organised and running",
+    "Working with data, reports or sales figures",
+    "Building customer loyalty and relationships",
+    "Processing returns, refunds and exchanges",
+    "Working fast and accurately under pressure",
+  ],
+  "Healthcare & Medicine": [
+    "Assessing and monitoring patients",
+    "Administering medication or treatments",
+    "Supporting patients emotionally and mentally",
+    "Documenting clinical notes and records",
+    "Educating patients or their families",
+    "Coordinating care across teams or agencies",
+    "Training or supervising junior colleagues",
+    "Identifying risks or safeguarding concerns",
+    "Managing a caseload or patient list",
+    "Using clinical equipment or technology",
+    "Responding to emergencies or urgent situations",
+    "Improving ward or clinic processes",
+  ],
+  "Technology & Engineering": [
+    "Writing, reviewing or debugging code",
+    "Building or maintaining systems and infrastructure",
+    "Analysing data or working with databases",
+    "Designing or architecting solutions",
+    "Testing, QA and quality assurance",
+    "Managing deployments and releases",
+    "Explaining technical concepts to others",
+    "Documenting systems or processes",
+    "Identifying and fixing security risks",
+    "Leading technical projects or sprints",
+    "Learning and applying new technologies",
+    "Automating manual processes",
+  ],
+  "Business & Operations": [
+    "Managing projects and delivering to deadlines",
+    "Coordinating teams or departments",
+    "Analysing data and producing reports",
+    "Improving processes and ways of working",
+    "Managing budgets or financial planning",
+    "Negotiating with vendors or stakeholders",
+    "Recruiting, onboarding or developing people",
+    "Writing documents, policies or procedures",
+    "Running meetings and managing stakeholders",
+    "Managing suppliers or procurement",
+    "Ensuring compliance and managing risk",
+    "Handling admin, scheduling and organisation",
+  ],
+  "Sales & Marketing": [
+    "Prospecting and generating new leads",
+    "Managing and growing existing accounts",
+    "Pitching, presenting and closing deals",
+    "Creating content or campaigns",
+    "Analysing performance data and reporting",
+    "Managing social media or digital channels",
+    "Writing copy or creating messaging",
+    "Running paid advertising or SEO",
+    "Building relationships with clients or partners",
+    "Researching markets, trends or competitors",
+    "Managing a pipeline or CRM",
+    "Planning and executing go-to-market activity",
+  ],
+  "Creative & Media": [
+    "Designing visuals, layouts or brand assets",
+    "Writing, editing or producing content",
+    "Filming, photographing or recording",
+    "Editing video, audio or post-production",
+    "Taking and interpreting client briefs",
+    "Managing creative projects and timelines",
+    "Researching trends, references or inspiration",
+    "Presenting creative work to stakeholders",
+    "Working with tools like Adobe, Figma or DAWs",
+    "Animating, illustrating or motion design",
+    "Managing social content or digital channels",
+    "Translating or localising content",
+  ],
+  "Finance & Accounting": [
+    "Preparing financial statements and reports",
+    "Managing accounts payable or receivable",
+    "Building financial models or forecasts",
+    "Conducting audits or compliance reviews",
+    "Processing payroll or tax returns",
+    "Analysing financial data and spotting trends",
+    "Managing budgets and cost control",
+    "Advising clients on financial decisions",
+    "Negotiating deals or contracts",
+    "Identifying financial risks or irregularities",
+    "Working with accounting software or ERP",
+    "Documenting financial processes and policies",
+  ],
+  "Education & Social Care": [
+    "Planning and delivering lessons or sessions",
+    "Assessing and tracking progress",
+    "Supporting students or clients emotionally",
+    "Managing behaviour or difficult situations",
+    "Writing reports, case notes or documentation",
+    "Liaising with parents, families or carers",
+    "Coordinating with external agencies or services",
+    "Designing curricula or learning programmes",
+    "Advocating for students or vulnerable people",
+    "Running group sessions or workshops",
+    "Identifying safeguarding or welfare concerns",
+    "Mentoring or coaching individuals",
+  ],
+  "Trades & Construction": [
+    "Installing, fitting or building physical things",
+    "Diagnosing faults and troubleshooting",
+    "Reading blueprints, plans or technical drawings",
+    "Operating tools, machinery or equipment",
+    "Following health and safety procedures",
+    "Coordinating with other trades on site",
+    "Managing materials, stock or supplies",
+    "Communicating with clients about the job",
+    "Training or supervising apprentices",
+    "Estimating, quoting or pricing jobs",
+    "Inspecting work and maintaining quality",
+    "Managing a site or project schedule",
+  ],
+};
+
 const STUDENT_SUBTEXTS: Record<string, string> = {
   "Leading or coaching others": "e.g. society president, group project lead",
   "Selling or persuading": "e.g. pitching ideas, sponsorship, fundraising",
@@ -242,8 +385,8 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                     key={title}
                     onClick={() => {
                       setIndustry(title);
-                      // Reset Q2 selection when industry changes since tiles change
                       setQ2Selection(null);
+                      setQ1Selections([]);
                     }}
                     className={`px-3 py-3 rounded-xl text-left transition-all border flex items-start gap-2.5 ${
                       industry === title
@@ -283,7 +426,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                   : "Think about your typical day. Pick everything that applies."}
               </p>
               <div className="grid grid-cols-2 gap-2 flex-1">
-                {ACTIVITIES.map((a) => (
+                {(isStudent ? ACTIVITIES : (industry && Q1_TILES_BY_INDUSTRY[industry] ? Q1_TILES_BY_INDUSTRY[industry] : ACTIVITIES)).map((a) => (
                   <button
                     key={a}
                     onClick={() => toggleActivity(a)}
