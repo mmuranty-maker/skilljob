@@ -116,7 +116,7 @@ export function ApplicationModal({ job, scored, querySkills, onClose }: Applicat
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto">
         {/* Header gradient strip */}
-        <div className="h-[180px] md:h-[180px] h-[100px] bg-gradient-to-br from-primary/80 via-primary/60 to-primary/40 relative">
+        <div className="h-[100px] md:h-[180px] bg-gradient-to-br from-primary/80 via-primary/60 to-primary/40 relative">
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIxLjUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIvPjwvc3ZnPg==')] opacity-60" />
         </div>
 
