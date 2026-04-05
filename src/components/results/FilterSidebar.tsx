@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { ChevronDown, ChevronUp, X, Sparkles } from "lucide-react";
 
 export interface Filters {
@@ -44,6 +43,7 @@ const CATEGORIES = [
 interface FilterSidebarProps {
   filters: Filters;
   onChange: (filters: Filters) => void;
+  onOpenQuiz?: () => void;
   className?: string;
 }
 
