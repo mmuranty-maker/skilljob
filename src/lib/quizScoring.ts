@@ -7,6 +7,34 @@ export interface UserSkill {
   boosted: boolean;
 }
 
+const synonymMap: Record<string, string> = {
+  "troubleshooting": "problem solving",
+  "de-escalation": "conflict resolution",
+  "active listening": "communication",
+  "composure under pressure": "resilience",
+  "speed under pressure": "time management",
+  "accuracy": "attention to detail",
+  "accountability": "reliability",
+  "personal care assistance": "patient care",
+  "upselling": "selling",
+  "organisation": "attention to detail",
+  "multitasking": "time management",
+  "scheduling": "time management",
+  "documentation": "reporting",
+  "teamwork": "communication",
+  "mentoring": "training",
+  "adaptability": "problem solving",
+};
+
+function normaliseSkill(s: string): string {
+  const lower = s.toLowerCase().trim();
+  return synonymMap[lower] || lower;
+}
+
+function skillsMatch(a: string, b: string): boolean {
+  return normaliseSkill(a) === normaliseSkill(b);
+}
+
 export interface ScoredPosting extends Job {
   matchedSkills: string[];
   matchScore: number;
