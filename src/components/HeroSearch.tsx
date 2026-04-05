@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, Sparkles, X } from "lucide-react";
 import { searchJobsBySkills, type Job } from "@/data/jobs";
-import { JobResults } from "./JobResults";
 import { SkillQuiz } from "./SkillQuiz";
 import type { UserSkill, ScoredPosting } from "@/lib/quizScoring";
 import heroPeople from "@/assets/hero-people.jpg";
@@ -27,14 +27,11 @@ export interface HeroSearchHandle {
 }
 
 export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, ref) {
+  const navigate = useNavigate();
   const [skillTags, setSkillTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [results, setResults] = useState<Job[]>([]);
-  const [hasSearched, setHasSearched] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [quizResults, setQuizResults] = useState<{ userSkills: UserSkill[]; topMatches: ScoredPosting[] } | null>(null);
-  const resultsRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -64,11 +61,8 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
 
   const doSearch = (tags: string[]) => {
     if (tags.length === 0) return;
-    setQuizResults(null);
     const matched = searchJobsBySkills(tags);
-    setResults(matched);
-    setHasSearched(true);
-    setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
+    navigate("/results", { state: { results: matched, skillTags: tags } });
   };
 
   const handleSearch = () => {
@@ -127,13 +121,8 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
 
   const triggerSearch = (skill: string) => {
     const newTags = [skill];
-    setSkillTags(newTags);
-    setShowSearch(true);
-    setQuizResults(null);
     const matched = searchJobsBySkills(newTags);
-    setResults(matched);
-    setHasSearched(true);
-    setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 300);
+    navigate("/results", { state: { results: matched, skillTags: newTags } });
   };
 
   const handlePopularClick = (skill: string) => {
@@ -144,11 +133,13 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
   };
 
   const handleQuizResults = (userSkills: UserSkill[], topMatches: ScoredPosting[]) => {
-    setQuizResults({ userSkills, topMatches });
-    setResults(topMatches);
-    setSkillTags(userSkills.map((s) => s.name));
-    setHasSearched(true);
-    setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth" }), 300);
+    navigate("/results", {
+      state: {
+        results: topMatches,
+        skillTags: userSkills.map((s) => s.name),
+        quizResults: { userSkills, topMatches },
+      },
+    });
   };
 
   useImperativeHandle(ref, () => ({ triggerSearch, openQuiz: () => setQuizOpen(true) }));
@@ -292,16 +283,6 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
           </div>
         </div>
       </section>
-
-      {hasSearched && (
-        <div ref={resultsRef}>
-          <JobResults
-            results={results}
-            query={skillTags.join(", ")}
-            quizResults={quizResults ?? undefined}
-          />
-        </div>
-      )}
 
       <SkillQuiz
         open={quizOpen}
