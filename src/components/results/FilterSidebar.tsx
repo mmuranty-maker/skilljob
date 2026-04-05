@@ -256,9 +256,6 @@ export function FilterSidebar({ filters, onChange, onOpenQuiz, className = "" }:
           Clear all filters
         </button>
       )}
-
-      {/* Quiz nudge */}
-      <QuizNudge />
     </aside>
   );
 }
