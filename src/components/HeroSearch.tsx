@@ -218,26 +218,29 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
                       {skillTags.map((tag) => (
                         <span
                           key={tag}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[20px] bg-primary text-primary-foreground text-sm font-medium"
                         >
                           {tag}
                           <button
                             onClick={() => removeSkill(tag)}
-                            className="hover:bg-primary/20 rounded-full p-0.5 transition-colors"
+                            className="hover:bg-primary-foreground/20 rounded-full p-0.5 transition-colors"
                           >
                             <X className="h-3 w-3" />
                           </button>
                         </span>
                       ))}
-                      <input
-                        ref={inputRef}
-                        type="text"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        placeholder={skillTags.length === 0 ? `Try "${PLACEHOLDER_SKILLS[placeholderIndex]}"...` : skillTags.length < MIN_SKILLS ? `Add ${MIN_SKILLS - skillTags.length} more skill${MIN_SKILLS - skillTags.length > 1 ? "s" : ""}...` : "Add more or search..."}
-                        className="flex-1 min-w-[120px] h-8 bg-transparent text-foreground placeholder:text-muted-foreground text-base focus:outline-none"
-                      />
+                      {skillTags.length < MAX_SKILLS && (
+                        <input
+                          ref={inputRef}
+                          type="text"
+                          value={inputValue}
+                          onChange={handleInputChange}
+                          onKeyDown={handleKeyDown}
+                          onPaste={handlePaste}
+                          placeholder={getPlaceholder()}
+                          className="flex-1 min-w-[120px] h-8 bg-transparent text-foreground placeholder:text-muted-foreground text-base focus:outline-none"
+                        />
+                      )}
                     </div>
                     <button
                       onClick={handleSearch}
@@ -247,11 +250,6 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
                       Search
                     </button>
                   </div>
-                  {!canSearch && skillTags.length > 0 && (
-                    <p className="mt-2 text-xs text-muted-foreground">
-                      Add at least {MIN_SKILLS} skills to search · {MIN_SKILLS - skillTags.length} more needed
-                    </p>
-                  )}
                   <div className="mt-3 flex flex-wrap gap-2">
                     <span className="text-sm text-muted-foreground">Popular:</span>
                     {POPULAR_SKILLS.filter((s) => !skillTags.some((t) => t.toLowerCase() === s.toLowerCase())).map((skill) => (
