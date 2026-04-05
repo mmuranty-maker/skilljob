@@ -385,8 +385,8 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                     key={title}
                     onClick={() => {
                       setIndustry(title);
-                      // Reset Q2 selection when industry changes since tiles change
                       setQ2Selection(null);
+                      setQ1Selections([]);
                     }}
                     className={`px-3 py-3 rounded-xl text-left transition-all border flex items-start gap-2.5 ${
                       industry === title
