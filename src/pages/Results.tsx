@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SlidersHorizontal, ArrowLeft, X, Sparkles } from "lucide-react";
+import { SlidersHorizontal, ArrowLeft, X, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
 import { ApplicationModal } from "@/components/results/ApplicationModal";
 import type { Job } from "@/data/jobs";
 import type { UserSkill, ScoredPosting } from "@/lib/quizScoring";
@@ -34,6 +34,9 @@ const ResultsPage = () => {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
   const [applyOpen, setApplyOpen] = useState(false);
+  const [skippedQ3, setSkippedQ3] = useState(false);
+  const [proudMomentOpen, setProudMomentOpen] = useState(false);
+  const [proudMomentText, setProudMomentText] = useState("");
 
   const isQuizMode = !!quizResults;
 
@@ -80,13 +83,17 @@ const ResultsPage = () => {
     if (isMobile) setShowMobileDetail(true);
   };
 
-  const handleQuizComplete = (userSkills: UserSkill[], topMatches: ScoredPosting[]) => {
+  const handleQuizComplete = (userSkills: UserSkill[], topMatches: ScoredPosting[], quizSkippedQ3?: boolean) => {
     setQuizResults({ userSkills, topMatches });
     setResults(topMatches);
     setSkillTags(userSkills.map((s) => s.name));
     setFilters(defaultFilters);
     if (topMatches.length > 0) setSelectedId(topMatches[0].id);
     setQuizOpen(false);
+    setSkippedQ3(!!(quizSkippedQ3 ?? (window as any).__skilljob_skippedQ3));
+    (window as any).__skilljob_skippedQ3 = false;
+    setProudMomentOpen(false);
+    setProudMomentText("");
   };
 
   const handleBrowseAll = () => {
@@ -144,6 +151,53 @@ const ResultsPage = () => {
         >
           {filteredResults.length > 0 ? (
             <>
+              {/* Proud moment nudge for skipped Q3 */}
+              {skippedQ3 && isQuizMode && (
+                <div className="mx-1 mb-2">
+                  <button
+                    onClick={() => setProudMomentOpen(!proudMomentOpen)}
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-[#E8F7F2] border border-[#B8E0D2] text-[13px] text-[#0F6E56] font-medium hover:bg-[#dcf3ea] transition-colors"
+                  >
+                    <span>✦ Want better matches? Add a proud moment →</span>
+                    {proudMomentOpen ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+                  </button>
+                  {proudMomentOpen && (
+                    <div className="mt-2 px-3 py-3 rounded-lg bg-white border border-[#E8E8E4]">
+                      <p className="text-xs text-muted-foreground mb-2">Tell us about something you're proud of — at work, big or small.</p>
+                      <textarea
+                        value={proudMomentText}
+                        onChange={(e) => setProudMomentText(e.target.value)}
+                        rows={3}
+                        placeholder="e.g. I trained 3 new starters, I reorganised how we handle complaints..."
+                        className="w-full px-3 py-2 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm resize-none"
+                      />
+                      <button
+                        disabled={proudMomentText.length < 15}
+                        onClick={() => {
+                          // Re-run scoring with the proud moment included
+                          const { runQuizScoring } = require("@/lib/quizScoring");
+                          const result = runQuizScoring(
+                            skillTags,
+                            "",
+                            proudMomentText,
+                            false,
+                            null
+                          );
+                          setQuizResults({ userSkills: result.userSkills, topMatches: result.topMatches });
+                          setResults(result.topMatches);
+                          setSkillTags(result.userSkills.map((s: UserSkill) => s.name));
+                          if (result.topMatches.length > 0) setSelectedId(result.topMatches[0].id);
+                          setSkippedQ3(false);
+                          setProudMomentOpen(false);
+                        }}
+                        className="mt-2 w-full h-9 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        Update my matches →
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
               <div className="px-1 py-2.5">
                 <p className="text-xs text-muted-foreground">
                   Sorted by best skill match · {filteredResults.length} result{filteredResults.length !== 1 ? "s" : ""}
