@@ -24,7 +24,7 @@ interface JobDetailPanelProps {
 export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPanelProps) {
   if (!job) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-white min-h-[500px]">
+      <div className="flex-1 flex items-center justify-center bg-white border-l border-[#E8E8E4] shadow-[-2px_0_8px_rgba(0,0,0,0.04)] min-h-[500px]">
         <div className="text-center text-muted-foreground">
           <Briefcase className="h-12 w-12 mx-auto mb-3 opacity-30" />
           <p className="text-sm">Select a role to see details</p>
@@ -45,8 +45,8 @@ export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPane
     : Math.round((matchedCount / job.skills.length) * 100);
 
   return (
-    <div className="flex-1 bg-white overflow-y-auto custom-scrollbar">
-      <div className="p-8">
+    <div className="flex-1 bg-white border-l border-[#E8E8E4] shadow-[-2px_0_8px_rgba(0,0,0,0.04)] overflow-y-auto custom-scrollbar">
+      <div className="px-9 py-10">
         {/* Header */}
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-4">
@@ -88,7 +88,7 @@ export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPane
           </span>
         </div>
 
-        <hr className="my-6 border-[hsl(220,13%,91%)]" />
+        <hr className="my-6 border-[#F0F0EC]" />
 
         {/* Skills match */}
         <div>
@@ -106,7 +106,7 @@ export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPane
                   className={`inline-flex items-center gap-1 text-sm px-3 py-1.5 rounded-full border ${
                     isMatch
                       ? "border-primary/60 bg-primary/15 text-primary font-semibold"
-                      : "border-[hsl(220,13%,91%)] text-muted-foreground"
+                      : "border-[#F0F0EC] text-muted-foreground"
                   }`}
                 >
                   {isMatch && <Sparkles className="h-3 w-3" />}
@@ -141,7 +141,7 @@ export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPane
                     className={`text-sm px-3 py-1.5 rounded-full border ${
                       isMatch
                         ? "border-primary/40 bg-primary/10 text-primary font-medium"
-                        : "border-[hsl(220,13%,91%)] text-muted-foreground"
+                        : "border-[#F0F0EC] text-muted-foreground"
                     }`}
                   >
                     {skill}
@@ -152,7 +152,7 @@ export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPane
           </div>
         )}
 
-        <hr className="my-6 border-[hsl(220,13%,91%)]" />
+        <hr className="my-6 border-[#F0F0EC]" />
 
         {/* Gap section */}
         <div>
@@ -192,25 +192,25 @@ export function JobDetailPanel({ job, scored, query, userSkills }: JobDetailPane
           )}
         </div>
 
-        <hr className="my-6 border-[hsl(220,13%,91%)]" />
+        <hr className="my-6 border-[#F0F0EC]" />
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="rounded-lg border border-[hsl(220,13%,91%)] p-3 text-center">
+          <div className="rounded-lg border border-[#F0F0EC] p-3 text-center">
             <p className="text-lg font-bold text-primary">{job.skills.length}</p>
             <p className="text-[11px] text-muted-foreground mt-0.5">Skills Required</p>
           </div>
-          <div className="rounded-lg border border-[hsl(220,13%,91%)] p-3 text-center">
+          <div className="rounded-lg border border-[#F0F0EC] p-3 text-center">
             <p className="text-lg font-bold text-primary">{matchedCount}</p>
             <p className="text-[11px] text-muted-foreground mt-0.5">Your Matches</p>
           </div>
-          <div className="rounded-lg border border-[hsl(220,13%,91%)] p-3 text-center">
+          <div className="rounded-lg border border-[#F0F0EC] p-3 text-center">
             <p className="text-lg font-bold text-primary">{matchPercent}%</p>
             <p className="text-[11px] text-muted-foreground mt-0.5">Skill Match</p>
           </div>
         </div>
 
-        <hr className="my-6 border-[hsl(220,13%,91%)]" />
+        <hr className="my-6 border-[#F0F0EC]" />
 
         {/* Description */}
         <div>

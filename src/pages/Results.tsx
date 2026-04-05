@@ -136,11 +136,11 @@ const ResultsPage = () => {
         <div
           className={`${
             isMobile ? "w-full" : "w-[340px]"
-          } shrink-0 bg-white overflow-y-auto h-[calc(100vh-56px)] custom-scrollbar`}
+          } shrink-0 bg-[#F5F5F3] overflow-y-auto h-[calc(100vh-56px)] custom-scrollbar px-3 pt-3`}
         >
           {filteredResults.length > 0 ? (
             <>
-              <div className="px-4 py-2.5 border-b border-[hsl(220,13%,91%)]">
+              <div className="px-1 py-2.5">
                 <p className="text-xs text-muted-foreground">
                   Sorted by best skill match · {filteredResults.length} result{filteredResults.length !== 1 ? "s" : ""}
                 </p>
