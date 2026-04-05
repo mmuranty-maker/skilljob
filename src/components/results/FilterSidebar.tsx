@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { ChevronDown, ChevronUp, X, Sparkles } from "lucide-react";
 
 export interface Filters {
@@ -44,6 +43,7 @@ const CATEGORIES = [
 interface FilterSidebarProps {
   filters: Filters;
   onChange: (filters: Filters) => void;
+  onOpenQuiz?: () => void;
   className?: string;
 }
 
@@ -83,26 +83,7 @@ function FilterGroup({
     </div>
   );
 }
-
-function QuizNudge() {
-  const navigate = useNavigate();
-  return (
-    <button
-      onClick={() => navigate("/", { state: { openQuiz: true } })}
-      className="mt-5 w-full rounded-lg border border-[#B8E0D2] bg-[#E8F7F2] p-3 text-left hover:border-primary/50 transition-colors"
-    >
-      <div className="flex items-start gap-2">
-        <Sparkles className="h-3.5 w-3.5 text-[#0F6E56] mt-0.5 shrink-0" />
-        <div>
-          <p className="text-xs font-semibold text-[#0F6E56]">Not sure about your skills?</p>
-          <p className="text-xs text-[#0F6E56] mt-0.5">Try the quiz instead →</p>
-        </div>
-      </div>
-    </button>
-  );
-}
-
-export function FilterSidebar({ filters, onChange, className = "" }: FilterSidebarProps) {
+export function FilterSidebar({ filters, onChange, onOpenQuiz, className = "" }: FilterSidebarProps) {
   const toggleArray = (arr: string[], value: string) =>
     arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value];
 
@@ -124,6 +105,23 @@ export function FilterSidebar({ filters, onChange, className = "" }: FilterSideb
 
   return (
     <aside className={`bg-white border-r border-[hsl(220,13%,91%)] p-5 ${className}`}>
+      {/* Quiz CTA card */}
+      {onOpenQuiz && (
+        <div className="mb-5 rounded-lg bg-primary p-4">
+          <Sparkles className="h-4 w-4 text-white mb-2" />
+          <p className="text-[13px] font-semibold text-white">Not sure what your skills are?</p>
+          <p className="text-xs text-white/80 leading-relaxed mt-1">
+            Take the 3-minute quiz and we'll build your skill profile for you.
+          </p>
+          <button
+            onClick={onOpenQuiz}
+            className="mt-3 w-full text-xs font-semibold text-white border border-white/60 rounded-[20px] px-3.5 py-2.5 hover:bg-white/10 transition-colors"
+          >
+            Discover my skills →
+          </button>
+        </div>
+      )}
+
       <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-5">
         Refine results
       </p>
@@ -258,9 +256,6 @@ export function FilterSidebar({ filters, onChange, className = "" }: FilterSideb
           Clear all filters
         </button>
       )}
-
-      {/* Quiz nudge */}
-      <QuizNudge />
     </aside>
   );
 }

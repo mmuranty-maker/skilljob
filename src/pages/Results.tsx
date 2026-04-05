@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SlidersHorizontal, ArrowLeft, X } from "lucide-react";
+import { SlidersHorizontal, ArrowLeft, X, Sparkles } from "lucide-react";
 import type { Job } from "@/data/jobs";
 import type { UserSkill, ScoredPosting } from "@/lib/quizScoring";
 import { ResultsTopBar } from "@/components/results/ResultsTopBar";
@@ -8,7 +8,8 @@ import { FilterSidebar, type Filters, defaultFilters } from "@/components/result
 import { JobListCard } from "@/components/results/JobListCard";
 import { JobDetailPanel } from "@/components/results/JobDetailPanel";
 import { SkeletonCards } from "@/components/results/SkeletonCards";
-import { searchJobsBySkills } from "@/data/jobs";
+import { SkillQuiz } from "@/components/SkillQuiz";
+import { searchJobsBySkills, jobs } from "@/data/jobs";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ResultsState {
@@ -25,11 +26,12 @@ const ResultsPage = () => {
 
   const [skillTags, setSkillTags] = useState<string[]>(incoming?.skillTags ?? []);
   const [results, setResults] = useState<Job[]>(incoming?.results ?? []);
-  const [quizResults] = useState(incoming?.quizResults ?? undefined);
+  const [quizResults, setQuizResults] = useState(incoming?.quizResults ?? undefined);
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [selectedId, setSelectedId] = useState<string | null>(results.length > 0 ? results[0].id : null);
   const [showMobileDetail, setShowMobileDetail] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [quizOpen, setQuizOpen] = useState(false);
 
   const isQuizMode = !!quizResults;
 
@@ -76,22 +78,21 @@ const ResultsPage = () => {
     if (isMobile) setShowMobileDetail(true);
   };
 
-  // Redirect to home if no state
-  if (!incoming) {
-    return (
-      <div className="min-h-screen bg-[hsl(40,14%,96%)] flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-muted-foreground mb-4">No search results to display.</p>
-          <button
-            onClick={() => navigate("/")}
-            className="h-10 px-6 rounded-lg bg-primary text-primary-foreground font-semibold text-sm"
-          >
-            Go to homepage
-          </button>
-        </div>
-      </div>
-    );
-  }
+  const handleQuizComplete = (userSkills: UserSkill[], topMatches: ScoredPosting[]) => {
+    setQuizResults({ userSkills, topMatches });
+    setResults(topMatches);
+    setSkillTags(userSkills.map((s) => s.name));
+    setFilters(defaultFilters);
+    if (topMatches.length > 0) setSelectedId(topMatches[0].id);
+    setQuizOpen(false);
+  };
+
+  const handleBrowseAll = () => {
+    setResults(jobs);
+    setSkillTags([]);
+    setFilters(defaultFilters);
+    if (jobs.length > 0) setSelectedId(jobs[0].id);
+  };
 
   return (
     <div className="min-h-screen bg-[hsl(40,14%,96%)] flex flex-col">
@@ -128,6 +129,7 @@ const ResultsPage = () => {
           <FilterSidebar
             filters={filters}
             onChange={setFilters}
+            onOpenQuiz={() => setQuizOpen(true)}
             className="w-[220px] shrink-0 sticky top-14 h-[calc(100vh-56px)] overflow-y-auto custom-scrollbar"
           />
         )}
@@ -161,6 +163,28 @@ const ResultsPage = () => {
                 );
               })}
             </>
+          ) : skillTags.length === 0 && results.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full px-6 text-center">
+              <Sparkles className="h-8 w-8 text-primary mb-4" />
+              <p className="text-foreground font-semibold mb-1">No skills added yet.</p>
+              <p className="text-sm text-muted-foreground mb-5 max-w-[240px]">
+                Search for a skill above, or take the quiz to discover yours.
+              </p>
+              <div className="flex gap-3 w-full max-w-[280px]">
+                <button
+                  onClick={() => setQuizOpen(true)}
+                  className="flex-1 h-10 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 transition-all"
+                >
+                  Take the quiz →
+                </button>
+                <button
+                  onClick={handleBrowseAll}
+                  className="flex-1 h-10 rounded-lg border border-[#E8E8E4] bg-white text-foreground font-semibold text-sm hover:border-primary/40 transition-colors"
+                >
+                  Browse all roles →
+                </button>
+              </div>
+            </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-full px-6 text-center">
               <p className="text-muted-foreground text-sm mb-3">
@@ -223,10 +247,18 @@ const ResultsPage = () => {
                 <X className="h-5 w-5 text-muted-foreground" />
               </button>
             </div>
-            <FilterSidebar filters={filters} onChange={setFilters} className="border-r-0" />
+            <FilterSidebar filters={filters} onChange={setFilters} onOpenQuiz={() => setQuizOpen(true)} className="border-r-0" />
           </div>
         </div>
       )}
+
+      {/* Quiz modal */}
+      <SkillQuiz
+        open={quizOpen}
+        onClose={() => setQuizOpen(false)}
+        onComplete={() => {}}
+        onQuizResults={handleQuizComplete}
+      />
     </div>
   );
 };
