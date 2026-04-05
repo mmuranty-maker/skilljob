@@ -7,6 +7,34 @@ export interface UserSkill {
   boosted: boolean;
 }
 
+const synonymMap: Record<string, string> = {
+  "troubleshooting": "problem solving",
+  "de-escalation": "conflict resolution",
+  "active listening": "communication",
+  "composure under pressure": "resilience",
+  "speed under pressure": "time management",
+  "accuracy": "attention to detail",
+  "accountability": "reliability",
+  "personal care assistance": "patient care",
+  "upselling": "selling",
+  "organisation": "attention to detail",
+  "multitasking": "time management",
+  "scheduling": "time management",
+  "documentation": "reporting",
+  "teamwork": "communication",
+  "mentoring": "training",
+  "adaptability": "problem solving",
+};
+
+function normaliseSkill(s: string): string {
+  const lower = s.toLowerCase().trim();
+  return synonymMap[lower] || lower;
+}
+
+function skillsMatch(a: string, b: string): boolean {
+  return normaliseSkill(a) === normaliseSkill(b);
+}
+
 export interface ScoredPosting extends Job {
   matchedSkills: string[];
   matchScore: number;
@@ -196,7 +224,7 @@ function scorePostings(
   q2Selection: string,
   industry: string | null
 ): ScoredPosting[] {
-  const userSkillNames = userSkills.map((s) => s.name.toLowerCase());
+  const userSkillNormalised = userSkills.map((s) => normaliseSkill(s.name));
   const industryConfig = industry ? getIndustryConfig(industry) : null;
 
   // Get industry Q2 tile data for boost
@@ -219,7 +247,7 @@ function scorePostings(
   return filteredJobs
     .map((posting) => {
       const matchedSkills = posting.skills.filter((skill) =>
-        userSkillNames.includes(skill.toLowerCase())
+        userSkillNormalised.includes(normaliseSkill(skill))
       );
 
       let matchScore = posting.skills.length > 0
@@ -251,14 +279,14 @@ function scorePostings(
 
       // Nice-to-have bonus
       const niceMatches = posting.niceToHaveSkills.filter((skill) =>
-        userSkillNames.includes(skill.toLowerCase())
+        userSkillNormalised.includes(normaliseSkill(skill))
       );
       if (niceMatches.length > 0) {
         matchScore = Math.min(matchScore + niceMatches.length * 0.05, 1.0);
       }
 
       const gapSkills = posting.skills.filter(
-        (skill) => !userSkillNames.includes(skill.toLowerCase())
+        (skill) => !userSkillNormalised.includes(normaliseSkill(skill))
       );
 
       return {
