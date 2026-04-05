@@ -247,7 +247,8 @@ function scorePostings(
   return filteredJobs
     .map((posting) => {
       const matchedSkills = posting.skills.filter((skill) =>
-        userSkillNames.includes(skill.toLowerCase())
+        userSkillNormalised.includes(normaliseSkill(skill))
+      );
       );
 
       let matchScore = posting.skills.length > 0
@@ -279,14 +280,14 @@ function scorePostings(
 
       // Nice-to-have bonus
       const niceMatches = posting.niceToHaveSkills.filter((skill) =>
-        userSkillNames.includes(skill.toLowerCase())
+        userSkillNormalised.includes(normaliseSkill(skill))
       );
       if (niceMatches.length > 0) {
         matchScore = Math.min(matchScore + niceMatches.length * 0.05, 1.0);
       }
 
       const gapSkills = posting.skills.filter(
-        (skill) => !userSkillNames.includes(skill.toLowerCase())
+        (skill) => !userSkillNormalised.includes(normaliseSkill(skill))
       );
 
       return {
