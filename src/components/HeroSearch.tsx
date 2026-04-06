@@ -164,7 +164,7 @@ export const HeroSearch = forwardRef<HeroSearchHandle>(function HeroSearch(_, re
             </h1>
 
             <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-xl animate-fade-up-delay">
-              Most job sites look at your job title. We look at what you can actually do. Get matched with roles that value your hustle.
+              Most job sites look at your job title. We look at what you can actually do. Get matched to roles you're actually built for.
             </p>
 
             {/* Two-path entry point */}
