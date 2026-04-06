@@ -15,9 +15,8 @@
     "required_skills": [
       "Customer service",
       "Communication",
-      "Problem solving",
-      "Active listening",
-      "CRM"
+      "Conflict resolution",
+      "Empathy"
     ],
     "nice_to_have_skills": [
       "Upselling",
@@ -63,10 +62,9 @@
     "description": "Be the welcoming face of our busy wellness clinic. Greet patients, manage scheduling, handle payments, and ensure a smooth experience.",
     "required_skills": [
       "Customer service",
-      "Scheduling",
-      "Communication",
       "Attention to detail",
-      "Multitasking"
+      "Communication",
+      "Empathy"
     ],
     "nice_to_have_skills": [
       "Data entry",
@@ -111,9 +109,8 @@
     "description": "First point of contact for customers. Resolve product issues, handle billing questions, and turn frustrated customers into loyal advocates.",
     "required_skills": [
       "Customer service",
-      "Problem solving",
-      "Communication",
       "Conflict resolution",
+      "Empathy",
       "Active listening"
     ],
     "nice_to_have_skills": [
@@ -160,10 +157,9 @@
     "description": "Deliver unforgettable stays at the front desk. Handle check-in, resolve concerns, make recommendations, and ensure every guest leaves happy.",
     "required_skills": [
       "Customer service",
-      "Communication",
       "Conflict resolution",
-      "Attention to detail",
-      "Product knowledge"
+      "Communication",
+      "Empathy"
     ],
     "nice_to_have_skills": [
       "Upselling",
@@ -209,10 +205,9 @@
     "description": "Turn inbound leads into loyal customers. Make outbound calls, run product demos, and close deals for our SMB-focused software platform.",
     "required_skills": [
       "Communication",
+      "Customer service",
       "Active listening",
-      "Goal orientation",
-      "Upselling",
-      "Customer service"
+      "Empathy"
     ],
     "nice_to_have_skills": [
       "CRM",
@@ -260,8 +255,7 @@
       "Customer service",
       "Conflict resolution",
       "Empathy",
-      "Communication",
-      "Problem solving"
+      "Communication"
     ],
     "nice_to_have_skills": [
       "CRM",
@@ -356,10 +350,8 @@
     "description": "Help customers find the perfect tech solution. Use product knowledge and listening skills to match customers with the right products and drive store sales.",
     "required_skills": [
       "Customer service",
-      "Product knowledge",
-      "Upselling",
       "Communication",
-      "Goal orientation"
+      "Conflict resolution"
     ],
     "nice_to_have_skills": [
       "Cash handling",
@@ -454,10 +446,9 @@
     "description": "Sell gym memberships and personal training packages to prospective and existing members.",
     "required_skills": [
       "Customer service",
-      "Upselling",
       "Communication",
-      "Goal orientation",
-      "Conflict resolution"
+      "Conflict resolution",
+      "Empathy"
     ],
     "nice_to_have_skills": [
       "Negotiation",
@@ -553,9 +544,7 @@
     "required_skills": [
       "Customer service",
       "Cash handling",
-      "Teamwork",
-      "Attention to detail",
-      "Communication"
+      "Attention to detail"
     ],
     "nice_to_have_skills": [
       "POS systems",
@@ -600,10 +589,8 @@
     "category": "Trade",
     "description": "Keep store shelves stocked and organised. Receive deliveries, process inventory, and ensure products are correctly displayed.",
     "required_skills": [
-      "Inventory management",
+      "Cash handling",
       "Attention to detail",
-      "Physical stamina",
-      "Teamwork",
       "Reliability"
     ],
     "nice_to_have_skills": [
@@ -650,10 +637,8 @@
     "description": "Take responsibility for opening and closing the store. Support the management team and ensure standards are upheld at all times.",
     "required_skills": [
       "Customer service",
-      "Team leadership",
       "Cash handling",
-      "Communication",
-      "Accountability"
+      "Attention to detail"
     ],
     "nice_to_have_skills": [
       "Problem solving",
@@ -699,10 +684,9 @@
     "description": "Coordinate care for patients across their entire journey \u2014 from referral to discharge.",
     "required_skills": [
       "Patient care",
-      "Communication",
-      "Scheduling",
       "Empathy",
-      "Documentation"
+      "Communication",
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "EHR systems",
@@ -747,11 +731,10 @@
     "category": "Healthcare",
     "description": "Connect underserved community members to health resources, education, and support.",
     "required_skills": [
+      "Patient care",
       "Empathy",
       "Communication",
-      "Patient care",
-      "Active listening",
-      "Documentation"
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Problem solving",
@@ -797,10 +780,9 @@
     "description": "First point of contact for our patients. Manage a busy front desk, schedule appointments, and ensure every patient feels welcomed.",
     "required_skills": [
       "Customer service",
-      "Scheduling",
+      "Patient care",
       "Communication",
-      "Attention to detail",
-      "Patient care"
+      "Empathy"
     ],
     "nice_to_have_skills": [
       "Data entry",
@@ -845,11 +827,10 @@
     "category": "Healthcare",
     "description": "Provide compassionate in-home care to elderly and disabled clients.",
     "required_skills": [
-      "Personal care assistance",
+      "Patient care",
       "Empathy",
-      "Patience",
-      "Reliability",
-      "Communication"
+      "Communication",
+      "Reliability"
     ],
     "nice_to_have_skills": [
       "Medication assistance",
@@ -894,11 +875,10 @@
     "category": "Healthcare",
     "description": "Support clinical teams with administrative coordination \u2014 scheduling, referrals, authorisations, and patient communication.",
     "required_skills": [
-      "Scheduling",
-      "Documentation",
       "Communication",
-      "Attention to detail",
-      "Teamwork"
+      "Patient care",
+      "Empathy",
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Patient care",
@@ -943,11 +923,10 @@
     "category": "Healthcare",
     "description": "Coach members through their health journey via video, phone, and messaging.",
     "required_skills": [
+      "Patient care",
       "Empathy",
       "Communication",
-      "Goal setting",
-      "Active listening",
-      "Patient care"
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Nutrition basics",
@@ -994,9 +973,8 @@
     "required_skills": [
       "Customer service",
       "Communication",
-      "Product knowledge",
-      "Upselling",
-      "Teamwork"
+      "Conflict resolution",
+      "Empathy"
     ],
     "nice_to_have_skills": [
       "Memory",
@@ -1041,11 +1019,10 @@
     "category": "Business",
     "description": "Coordinate catering logistics for weddings, corporate events, and private functions.",
     "required_skills": [
-      "Communication",
-      "Multitasking",
-      "Time management",
       "Customer service",
-      "Teamwork"
+      "Communication",
+      "Conflict resolution",
+      "Empathy"
     ],
     "nice_to_have_skills": [
       "Organisation",
@@ -1188,11 +1165,9 @@
     "category": "Business",
     "description": "Ensure data accuracy across our customer database. Input, verify, and clean large volumes of data with a focus on accuracy and speed.",
     "required_skills": [
-      "Accuracy",
       "Attention to detail",
-      "Communication",
-      "Reliability",
-      "Organisation"
+      "Customer service",
+      "Reliability"
     ],
     "nice_to_have_skills": [
       "Microsoft Office",
@@ -1581,9 +1556,8 @@
     "description": "Support adults with learning disabilities and mental health conditions to live fulfilling, independent lives.",
     "required_skills": [
       "Empathy",
-      "Patience",
       "Communication",
-      "Reliability",
+      "Patient care",
       "Teamwork"
     ],
     "nice_to_have_skills": [
@@ -1678,11 +1652,10 @@
     "category": "Healthcare",
     "description": "Provide compassionate care to elderly clients in their homes.",
     "required_skills": [
-      "Personal care assistance",
+      "Patient care",
       "Empathy",
-      "Patience",
-      "Reliability",
-      "Communication"
+      "Communication",
+      "Reliability"
     ],
     "nice_to_have_skills": [
       "Medication assistance",
@@ -1778,9 +1751,8 @@
     "required_skills": [
       "Empathy",
       "Communication",
-      "Mentoring",
-      "Goal setting",
-      "Active listening"
+      "Patient care",
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Patience",
@@ -2508,10 +2480,8 @@
     "description": "Support our team of content strategists and designers to keep projects on time, on brief, and on brand. You'll coordinate assets, manage schedules, and ensure nothing slips through the cracks.",
     "required_skills": [
       "Creativity",
-      "Communication",
       "Attention to detail",
-      "Organisation",
-      "Teamwork"
+      "Communication"
     ],
     "nice_to_have_skills": [
       "Deadline management",
@@ -2556,11 +2526,9 @@
     "category": "Creative",
     "description": "Own our email channel end-to-end. You'll write copy, design layouts, build campaigns, hit send, and report on what worked. This is a hands-on creative and analytical role.",
     "required_skills": [
-      "Communication",
       "Creativity",
-      "Organisation",
       "Attention to detail",
-      "Deadline management"
+      "Organisation"
     ],
     "nice_to_have_skills": [
       "Copywriting",
@@ -2704,8 +2672,6 @@
     "description": "Create compelling content that brings our brand story to life across every channel \u2014 social, email, web, and packaging. You'll work closely with design, marketing, and product teams.",
     "required_skills": [
       "Creativity",
-      "Copywriting",
-      "Communication",
       "Attention to detail",
       "Teamwork"
     ],
@@ -2754,8 +2720,6 @@
     "required_skills": [
       "Creativity",
       "Attention to detail",
-      "Organisation",
-      "Communication",
       "Deadline management"
     ],
     "nice_to_have_skills": [
@@ -2997,11 +2961,9 @@
     "category": "Creative",
     "description": "Keep our busy design studio running smoothly. You'll manage project intake, coordinate between clients and designers, track deadlines, and ensure nothing falls through the cracks.",
     "required_skills": [
-      "Organisation",
-      "Communication",
       "Creativity",
-      "Deadline management",
-      "Teamwork"
+      "Attention to detail",
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Attention to detail",
@@ -3046,11 +3008,9 @@
     "category": "Creative",
     "description": "Develop and execute social content strategies for 5 consumer brands. You'll research trends, plan content calendars, oversee production, and use data to continuously improve performance.",
     "required_skills": [
-      "Social media",
       "Creativity",
       "Communication",
-      "Analytics",
-      "Organisation"
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Campaign management",
