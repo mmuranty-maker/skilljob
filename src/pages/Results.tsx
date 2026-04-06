@@ -54,7 +54,7 @@ const ResultsPage = () => {
   };
 
   const filteredResults = useMemo(() => {
-    return results.filter((job) => {
+    const filtered = results.filter((job) => {
       if (filters.jobTypes.length > 0 && !filters.jobTypes.includes(job.type)) return false;
       if (filters.seniorities.length > 0 && !filters.seniorities.includes(job.seniority)) return false;
       if (filters.salaryMin && job.salaryMax < filters.salaryMin) return false;
@@ -71,7 +71,13 @@ const ResultsPage = () => {
       }
       return true;
     });
-  }, [results, filters]);
+    // Sort by match score descending when quiz results are available
+    if (quizResults) {
+      const scoreMap = new Map(quizResults.topMatches.map((m) => [m.id, m.matchScore]));
+      filtered.sort((a, b) => (scoreMap.get(b.id) ?? 0) - (scoreMap.get(a.id) ?? 0));
+    }
+    return filtered;
+  }, [results, filters, quizResults]);
 
   const selectedJob = filteredResults.find((j) => j.id === selectedId) ?? filteredResults[0] ?? null;
   const selectedScored = isQuizMode && selectedJob
