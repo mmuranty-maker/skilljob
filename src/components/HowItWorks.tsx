@@ -25,7 +25,7 @@ const cards = [
   },
   {
     icon: Rocket,
-    title: "See your next step",
+    title: "Get hired",
     bullets: [
       "Know exactly what skills you're missing",
       "Find roles you didn't know you qualified for",
