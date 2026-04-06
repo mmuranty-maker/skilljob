@@ -177,14 +177,63 @@ export function searchJobsBySkill(query: string): Job[] {
   );
 }
 
+// Synonym map for search matching (mirrors quizScoring synonymMap)
+const searchSynonymMap: Record<string, string> = {
+  "troubleshooting": "problem solving",
+  "de-escalation": "conflict resolution",
+  "active listening": "communication",
+  "composure under pressure": "active listening",
+  "speed under pressure": "time management",
+  "accuracy": "attention to detail",
+  "accountability": "reliability",
+  "personal care assistance": "patient care",
+  "upselling": "selling",
+  "organisation": "attention to detail",
+  "multitasking": "time management",
+  "scheduling": "time management",
+  "documentation": "reporting",
+  "teamwork": "communication",
+  "mentoring": "training",
+  "adaptability": "problem solving",
+  "emotional intelligence": "empathy",
+  "clinical empathy": "empathy",
+  "outcome focus": "problem solving",
+  "creative ownership": "creativity",
+  "craft": "attention to detail",
+  "initiative": "problem solving",
+  "advocacy": "communication",
+  "patient advocacy": "communication",
+  "self-motivation": "reliability",
+  "deadline management": "time management",
+  "relationship building": "relationship management",
+  "brief interpretation": "communication",
+  "goal orientation": "goal setting",
+  "crisis intervention": "conflict resolution",
+  "process optimisation": "process improvement",
+  "resilience under pressure": "resilience",
+  "creative instinct": "creativity",
+  "clinical assessment": "assessment",
+  "multi-disciplinary teamwork": "teamwork",
+  "lesson planning": "planning",
+  "classroom management": "team leadership",
+  "case management": "project management",
+  "outcome-focused": "problem solving",
+  "kpi tracking": "reporting",
+};
+
+function normaliseSearchSkill(s: string): string {
+  const lower = s.toLowerCase().trim();
+  return searchSynonymMap[lower] || lower;
+}
+
 export function searchJobsBySkills(skills: string[]): Job[] {
   if (skills.length === 0) return [];
-  const lowerSkills = skills.map((s) => s.toLowerCase().trim());
+  const normSkills = skills.map((s) => normaliseSearchSkill(s));
   return jobs
     .map((job) => {
-      const allJobSkills = [...job.skills, ...job.niceToHaveSkills].map((s) => s.toLowerCase());
-      const matchCount = lowerSkills.filter((q) =>
-        allJobSkills.some((s) => s.includes(q))
+      const allJobSkills = [...job.skills, ...job.niceToHaveSkills].map((s) => normaliseSearchSkill(s));
+      const matchCount = normSkills.filter((q) =>
+        allJobSkills.some((s) => s === q || s.includes(q))
       ).length;
       return { job, matchCount };
     })
