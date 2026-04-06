@@ -301,10 +301,8 @@
     "description": "Generate pipeline for our enterprise sales team. Qualify leads, run discovery calls, and book meetings. Full training provided.",
     "required_skills": [
       "Communication",
-      "Goal orientation",
-      "Active listening",
-      "Relationship building",
-      "Prospecting"
+      "Customer service",
+      "Active listening"
     ],
     "nice_to_have_skills": [
       "CRM",
@@ -397,9 +395,7 @@
     "description": "Own a territory of small and mid-sized business prospects. Manage the full sales cycle from prospecting to close.",
     "required_skills": [
       "Negotiation",
-      "CRM",
       "Communication",
-      "Closing",
       "Relationship building"
     ],
     "nice_to_have_skills": [
@@ -494,9 +490,7 @@
     "description": "Find and develop new business relationships for our freight and logistics platform.",
     "required_skills": [
       "Communication",
-      "Prospecting",
-      "Relationship building",
-      "Goal orientation",
+      "Customer service",
       "Active listening"
     ],
     "nice_to_have_skills": [
@@ -1067,11 +1061,9 @@
     "category": "Business",
     "description": "Support two C-suite executives with diary management, travel, correspondence, and special projects.",
     "required_skills": [
-      "Scheduling",
       "Communication",
-      "Attention to detail",
-      "Confidentiality",
-      "Multitasking"
+      "Organisation",
+      "Attention to detail"
     ],
     "nice_to_have_skills": [
       "Microsoft Office",
@@ -1118,9 +1110,7 @@
     "required_skills": [
       "Organisation",
       "Communication",
-      "Multitasking",
-      "Attention to detail",
-      "Scheduling"
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Problem solving",
@@ -1214,9 +1204,7 @@
     "required_skills": [
       "Organisation",
       "Communication",
-      "Attention to detail",
-      "Confidentiality",
-      "Scheduling"
+      "Attention to detail"
     ],
     "nice_to_have_skills": [
       "Empathy",
@@ -1261,8 +1249,6 @@
     "category": "Business",
     "description": "Support the operations team with scheduling, vendor coordination, documentation, and reporting.",
     "required_skills": [
-      "Scheduling",
-      "Documentation",
       "Communication",
       "Organisation",
       "Problem solving"
@@ -1312,9 +1298,7 @@
     "required_skills": [
       "Team leadership",
       "Customer service",
-      "Communication",
-      "Problem solving",
-      "Performance management"
+      "Communication"
     ],
     "nice_to_have_skills": [
       "Scheduling",
@@ -1360,9 +1344,7 @@
     "description": "Lead your shift with confidence. Be responsible for the team, the quality, and the customer experience during your hours.",
     "required_skills": [
       "Team leadership",
-      "Customer service",
       "Communication",
-      "Accountability",
       "Problem solving"
     ],
     "nice_to_have_skills": [
@@ -1410,9 +1392,7 @@
     "required_skills": [
       "Team leadership",
       "Communication",
-      "Problem solving",
-      "Scheduling",
-      "Accountability"
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Reporting",
@@ -1459,8 +1439,6 @@
     "required_skills": [
       "Team leadership",
       "Customer service",
-      "Scheduling",
-      "Problem solving",
       "Communication"
     ],
     "nice_to_have_skills": [
@@ -1508,9 +1486,7 @@
     "required_skills": [
       "Team leadership",
       "Communication",
-      "Performance management",
-      "Problem solving",
-      "Accountability"
+      "Performance management"
     ],
     "nice_to_have_skills": [
       "Scheduling",
@@ -1605,8 +1581,6 @@
     "required_skills": [
       "Empathy",
       "Communication",
-      "Mentoring",
-      "Patience",
       "Problem solving"
     ],
     "nice_to_have_skills": [
@@ -1701,10 +1675,8 @@
     "description": "Coordinate training programmes for corporate clients. Schedule sessions, support facilitators, and ensure a seamless learning experience.",
     "required_skills": [
       "Communication",
-      "Scheduling",
-      "Organisation",
-      "Patience",
-      "Mentoring"
+      "Empathy",
+      "Organisation"
     ],
     "nice_to_have_skills": [
       "Empathy",
@@ -1797,11 +1769,9 @@
     "category": "Trade",
     "description": "Deliver parcels to homes and businesses across your assigned territory. Complete 80-120 deliveries per day with excellent customer service.",
     "required_skills": [
-      "Safe driving",
       "Time management",
       "Customer service",
-      "Reliability",
-      "Physical stamina"
+      "Reliability"
     ],
     "nice_to_have_skills": [
       "Navigation",
@@ -1848,9 +1818,7 @@
     "required_skills": [
       "Attention to detail",
       "Communication",
-      "Problem solving",
-      "Reliability",
-      "Time management"
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Inventory management",
@@ -1897,9 +1865,7 @@
     "required_skills": [
       "Communication",
       "Problem solving",
-      "Time management",
-      "Attention to detail",
-      "Reliability"
+      "Time management"
     ],
     "nice_to_have_skills": [
       "Navigation",
@@ -1944,11 +1910,9 @@
     "category": "Trade",
     "description": "Maintain and repair our 300-unit residential complex across plumbing, electrical, appliance, and general maintenance.",
     "required_skills": [
-      "Troubleshooting",
+      "Problem solving",
       "Safety compliance",
-      "Physical stamina",
-      "Attention to detail",
-      "Communication"
+      "Attention to detail"
     ],
     "nice_to_have_skills": [
       "Wiring",
@@ -1994,9 +1958,7 @@
     "required_skills": [
       "Physical stamina",
       "Safety compliance",
-      "Teamwork",
-      "Reliability",
-      "Attention to detail"
+      "Teamwork"
     ],
     "nice_to_have_skills": [
       "Blueprint reading",
@@ -2041,11 +2003,9 @@
     "category": "Business",
     "description": "Coordinate maintenance, repairs, and facilities operations for a portfolio of commercial office buildings.",
     "required_skills": [
-      "Problem solving",
       "Communication",
-      "Attention to detail",
-      "Scheduling",
-      "Safety compliance"
+      "Problem solving",
+      "Attention to detail"
     ],
     "nice_to_have_skills": [
       "Vendor management",
@@ -2092,9 +2052,7 @@
     "required_skills": [
       "Communication",
       "Organisation",
-      "Scheduling",
-      "Relationship building",
-      "Attention to detail"
+      "Relationship building"
     ],
     "nice_to_have_skills": [
       "ATS",
@@ -2141,9 +2099,7 @@
     "required_skills": [
       "Organisation",
       "Communication",
-      "Confidentiality",
-      "Attention to detail",
-      "Teamwork"
+      "Attention to detail"
     ],
     "nice_to_have_skills": [
       "Scheduling",
@@ -2188,11 +2144,9 @@
     "category": "Finance",
     "description": "Process supplier invoices, manage payment runs, reconcile accounts, and maintain accurate financial records.",
     "required_skills": [
-      "Accuracy",
       "Attention to detail",
       "Communication",
-      "Problem solving",
-      "Organisation"
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Excel",
@@ -2238,9 +2192,7 @@
     "required_skills": [
       "Attention to detail",
       "Communication",
-      "Problem solving",
-      "Critical thinking",
-      "Reporting"
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Excel",
@@ -2286,9 +2238,7 @@
     "required_skills": [
       "Communication",
       "Organisation",
-      "Attention to detail",
-      "Teamwork",
-      "Reliability"
+      "Attention to detail"
     ],
     "nice_to_have_skills": [
       "Social media",
@@ -2332,11 +2282,9 @@
     "category": "Creative",
     "description": "Manage our social media presence across Instagram, TikTok, and Pinterest.",
     "required_skills": [
-      "Communication",
       "Creativity",
-      "Attention to detail",
-      "Organisation",
-      "Teamwork"
+      "Communication",
+      "Attention to detail"
     ],
     "nice_to_have_skills": [
       "Social media",
@@ -2382,10 +2330,8 @@
     "description": "Join our small engineering team as a junior developer. Work on real features from day one with strong mentorship and clear progression.",
     "required_skills": [
       "Problem solving",
-      "Debugging",
-      "Collaboration",
-      "Testing",
-      "Documentation"
+      "Communication",
+      "Teamwork"
     ],
     "nice_to_have_skills": [
       "Version control",
@@ -2430,11 +2376,9 @@
     "category": "Business",
     "description": "Use data to improve how our 60-store retail operation runs. Build dashboards, identify trends, and support management decisions with clear analysis.",
     "required_skills": [
-      "Data analysis",
-      "Reporting",
+      "Attention to detail",
       "Communication",
-      "Problem solving",
-      "Attention to detail"
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Excel",
@@ -2574,10 +2518,8 @@
     "description": "Be the voice of our brand across social platforms and community forums. You'll engage our audience, moderate conversations, respond to comments, and turn followers into advocates.",
     "required_skills": [
       "Communication",
-      "Creativity",
-      "Active listening",
-      "Teamwork",
-      "Organisation"
+      "Empathy",
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Social media",
@@ -2622,11 +2564,9 @@
     "category": "Creative",
     "description": "Coordinate digital marketing activity across paid, organic, and social for a portfolio of 8 client brands. You'll be the operational hub that keeps campaigns moving on time.",
     "required_skills": [
-      "Social media",
       "Communication",
-      "Creativity",
       "Organisation",
-      "Attention to detail"
+      "Creativity"
     ],
     "nice_to_have_skills": [
       "Analytics",
@@ -2765,10 +2705,8 @@
     "category": "Creative",
     "description": "Coordinate day-to-day production operations for a busy media and content studio. You'll manage schedules, book resources, track budgets, and keep shoots and post-production on track.",
     "required_skills": [
-      "Scheduling",
       "Organisation",
       "Communication",
-      "Attention to detail",
       "Problem solving"
     ],
     "nice_to_have_skills": [
@@ -2814,11 +2752,9 @@
     "category": "Creative",
     "description": "Lead creative projects from brief to delivery. You'll own timelines, manage creative teams, keep clients updated, and ensure every project lands on time and on budget.",
     "required_skills": [
-      "Project planning",
       "Communication",
-      "Team coordination",
-      "Organisation",
-      "Deadline management"
+      "Teamwork",
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Problem solving",
@@ -2865,9 +2801,7 @@
     "required_skills": [
       "Organisation",
       "Communication",
-      "Scheduling",
-      "Problem solving",
-      "Attention to detail"
+      "Problem solving"
     ],
     "nice_to_have_skills": [
       "Team coordination",
@@ -2914,9 +2848,7 @@
     "required_skills": [
       "Organisation",
       "Communication",
-      "Scheduling",
-      "Attention to detail",
-      "Teamwork"
+      "Attention to detail"
     ],
     "nice_to_have_skills": [
       "Project planning",
