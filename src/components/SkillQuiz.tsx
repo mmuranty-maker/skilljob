@@ -223,7 +223,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
   // Get Q2/Q3 headings — fixed copy across all industries
   const q2Heading = "Pick the one that describes how you do your best work";
   const q2Subtitle = "Choose the one that feels most true — even if more than one applies.";
-    ?? (isStudent ? "At uni, at work, or anywhere — pick the one that sounds most like you." : "Pick the one that sounds most like you.");
+    
 
   const q3Heading = industryConfig?.q3.heading
     ?? (isStudent ? "Tell us about something you've done that you're proud of" : "Tell us about something you're proud of");
