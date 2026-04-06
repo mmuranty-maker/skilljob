@@ -220,10 +220,9 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
   const q2Tiles = industry ? getIndustryQ2Tiles(industry) : [];
   const activeQ2Tiles = q2Tiles.length > 0 ? q2Tiles : GENERIC_Q2_TILES;
 
-  // Get Q2/Q3 headings from industry config or use generic
-  const q2Heading = industryConfig?.q2.heading
-    ?? (isStudent ? "What does a great day look like for you?" : "What does a good day at work look like for you?");
-  const q2Subtitle = industryConfig?.q2.subtitle
+  // Get Q2/Q3 headings — fixed copy across all industries
+  const q2Heading = "Pick the one that describes how you do your best work";
+  const q2Subtitle = "Choose the one that feels most true — even if more than one applies.";
     ?? (isStudent ? "At uni, at work, or anywhere — pick the one that sounds most like you." : "Pick the one that sounds most like you.");
 
   const q3Heading = industryConfig?.q3.heading
