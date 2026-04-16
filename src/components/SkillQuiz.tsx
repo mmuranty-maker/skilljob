@@ -525,7 +525,12 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
           {step === 4 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">{q3Heading}</h3>
-              <p className="text-sm text-muted-foreground mt-1 mb-6">{q3Subtitle}</p>
+              <p className="text-sm text-muted-foreground mt-1">{q3Subtitle}</p>
+              <p className="text-xs text-muted-foreground mt-2 mb-6">
+                {q3Answer.length < 15
+                  ? `Write at least a sentence — ${Math.max(0, 15 - q3Answer.length)} more character${15 - q3Answer.length === 1 ? "" : "s"} to unlock your results.`
+                  : "✓ Good — hit the button below to see your matches."}
+              </p>
               <textarea
                 value={q3Answer}
                 onChange={(e) => setQ3Answer(e.target.value)}
