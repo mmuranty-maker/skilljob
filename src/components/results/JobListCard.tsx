@@ -1,9 +1,9 @@
-import { MapPin, DollarSign, Clock, Sparkles } from "lucide-react";
+import { MapPin, Clock, Sparkles } from "lucide-react";
 import type { Job } from "@/data/jobs";
 import type { ScoredPosting } from "@/lib/quizScoring";
 
 function formatSalary(amount: number) {
-  return `$${Math.round(amount / 1000)}k`;
+  return `£${Math.round(amount / 1000)}k`;
 }
 
 function MatchBadge({ score }: { score: number }) {
@@ -48,7 +48,6 @@ export function JobListCard({ job, scored, query, isSelected, onClick }: JobList
           </p>
           <div className="flex items-center gap-3 mt-1.5 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
-              <DollarSign className="h-3 w-3" />
               {formatSalary(job.salaryMin)}–{formatSalary(job.salaryMax)}
             </span>
           </div>

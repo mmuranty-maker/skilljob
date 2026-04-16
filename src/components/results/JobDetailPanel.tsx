@@ -1,11 +1,11 @@
-import { Sparkles, MapPin, DollarSign, Briefcase, Clock, CheckCircle2, Heart, Plus, Lock } from "lucide-react";
+import { Sparkles, MapPin, Briefcase, Clock, CheckCircle2, Heart, Plus, Lock } from "lucide-react";
 import type { Job } from "@/data/jobs";
 import type { ScoredPosting, UserSkill } from "@/lib/quizScoring";
 import { jobExtraData } from "@/data/jobExtraData";
 import { Progress } from "@/components/ui/progress";
 
 function formatSalary(amount: number) {
-  return `$${Math.round(amount / 1000)}k`;
+  return `£${Math.round(amount / 1000)}k`;
 }
 
 interface JobDetailPanelProps {
@@ -122,7 +122,6 @@ export function JobDetailPanel({ job, scored, query, userSkills, allJobs, allSco
                 <span className="flex items-center gap-1"><Briefcase className="h-3.5 w-3.5" />{job.type}</span>
               </div>
               <p className="text-sm text-muted-foreground mt-0.5 flex items-center gap-1">
-                <DollarSign className="h-3.5 w-3.5" />
                 {formatSalary(job.salaryMin)} – {formatSalary(job.salaryMax)} / year
                 <span className="ml-2">·</span>
                 <Clock className="h-3.5 w-3.5 ml-2" />
