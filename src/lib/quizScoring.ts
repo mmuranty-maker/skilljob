@@ -530,29 +530,37 @@ function scorePostings(
   // Get industry Q2 tile data for boost
   const industryQ2Tile = industry ? getIndustryQ2TileData(industry, q2Selection) : null;
 
-  // Pre-filter by industry categories if available
-  let filteredJobs = jobs;
-  if (industryConfig) {
-    const categories = industryConfig.posting_categories.map((c) => c.toLowerCase());
-    // Include jobs from industry categories but also keep any high-matching ones
-    filteredJobs = jobs.filter(
-      (j) => categories.includes(j.category.toLowerCase())
-    );
-    // If too few results, fall back to all jobs
-    if (filteredJobs.length < 10) {
-      filteredJobs = jobs;
-    }
-  }
+  // Fix 2: No hard industry filter — score all jobs, apply soft industry boost instead
+  const filteredJobs = jobs;
+  const industryCats = industryConfig
+    ? industryConfig.posting_categories.map((c) => c.toLowerCase())
+    : [];
 
   return filteredJobs
     .map((posting) => {
-      const matchedSkills = posting.skills.filter((skill) =>
+      // Fix 3: Weight skills by position — critical (1-2) = 2x, important (3-4) = 1.5x, rest = 1x
+      const skills = posting.skills;
+      let totalWeight = 0;
+      let matchedWeight = 0;
+
+      skills.forEach((skill, index) => {
+        const weight = index < 2 ? 2 : index < 4 ? 1.5 : 1;
+        totalWeight += weight;
+        if (userSkillNormalised.includes(normaliseSkill(skill))) {
+          matchedWeight += weight;
+        }
+      });
+
+      const matchedSkills = skills.filter((skill) =>
         userSkillNormalised.includes(normaliseSkill(skill))
       );
 
-      let matchScore = posting.skills.length > 0
-        ? matchedSkills.length / posting.skills.length
-        : 0;
+      let matchScore = totalWeight > 0 ? matchedWeight / totalWeight : 0;
+
+      // Fix 2: Soft +15% boost for jobs in the user's industry category
+      if (industryCats.length > 0 && industryCats.includes(posting.category.toLowerCase())) {
+        matchScore = Math.min(matchScore + 0.15, 1.0);
+      }
 
       // Industry Q2 boost: if posting's category matches boost_posting_categories
       if (industryQ2Tile) {
@@ -585,7 +593,7 @@ function scorePostings(
         matchScore = Math.min(matchScore + niceMatches.length * 0.05, 1.0);
       }
 
-      const gapSkills = posting.skills.filter(
+      const gapSkills = skills.filter(
         (skill) => !userSkillNormalised.includes(normaliseSkill(skill))
       );
 
