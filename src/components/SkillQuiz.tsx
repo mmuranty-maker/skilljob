@@ -222,8 +222,8 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
   const activeQ2Tiles = q2Tiles.length > 0 ? q2Tiles : GENERIC_Q2_TILES;
 
   // Get Q2/Q3 headings — fixed copy across all industries
-  const q2Heading = "Pick the one that describes how you do your best work";
-  const q2Subtitle = "Choose the one that feels most true — even if more than one applies.";
+  const q2Heading = "Which of these sounds most like you?";
+  const q2Subtitle = "Pick just one — this shapes your skill profile. Go with the one that fits most days, not your best day ever.";
     
 
   const q3Heading = industryConfig?.q3.heading
@@ -526,7 +526,10 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">{q3Heading}</h3>
               <p className="text-sm text-muted-foreground mt-1">{q3Subtitle}</p>
-              <p className="text-xs text-muted-foreground mt-2 mb-6">
+              <p className="text-xs text-primary/80 font-medium mt-3 mb-1">
+                We use this to find skills your job title doesn't show — the more specific, the better your matches.
+              </p>
+              <p className="text-xs text-muted-foreground mb-4">
                 {q3Answer.length < 15
                   ? `Write at least a sentence — ${Math.max(0, 15 - q3Answer.length)} more character${15 - q3Answer.length === 1 ? "" : "s"} to unlock your results.`
                   : "✓ Good — hit the button below to see your matches."}

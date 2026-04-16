@@ -1522,7 +1522,7 @@ export const jobExtraData: Record<string, JobExtraData> = {
       "Experience mentoring or leading a team"
     ],
     "offers": [
-      "Competitive salary $130k\u2013$170k",
+      "Competitive salary £90k\u2013£130k",
       "Fully remote with flexible hours",
       "Competitive salary",
       "Stock options",
@@ -1534,6 +1534,378 @@ export const jobExtraData: Record<string, JobExtraData> = {
       "Health insurance",
       "Stock options",
       "Training budget"
+    ]
+  },
+  "jp051": {
+    "responsibilities": [
+      "Plan and execute commercial shoots from brief through to final delivery",
+      "Manage lighting setups for studio and location work",
+      "Retouch and colour-correct images in Adobe Lightroom and Photoshop",
+      "Liaise with art directors, stylists, and clients on set",
+      "Maintain and manage camera and lighting equipment",
+      "Meet deadlines for high-volume e-commerce shoots"
+    ],
+    "requirements": [
+      "2\u20134 years of commercial photography experience",
+      "Strong portfolio demonstrating range and quality",
+      "Proficiency in Adobe Lightroom and Photoshop",
+      "Experience managing client relationships on set",
+      "Own professional camera kit"
+    ],
+    "offers": [
+      "Competitive salary £28k\u2013£45k",
+      "Studio access and equipment provided",
+      "Creative freedom on select projects",
+      "28 days annual leave",
+      "Portfolio development time"
+    ],
+    "benefits": [
+      "Studio access",
+      "Equipment provided",
+      "Flexible hours",
+      "Creative autonomy",
+      "Health insurance"
+    ]
+  },
+  "jp052": {
+    "responsibilities": [
+      "Create motion graphics and animated content from storyboard to final render",
+      "Collaborate with designers and copywriters on campaign briefs",
+      "Produce social-first animations optimised for multiple platforms",
+      "Iterate quickly on feedback and manage revisions efficiently",
+      "Maintain an organised project library and file structure",
+      "Stay current with motion design trends and tools"
+    ],
+    "requirements": [
+      "2\u20134 years of motion design experience",
+      "Expert-level Adobe After Effects and Premiere",
+      "Strong understanding of motion principles and timing",
+      "Ability to storyboard and pitch ideas visually",
+      "Experience working within brand guidelines"
+    ],
+    "offers": [
+      "Competitive salary £35k\u2013£52k",
+      "Hybrid working — 3 days in studio",
+      "Creative tools and software licences",
+      "Conference and learning budget",
+      "28 days annual leave"
+    ],
+    "benefits": [
+      "Hybrid work",
+      "Creative tools",
+      "Health insurance",
+      "Learning budget",
+      "Flexible hours"
+    ]
+  },
+  "jp053": {
+    "responsibilities": [
+      "Create original illustrations for editorial, advertising, and digital clients",
+      "Interpret creative briefs and develop multiple concept directions",
+      "Manage revisions and deliver production-ready artwork on time",
+      "Maintain a consistent visual style while adapting to client needs",
+      "Collaborate with art directors and designers on large-format campaigns",
+      "Build and maintain a strong, up-to-date portfolio"
+    ],
+    "requirements": [
+      "Strong illustration portfolio across editorial and brand work",
+      "Proficiency in Adobe Illustrator and Photoshop",
+      "Ability to work to tight deadlines across multiple briefs",
+      "Excellent client communication and revision management",
+      "1\u20133 years of professional illustration experience"
+    ],
+    "offers": [
+      "Competitive salary £26k\u2013£40k",
+      "Fully remote with flexible hours",
+      "Creative freedom on select projects",
+      "28 days annual leave",
+      "Annual conference budget"
+    ],
+    "benefits": [
+      "Remote",
+      "Flexible hours",
+      "Creative tools",
+      "Conference budget",
+      "Health insurance"
+    ]
+  },
+  "jp054": {
+    "responsibilities": [
+      "Animate 2D characters and scenes following approved storyboards",
+      "Handle rigging, keyframing, and in-betweening for characters",
+      "Work within the pipeline to deliver assets on schedule",
+      "Collaborate with directors and art leads to maintain visual consistency",
+      "Composite final scenes and prepare files for delivery",
+      "Contribute ideas during pre-production and creative reviews"
+    ],
+    "requirements": [
+      "2\u20134 years of 2D animation experience in TV or branded content",
+      "Proficiency in Adobe Animate, Toon Boom, or similar",
+      "Strong understanding of animation principles (12 principles)",
+      "Experience working from storyboards and animatics",
+      "Strong attention to detail and ability to work under deadlines"
+    ],
+    "offers": [
+      "Competitive salary £30k\u2013£46k",
+      "Hybrid studio environment",
+      "Access to industry-standard software",
+      "28 days annual leave",
+      "Creative development time"
+    ],
+    "benefits": [
+      "Hybrid work",
+      "Creative tools",
+      "Health insurance",
+      "Training budget",
+      "Pension scheme"
+    ]
+  },
+  "jp055": {
+    "responsibilities": [
+      "Lead visual direction across integrated campaign concepts",
+      "Brief and oversee a team of designers, photographers, and retouchers",
+      "Present creative work to senior clients and defend creative decisions",
+      "Collaborate with copywriters and strategists from brief to delivery",
+      "Ensure all creative output meets brand and quality standards",
+      "Contribute to new business pitches and credentials presentations"
+    ],
+    "requirements": [
+      "5+ years of art direction experience in an agency environment",
+      "Strong portfolio demonstrating campaign thinking across channels",
+      "Experience managing creative teams and freelancers",
+      "Excellent client presentation and communication skills",
+      "Proven ability to work across print, digital, and OOH"
+    ],
+    "offers": [
+      "Competitive salary £50k\u2013£70k",
+      "Hybrid working — 3 days in London studio",
+      "Creative leadership role with P&L visibility",
+      "30 days annual leave",
+      "Private health insurance"
+    ],
+    "benefits": [
+      "Hybrid work",
+      "Health insurance",
+      "Leadership opportunity",
+      "Performance bonus",
+      "Pension scheme"
+    ]
+  },
+  "jp056": {
+    "responsibilities": [
+      "Coordinate logistics across pre-production, production, and post",
+      "Manage call sheets, shooting schedules, and crew communications",
+      "Liaise with cast, agents, locations, and third-party vendors",
+      "Track production expenditure and process supplier invoices",
+      "Support the line producer on shoot days",
+      "Maintain production documentation and contracts"
+    ],
+    "requirements": [
+      "1\u20132 years of experience in a TV or film production office",
+      "Strong organisational and multitasking skills",
+      "Ability to stay calm and problem-solve under pressure",
+      "Good working knowledge of production management software",
+      "Excellent written and verbal communication"
+    ],
+    "offers": [
+      "Competitive salary £27k\u2013£38k",
+      "Experience across drama and documentary productions",
+      "Industry network and credits",
+      "28 days annual leave",
+      "Pension scheme"
+    ],
+    "benefits": [
+      "Industry credits",
+      "Pension scheme",
+      "Health insurance",
+      "Network access",
+      "Training opportunities"
+    ]
+  },
+  "jp057": {
+    "responsibilities": [
+      "Manage end-to-end production of multiple podcast series simultaneously",
+      "Book and brief guests, develop interview questions, and write scripts",
+      "Record, edit, and mix episodes to broadcast standard",
+      "Publish episodes, write show notes, and manage RSS feeds",
+      "Grow audience through SEO, promotion, and community engagement",
+      "Report on performance metrics and identify growth opportunities"
+    ],
+    "requirements": [
+      "2\u20134 years of podcast or audio production experience",
+      "Proficiency in a DAW (Audacity, Adobe Audition, Logic, or similar)",
+      "Strong editorial instincts and storytelling ability",
+      "Experience managing multiple shows or projects simultaneously",
+      "Excellent written communication for scripts and show notes"
+    ],
+    "offers": [
+      "Competitive salary £28k\u2013£42k",
+      "Fully remote with flexible working",
+      "Creative input on show formats and new commissions",
+      "28 days annual leave",
+      "Equipment and software budget"
+    ],
+    "benefits": [
+      "Remote",
+      "Flexible hours",
+      "Creative autonomy",
+      "Equipment budget",
+      "Health insurance"
+    ]
+  },
+  "jp058": {
+    "responsibilities": [
+      "Design core game mechanics and player progression systems",
+      "Write detailed game design documents and feature specifications",
+      "Prototype ideas in-engine and iterate based on playtesting feedback",
+      "Collaborate with art, engineering, and narrative teams",
+      "Balance gameplay through data analysis and player testing",
+      "Champion the player experience throughout the production process"
+    ],
+    "requirements": [
+      "2\u20134 years of game design experience on shipped titles",
+      "Strong understanding of player psychology and engagement loops",
+      "Experience writing clear design documentation",
+      "Ability to prototype in Unity or Unreal",
+      "Analytical mindset with ability to balance creativity and data"
+    ],
+    "offers": [
+      "Competitive salary £32k\u2013£50k",
+      "Hybrid working — Manchester studio",
+      "Work on original IP",
+      "28 days annual leave",
+      "Games library and platform access"
+    ],
+    "benefits": [
+      "Hybrid work",
+      "Creative ownership",
+      "Health insurance",
+      "Games access",
+      "Training budget"
+    ]
+  },
+  "jp059": {
+    "responsibilities": [
+      "Design and develop seasonal collections from concept through to sampling",
+      "Create technical packs, specifications, and construction details",
+      "Source and select fabrics, trims, and materials from supplier panels",
+      "Manage sample rounds and provide clear fit and revision feedback",
+      "Present collections to buyers and press at trade shows",
+      "Research trends and interpret them through the brand's aesthetic"
+    ],
+    "requirements": [
+      "2\u20134 years of fashion design experience in womenswear",
+      "Proficiency in Adobe Illustrator for technical drawing",
+      "Strong understanding of garment construction and pattern cutting",
+      "Experience managing the sample development process",
+      "Knowledge of sustainable sourcing practices"
+    ],
+    "offers": [
+      "Competitive salary £28k\u2013£44k",
+      "Creative ownership over collections",
+      "London studio with hybrid flexibility",
+      "28 days annual leave",
+      "Trade show travel"
+    ],
+    "benefits": [
+      "Creative ownership",
+      "Hybrid work",
+      "Health insurance",
+      "Travel budget",
+      "Staff discount"
+    ]
+  },
+  "jp060": {
+    "responsibilities": [
+      "Produce, mix, and master tracks for recording artists across pop, R&B, and electronic genres",
+      "Co-write songs and contribute to creative direction of recordings",
+      "Direct recording sessions and create a productive environment for artists",
+      "Manage the studio calendar and maintain equipment",
+      "Build and maintain relationships with artists, managers, and labels",
+      "Stay current with production trends and emerging sounds"
+    ],
+    "requirements": [
+      "3\u20135 years of professional music production experience",
+      "Expert-level DAW skills (Logic, Ableton, Pro Tools, or similar)",
+      "Strong music theory foundation across multiple genres",
+      "Experience delivering masters to label specifications",
+      "Portfolio of released commercial work"
+    ],
+    "offers": [
+      "Competitive salary £30k\u2013£50k",
+      "Studio access and premium equipment",
+      "Creative collaborations with signed artists",
+      "28 days annual leave",
+      "Royalty share on select projects"
+    ],
+    "benefits": [
+      "Studio access",
+      "Royalty participation",
+      "Equipment provided",
+      "Flexible hours",
+      "Health insurance"
+    ]
+  },
+  "jp061": {
+    "responsibilities": [
+      "Design and oversee construction of sets for theatre and television productions",
+      "Create scale models, technical drawings, and production-ready drawings",
+      "Collaborate with directors and producers to realise their creative vision",
+      "Manage the build budget and liaise with construction teams",
+      "Source materials, props, and furniture within budget",
+      "Supervise the set dressing and strike on production days"
+    ],
+    "requirements": [
+      "3\u20135 years of set design experience in theatre, TV, or events",
+      "Proficiency in AutoCAD or similar drafting software",
+      "Strong creative vision combined with technical understanding",
+      "Experience managing build budgets and teams",
+      "Portfolio demonstrating range across scale and style"
+    ],
+    "offers": [
+      "Competitive salary £30k\u2013£48k",
+      "Mix of theatre, TV, and events work",
+      "London and touring productions",
+      "28 days annual leave",
+      "Industry contacts and credits"
+    ],
+    "benefits": [
+      "Industry credits",
+      "Varied productions",
+      "Health insurance",
+      "Pension scheme",
+      "Flexible project work"
+    ]
+  },
+  "jp062": {
+    "responsibilities": [
+      "Set and champion the creative vision across all agency output",
+      "Lead and develop a team of designers, writers, and motion artists",
+      "Oversee creative work from brief to final delivery across all channels",
+      "Present and sell creative concepts to clients at senior level",
+      "Contribute to new business pitches and agency positioning",
+      "Foster a culture of ambition, craft, and commercial effectiveness"
+    ],
+    "requirements": [
+      "8+ years of creative experience, with 3+ years at senior level",
+      "Outstanding portfolio demonstrating award-winning or culturally resonant work",
+      "Proven track record leading and growing creative teams",
+      "Commercial awareness and the ability to balance creativity with results",
+      "Exceptional client presentation skills"
+    ],
+    "offers": [
+      "Competitive salary £70k\u2013£100k",
+      "Senior leadership role with equity potential",
+      "Hybrid working — London HQ",
+      "30 days annual leave",
+      "Private health and dental insurance"
+    ],
+    "benefits": [
+      "Leadership role",
+      "Equity potential",
+      "Health & dental",
+      "Pension scheme",
+      "Conference & awards budget"
     ]
   }
 };
