@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { QuizResults } from "./QuizResults";
 import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
 import { getIndustryConfig, getIndustryQ2Tiles } from "@/lib/industryMapping";
+import { extractSkillsWithFallback } from "@/lib/extractSkillsApi";
 
 const INDUSTRIES = [
   { title: "Hospitality & Food Service", subtitle: "Hotels, restaurants, events", icon: UtensilsCrossed },
@@ -245,35 +246,46 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
     setStep(1);
   };
 
-  const handleSubmit = (skipQ3 = false) => {
+  const handleSubmit = async (skipQ3 = false) => {
     setLoading(true);
     setStep(5);
 
-    const q3SkipRef = skipQ3;
     const start = Date.now();
 
-    setTimeout(() => {
-      const result = runQuizScoring(q1Selections, q2Selection || "", q3SkipRef ? "" : q3Answer, isStudent, industry);
-      const elapsed = Date.now() - start;
-      const remaining = Math.max(0, 1500 - elapsed);
+    // Call Claude API for skill extraction (falls back to keyword matching if unavailable)
+    let preExtractedQ3Skills: string[] | undefined;
+    if (!skipQ3 && q3Answer.length >= 15) {
+      preExtractedQ3Skills = await extractSkillsWithFallback(q3Answer, industry);
+    }
 
-      setTimeout(() => {
-        // Store skip state for results page
-        (window as any).__skilljob_skippedQ3 = q3SkipRef;
-        // Skip the results popup — navigate directly
-        if (onQuizResults && result.topMatches.length > 0) {
-          onQuizResults(result.userSkills, result.topMatches, q3SkipRef);
-          resetAndClose();
-        } else if (result.userSkills.length > 0) {
-          onComplete(result.userSkills[0].name);
-          resetAndClose();
-        } else {
-          setUserSkills(result.userSkills);
-          setTopMatches(result.topMatches);
-          setLoading(false);
-        }
-      }, remaining);
-    }, 100);
+    const result = runQuizScoring(
+      q1Selections,
+      q2Selection || "",
+      skipQ3 ? "" : q3Answer,
+      isStudent,
+      industry,
+      preExtractedQ3Skills
+    );
+
+    // Keep a minimum loading animation time so it doesn't flash
+    const elapsed = Date.now() - start;
+    const remaining = Math.max(0, 1200 - elapsed);
+    await new Promise((resolve) => setTimeout(resolve, remaining));
+
+    // Store skip state for results page
+    (window as any).__skilljob_skippedQ3 = skipQ3;
+
+    if (onQuizResults && result.topMatches.length > 0) {
+      onQuizResults(result.userSkills, result.topMatches, skipQ3);
+      resetAndClose();
+    } else if (result.userSkills.length > 0) {
+      onComplete(result.userSkills[0].name);
+      resetAndClose();
+    } else {
+      setUserSkills(result.userSkills);
+      setTopMatches(result.topMatches);
+      setLoading(false);
+    }
   };
 
   const handleSeeAll = () => {

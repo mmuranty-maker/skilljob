@@ -377,7 +377,8 @@ export function runQuizScoring(
   q2Selection: string,
   q3Answer: string,
   isStudent: boolean = false,
-  industry: string | null = null
+  industry: string | null = null,
+  preExtractedQ3Skills?: string[]
 ): { userSkills: UserSkill[]; topMatches: ScoredPosting[] } {
   // Step A
   let userSkills = getQ1Skills(q1Selections);
@@ -385,8 +386,8 @@ export function runQuizScoring(
   // Step B — industry-aware
   userSkills = addQ2Skills(userSkills, q1Selections, q2Selection, industry);
 
-  // Step C — industry-aware extraction
-  const q3Skills = extractSkillsFromText(q3Answer, industry);
+  // Step C — use Claude-extracted skills when available, otherwise keyword matching
+  const q3Skills = preExtractedQ3Skills ?? extractSkillsFromText(q3Answer, industry);
   userSkills = addQ3Skills(userSkills, q3Skills);
 
   // Step D — industry-aware scoring
