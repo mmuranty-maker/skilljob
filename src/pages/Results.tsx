@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { SlidersHorizontal, ArrowLeft, X, Sparkles, ChevronDown, ChevronUp } from "lucide-react";
+import { SlidersHorizontal, ArrowLeft, X, Sparkles, ChevronDown, ChevronUp, Trophy, Compass } from "lucide-react";
 import { ApplicationModal } from "@/components/results/ApplicationModal";
 import type { Job } from "@/data/jobs";
 import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
@@ -35,6 +35,7 @@ const ResultsPage = () => {
   const [skippedQ4, setSkippedQ3] = useState(false);
   const [proudMomentOpen, setProudMomentOpen] = useState(false);
   const [proudMomentText, setProudMomentText] = useState("");
+  const [showLowMatches, setShowLowMatches] = useState(false);
 
   const isQuizMode = !!quizResults;
 
