@@ -194,21 +194,98 @@ const ResultsPage = () => {
                   Sorted by best skill match · {filteredResults.length} result{filteredResults.length !== 1 ? "s" : ""}
                 </p>
               </div>
-              {filteredResults.map((job) => {
-                const scored = isQuizMode
-                  ? quizResults!.topMatches.find((m) => m.id === job.id) ?? null
-                  : null;
-                return (
-                  <JobListCard
+              {(() => {
+                // Bucket results by score (only meaningful in quiz mode; otherwise show all in "Strong")
+                const withScore = filteredResults.map((job) => {
+                  const scored = isQuizMode
+                    ? quizResults!.topMatches.find((m) => m.id === job.id) ?? null
+                    : null;
+                  return { job, scored, score: scored?.matchScore ?? 0 };
+                });
+
+                const strong = isQuizMode
+                  ? withScore.filter((x) => x.score >= 65)
+                  : withScore;
+                const worth = isQuizMode
+                  ? withScore.filter((x) => x.score >= 40 && x.score < 65)
+                  : [];
+                const low = isQuizMode
+                  ? withScore.filter((x) => x.score < 40)
+                  : [];
+
+                const renderCard = (
+                  { job, scored }: { job: typeof withScore[number]["job"]; scored: typeof withScore[number]["scored"] },
+                  variant: "full" | "muted" = "full"
+                ) => (
+                  <div
                     key={job.id}
-                    job={job}
-                    scored={scored}
-                    query={skillTags.join(", ")}
-                    isSelected={selectedJob?.id === job.id}
-                    onClick={() => handleCardClick(job.id)}
-                  />
+                    className={variant === "muted" ? "opacity-90 [&>button]:border [&>button]:border-[#E8E8E4]" : ""}
+                  >
+                    <JobListCard
+                      job={job}
+                      scored={scored}
+                      query={skillTags.join(", ")}
+                      isSelected={selectedJob?.id === job.id}
+                      onClick={() => handleCardClick(job.id)}
+                    />
+                  </div>
                 );
-              })}
+
+                return (
+                  <>
+                    {strong.length > 0 && (
+                      <>
+                        {isQuizMode && (
+                          <div className="flex items-center gap-2 px-1 mt-1 mb-2">
+                            <Trophy className="h-3.5 w-3.5 text-primary" />
+                            <h4 className="text-[11px] font-bold uppercase tracking-wider text-foreground">
+                              Strong matches
+                            </h4>
+                            <span className="text-[11px] text-muted-foreground">
+                              {strong.length}
+                            </span>
+                          </div>
+                        )}
+                        {strong.map((x) => renderCard(x, "full"))}
+                      </>
+                    )}
+
+                    {worth.length > 0 && (
+                      <>
+                        <div className="flex items-center gap-2 px-1 mt-4 mb-2 pt-3 border-t border-[#E8E8E4]">
+                          <Compass className="h-3.5 w-3.5 text-muted-foreground" />
+                          <h4 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                            Worth exploring
+                          </h4>
+                          <span className="text-[11px] text-muted-foreground">{worth.length}</span>
+                        </div>
+                        {worth.map((x) => renderCard(x, "muted"))}
+                      </>
+                    )}
+
+                    {low.length > 0 && (
+                      <div className="mt-4 pt-3 border-t border-[#E8E8E4]">
+                        <button
+                          onClick={() => setShowLowMatches((v) => !v)}
+                          className="w-full flex items-center justify-between px-1 py-1.5 text-[12px] font-semibold text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          <span>
+                            See {low.length} more lower-match role{low.length !== 1 ? "s" : ""}
+                          </span>
+                          {showLowMatches ? (
+                            <ChevronUp className="h-3.5 w-3.5" />
+                          ) : (
+                            <ChevronDown className="h-3.5 w-3.5" />
+                          )}
+                        </button>
+                        {showLowMatches && (
+                          <div className="mt-2">{low.map((x) => renderCard(x, "muted"))}</div>
+                        )}
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </>
           ) : skillTags.length === 0 && results.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full px-6 text-center">
