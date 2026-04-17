@@ -18,6 +18,18 @@ import {
   Wrench,
   Sparkles,
   Plus,
+  MessageSquare,
+  CalendarCheck,
+  Lightbulb,
+  BarChart3,
+  PenTool,
+  Users,
+  Target,
+  Hammer,
+  HandHeart,
+  FileEdit,
+  GraduationCap as TeachIcon,
+  ListChecks,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { SegmentedProgress } from "@/components/funnel/SegmentedProgress";
@@ -27,19 +39,21 @@ import { extractSkillsWithFallback } from "@/lib/extractSkillsApi";
 
 const TOTAL_STEPS = 5;
 
+// Each industry gets a tinted chip background + darker icon color
 const INDUSTRIES = [
-  { title: "Hospitality & Food Service", subtitle: "Hotels, restaurants, events", icon: UtensilsCrossed },
-  { title: "Retail & Customer Service", subtitle: "Shops, support, client-facing roles", icon: ShoppingBag },
-  { title: "Healthcare & Medicine", subtitle: "Hospitals, clinics, care roles", icon: Heart },
-  { title: "Technology & Engineering", subtitle: "Software, hardware, IT", icon: Cpu },
-  { title: "Business & Operations", subtitle: "Admin, logistics, management", icon: Building2 },
-  { title: "Sales & Marketing", subtitle: "Revenue, campaigns, outreach", icon: Megaphone },
-  { title: "Creative & Media", subtitle: "Design, content, film, music", icon: Palette },
-  { title: "Finance & Accounting", subtitle: "Banking, bookkeeping, auditing", icon: Landmark },
-  { title: "Education & Social Care", subtitle: "Teaching, training, community", icon: BookOpen },
-  { title: "Trades & Construction", subtitle: "Plumbing, electrical, building", icon: Wrench },
+  { title: "Hospitality & Food Service", subtitle: "Hotels, restaurants, events", icon: UtensilsCrossed, chipBg: "hsl(38, 92%, 92%)", chipFg: "hsl(32, 75%, 38%)" },
+  { title: "Retail & Customer Service", subtitle: "Shops, support, client-facing roles", icon: ShoppingBag, chipBg: "hsl(340, 82%, 94%)", chipFg: "hsl(340, 70%, 45%)" },
+  { title: "Healthcare & Medicine", subtitle: "Hospitals, clinics, care roles", icon: Heart, chipBg: "hsl(8, 88%, 93%)", chipFg: "hsl(8, 72%, 48%)" },
+  { title: "Technology & Engineering", subtitle: "Software, hardware, IT", icon: Cpu, chipBg: "hsl(212, 90%, 93%)", chipFg: "hsl(212, 80%, 45%)" },
+  { title: "Business & Operations", subtitle: "Admin, logistics, management", icon: Building2, chipBg: "hsl(215, 18%, 92%)", chipFg: "hsl(215, 25%, 35%)" },
+  { title: "Sales & Marketing", subtitle: "Revenue, campaigns, outreach", icon: Megaphone, chipBg: "hsl(22, 92%, 92%)", chipFg: "hsl(22, 85%, 45%)" },
+  { title: "Creative & Media", subtitle: "Design, content, film, music", icon: Palette, chipBg: "hsl(272, 75%, 94%)", chipFg: "hsl(272, 60%, 50%)" },
+  { title: "Finance & Accounting", subtitle: "Banking, bookkeeping, auditing", icon: Landmark, chipBg: "hsl(155, 45%, 90%)", chipFg: "hsl(155, 55%, 25%)" },
+  { title: "Education & Social Care", subtitle: "Teaching, training, community", icon: BookOpen, chipBg: "hsl(178, 60%, 90%)", chipFg: "hsl(178, 60%, 30%)" },
+  { title: "Trades & Construction", subtitle: "Plumbing, electrical, building", icon: Wrench, chipBg: "hsl(32, 38%, 88%)", chipFg: "hsl(28, 45%, 35%)" },
 ];
 
+// Generic activities (used for students or as fallback)
 const ACTIVITIES = [
   "Talking to people",
   "Managing tasks & schedules",
@@ -54,6 +68,24 @@ const ACTIVITIES = [
   "Teaching or explaining",
   "Organising processes",
 ];
+
+// Pick a semantically relevant icon for an activity tile based on keywords
+function getActivityIcon(text: string) {
+  const t = text.toLowerCase();
+  if (/(writ|copy|document|report|note|polic)/.test(t)) return FileEdit;
+  if (/(design|creat|visual|brand|illustrat|photo|film|edit video|content)/.test(t)) return PenTool;
+  if (/(teach|train|coach|mentor|explain|lesson|curricul)/.test(t)) return TeachIcon;
+  if (/(lead|manag.*team|supervis|shift|run.*team)/.test(t)) return Users;
+  if (/(sell|upsell|pitch|deal|target|prospect|negotiat|close)/.test(t)) return Target;
+  if (/(build|fix|install|fit|repair|tool|machin|equipment|maintain)/.test(t)) return Hammer;
+  if (/(care|support|help|safeguard|patient|emotion|family|complain)/.test(t)) return HandHeart;
+  if (/(data|number|analy|report|figure|forecast|model|audit|payroll|account|financ)/.test(t)) return BarChart3;
+  if (/(solv|problem|debug|trouble|fault)/.test(t)) return Lightbulb;
+  if (/(schedul|plan|deadline|coordin|organis|process|stock|invent|admin|brief)/.test(t)) return ListChecks;
+  if (/(talk|serv|guest|customer|client|enquir|relationship|loyalty)/.test(t)) return MessageSquare;
+  if (/(meeting|stakeholder|onboard|recruit)/.test(t)) return CalendarCheck;
+  return Sparkles;
+}
 
 const Q1_TILES_BY_INDUSTRY: Record<string, string[]> = {
   "Hospitality & Food Service": [
@@ -429,7 +461,7 @@ const FunnelQuiz = () => {
                 Pick the one closest to your current role. You can always change it.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {INDUSTRIES.map(({ title, subtitle, icon: Icon }) => (
+                {INDUSTRIES.map(({ title, subtitle, icon: Icon, chipBg, chipFg }) => (
                   <button
                     key={title}
                     onClick={() => {
@@ -444,10 +476,13 @@ const FunnelQuiz = () => {
                         : "bg-card border-border hover:border-primary/40"
                     }`}
                   >
-                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <Icon className="h-5 w-5 text-primary" />
+                    <div
+                      className="h-14 w-14 rounded-2xl flex items-center justify-center shrink-0"
+                      style={{ backgroundColor: chipBg }}
+                    >
+                      <Icon className="h-7 w-7" style={{ color: chipFg }} strokeWidth={1.75} />
                     </div>
-                    <div className="min-w-0">
+                    <div className="min-w-0 pt-1">
                       <p className="font-semibold text-foreground text-sm">{title}</p>
                       <p className="text-xs text-muted-foreground mt-0.5">{subtitle}</p>
                     </div>
@@ -469,17 +504,28 @@ const FunnelQuiz = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-10">
                 {(isStudent ? ACTIVITIES : (industry && Q1_TILES_BY_INDUSTRY[industry] ? Q1_TILES_BY_INDUSTRY[industry] : ACTIVITIES)).map((a) => {
                   const selected = q1Selections.includes(a);
+                  const ActIcon = getActivityIcon(a);
                   return (
                     <button
                       key={a}
                       onClick={() => toggleActivity(a)}
-                      className={`px-4 py-3.5 rounded-xl text-sm font-medium text-left transition-all border-2 ${
+                      className={`px-4 py-3.5 rounded-xl text-sm font-medium text-left transition-all border-2 flex items-center gap-3 ${
                         selected
                           ? "bg-primary text-primary-foreground border-primary"
                           : "bg-card text-foreground border-border hover:border-primary/40"
                       }`}
                     >
-                      {a}
+                      <span
+                        className={`h-9 w-9 rounded-lg flex items-center justify-center shrink-0 ${
+                          selected ? "bg-white/15" : "bg-primary/10"
+                        }`}
+                      >
+                        <ActIcon
+                          className={`h-4.5 w-4.5 ${selected ? "text-primary-foreground" : "text-primary"}`}
+                          strokeWidth={1.75}
+                        />
+                      </span>
+                      <span className="flex-1">{a}</span>
                     </button>
                   );
                 })}
@@ -614,7 +660,7 @@ const FunnelQuiz = () => {
 
           {/* CELEBRATE */}
           {phase === "celebrate" && (
-            <div className="animate-fade-in">
+            <div className="animate-fade-in pt-6">
               <div className="text-center mb-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-4">
                   <Sparkles className="h-3.5 w-3.5" />

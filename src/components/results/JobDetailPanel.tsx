@@ -138,7 +138,27 @@ export function JobDetailPanel({ job, scored, query, userSkills, allJobs, allSco
         {/* Match Score Hero Block - Circular ring style (wearable inspired) */}
         {(() => {
           const tier = getScoreTier(matchPercent);
-          const isCelebratory = matchPercent >= 81;
+          // Reserve "Outstanding · You're built for this role" for 90%+ only
+          const isCelebratory = matchPercent >= 90;
+          // Total skills the role needs = matched + gaps (consistent with what we display below)
+          const requiredTotal = matchedSkills.length + gapSkills.length;
+          const gapCount = gapSkills.length;
+          const headline =
+            matchPercent >= 90
+              ? "You're built for this role."
+              : matchPercent >= 81
+              ? "You're a strong fit here."
+              : matchPercent >= 50
+              ? "You've got most of what they need."
+              : "A stretch role to grow into.";
+          const tierLabel =
+            matchPercent >= 90
+              ? "Outstanding match"
+              : matchPercent >= 81
+              ? "Strong match"
+              : matchPercent >= 50
+              ? "Good match"
+              : "Building match";
           return (
             <div
               className="mt-6 rounded-2xl p-5 border"
@@ -153,29 +173,25 @@ export function JobDetailPanel({ job, scored, query, userSkills, allJobs, allSco
                       className="text-xs font-bold uppercase tracking-wider"
                       style={{ color: tier.text }}
                     >
-                      {tier.label}
+                      {tierLabel}
                     </span>
                   </div>
                   <p className="mt-1 text-base font-semibold text-foreground leading-snug">
-                    {matchPercent >= 91
-                      ? "You're built for this role."
-                      : matchPercent >= 81
-                      ? "You're a strong fit here."
-                      : matchPercent >= 50
-                      ? "You've got most of what they need."
-                      : "A stretch role to grow into."}
+                    {headline}
                   </p>
-                  <div className="flex gap-4 mt-3">
+                  <div className="flex flex-wrap gap-x-4 gap-y-1.5 mt-3">
                     <div className="flex items-center gap-1.5">
                       <Trophy className="h-3.5 w-3.5" style={{ color: tier.color }} />
                       <span className="text-sm font-bold" style={{ color: tier.text }}>{matchedCount}</span>
-                      <span className="text-xs text-muted-foreground">matched</span>
+                      <span className="text-xs text-muted-foreground">core skills match</span>
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <Sparkles className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span className="text-sm font-bold text-foreground">{job.skills.length}</span>
-                      <span className="text-xs text-muted-foreground">required</span>
-                    </div>
+                    {gapCount > 0 && (
+                      <div className="flex items-center gap-1.5">
+                        <Sparkles className="h-3.5 w-3.5 text-muted-foreground" />
+                        <span className="text-sm font-bold text-foreground">{gapCount}</span>
+                        <span className="text-xs text-muted-foreground">room to grow</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
