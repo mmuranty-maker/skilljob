@@ -248,24 +248,21 @@ export function JobDetailPanel({ job, scored, query, userSkills, allJobs, allSco
         {extra?.offers && extra.offers.length > 0 && (
           <>
             <SectionHeading>What's on offer</SectionHeading>
-            <ul className="space-y-0.5">
+            <div className="flex flex-wrap gap-2">
               {extra.offers.map((o, i) => (
-                <BulletItem key={i} icon="heart">{o}</BulletItem>
+                <PerkBadge key={i} text={o} variant="soft" />
               ))}
-            </ul>
+            </div>
           </>
         )}
 
         {/* Benefits */}
         {extra?.benefits && extra.benefits.length > 0 && (
           <>
-            <SectionHeading>Benefits</SectionHeading>
-            <div className="grid grid-cols-2 gap-2">
+            <SectionHeading>Benefits & perks</SectionHeading>
+            <div className="flex flex-wrap gap-2">
               {extra.benefits.map((b, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm text-foreground/70 px-3 py-2 rounded-lg border border-[#F0F0EC]">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0" />
-                  {b}
-                </div>
+                <PerkBadge key={i} text={b} variant="outline" />
               ))}
             </div>
           </>
