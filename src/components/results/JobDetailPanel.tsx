@@ -1,8 +1,9 @@
-import { Sparkles, MapPin, Briefcase, Clock, CheckCircle2, Heart, Plus, Lock } from "lucide-react";
+import { Sparkles, MapPin, Briefcase, Clock, CheckCircle2, Heart, Plus, PartyPopper, Trophy } from "lucide-react";
 import type { Job } from "@/data/jobs";
 import type { ScoredPosting, UserSkill } from "@/lib/quizScoring";
 import { jobExtraData } from "@/data/jobExtraData";
-import { Progress } from "@/components/ui/progress";
+import { ScoreRing, getScoreTier } from "./ScoreRing";
+import { PerkBadge } from "./PerkBadge";
 
 function formatSalary(amount: number) {
   return `£${Math.round(amount / 1000)}k`;
