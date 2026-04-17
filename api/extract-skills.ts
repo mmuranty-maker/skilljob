@@ -115,6 +115,22 @@ Decision making → Problem Solving
 Numeracy / Financial literacy → Application of Number
 `.trim();
 
+// Fetch matching skill terms from the ESCO public API.
+// Runs server-side so no CORS issues. Returns empty array on any failure.
+async function fetchEscoHints(text: string): Promise<string[]> {
+  try {
+    const query = encodeURIComponent(text.slice(0, 150));
+    const url = `https://ec.europa.eu/esco/api/search?text=${query}&type=skill&language=en&limit=10`;
+    const res = await fetch(url, { signal: AbortSignal.timeout(3000) });
+    if (!res.ok) return [];
+    const data = await res.json();
+    const results: Array<{ title?: string }> = data?._embedded?.results ?? [];
+    return results.map((r) => r.title ?? "").filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
 export default async function handler(req: Request): Promise<Response> {
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405 });
@@ -139,6 +155,12 @@ export default async function handler(req: Request): Promise<Response> {
     });
   }
 
+  // Fetch ESCO hints in parallel with any other setup — falls back silently if unavailable
+  const escoHints = await fetchEscoHints(text);
+  const escoSection = escoHints.length > 0
+    ? `\nESCO skill terms matched to this story (use as additional hints — still map to canonical labels only):\n${escoHints.join(", ")}\n`
+    : "";
+
   try {
     const response = await client.messages.create({
       model: "claude-opus-4-6",
@@ -152,7 +174,7 @@ ${SKILL_TAXONOMY}
 
 When you encounter jargon from job listings or CVs, translate it to the canonical label using this guide:
 ${JARGON_TRANSLATIONS}
-
+${escoSection}
 Industry context: ${industry ?? "General"}
 
 Story: "${text}"
