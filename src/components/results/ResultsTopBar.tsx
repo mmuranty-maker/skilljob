@@ -156,9 +156,6 @@ export function ResultsTopBar({ skillTags, setSkillTags, resultCount, onSearch }
           )}
         </div>
 
-        <p className="text-sm text-muted-foreground ml-auto whitespace-nowrap hidden sm:block">
-          <span className="font-semibold text-foreground">{resultCount}</span> role{resultCount !== 1 ? "s" : ""} matched
-        </p>
       </div>
     </div>
   );

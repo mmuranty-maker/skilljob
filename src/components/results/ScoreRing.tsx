@@ -5,8 +5,8 @@ interface ScoreRingProps {
   showLabel?: boolean;
 }
 
-// Tier mapping per spec:
-// 0-49 Yellow, 50-80 Orange, 81-90 Green, 91-100 Super green
+// Tier mapping (celebration-first — no warning reds/oranges):
+// 0-49 Soft yellow, 50-80 Light green, 81-90 Green, 91-100 Super green
 export function getScoreTier(score: number) {
   if (score >= 91)
     return {
@@ -29,12 +29,13 @@ export function getScoreTier(score: number) {
     };
   if (score >= 50)
     return {
-      key: "orange",
+      key: "light-green",
       label: "Good match",
-      color: "hsl(28, 92%, 55%)",
-      track: "hsl(28, 92%, 55% / 0.15)",
-      bg: "hsl(28, 92%, 55% / 0.10)",
-      text: "hsl(28, 92%, 38%)",
+      // Light/mint green — celebratory, not a warning
+      color: "hsl(148, 48%, 55%)",
+      track: "hsl(148, 48%, 55% / 0.18)",
+      bg: "hsl(148, 48%, 55% / 0.10)",
+      text: "hsl(148, 50%, 32%)",
     };
   return {
     key: "yellow",

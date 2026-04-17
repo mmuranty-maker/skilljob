@@ -189,11 +189,6 @@ const ResultsPage = () => {
                   )}
                 </div>
               )}
-              <div className="px-1 py-2.5">
-                <p className="text-xs text-muted-foreground">
-                  Sorted by best skill match · {filteredResults.length} result{filteredResults.length !== 1 ? "s" : ""}
-                </p>
-              </div>
               {(() => {
                 // Bucket results by score (only meaningful in quiz mode; otherwise show all in "Strong")
                 const withScore = filteredResults.map((job) => {
