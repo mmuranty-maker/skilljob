@@ -18,6 +18,18 @@ import {
   Wrench,
   Sparkles,
   Plus,
+  MessageSquare,
+  CalendarCheck,
+  Lightbulb,
+  BarChart3,
+  PenTool,
+  Users,
+  Target,
+  Hammer,
+  HandHeart,
+  FileEdit,
+  GraduationCap as TeachIcon,
+  ListChecks,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { SegmentedProgress } from "@/components/funnel/SegmentedProgress";
@@ -27,19 +39,21 @@ import { extractSkillsWithFallback } from "@/lib/extractSkillsApi";
 
 const TOTAL_STEPS = 5;
 
+// Each industry gets a tinted chip background + darker icon color
 const INDUSTRIES = [
-  { title: "Hospitality & Food Service", subtitle: "Hotels, restaurants, events", icon: UtensilsCrossed },
-  { title: "Retail & Customer Service", subtitle: "Shops, support, client-facing roles", icon: ShoppingBag },
-  { title: "Healthcare & Medicine", subtitle: "Hospitals, clinics, care roles", icon: Heart },
-  { title: "Technology & Engineering", subtitle: "Software, hardware, IT", icon: Cpu },
-  { title: "Business & Operations", subtitle: "Admin, logistics, management", icon: Building2 },
-  { title: "Sales & Marketing", subtitle: "Revenue, campaigns, outreach", icon: Megaphone },
-  { title: "Creative & Media", subtitle: "Design, content, film, music", icon: Palette },
-  { title: "Finance & Accounting", subtitle: "Banking, bookkeeping, auditing", icon: Landmark },
-  { title: "Education & Social Care", subtitle: "Teaching, training, community", icon: BookOpen },
-  { title: "Trades & Construction", subtitle: "Plumbing, electrical, building", icon: Wrench },
+  { title: "Hospitality & Food Service", subtitle: "Hotels, restaurants, events", icon: UtensilsCrossed, chipBg: "hsl(38, 92%, 92%)", chipFg: "hsl(32, 75%, 38%)" },
+  { title: "Retail & Customer Service", subtitle: "Shops, support, client-facing roles", icon: ShoppingBag, chipBg: "hsl(340, 82%, 94%)", chipFg: "hsl(340, 70%, 45%)" },
+  { title: "Healthcare & Medicine", subtitle: "Hospitals, clinics, care roles", icon: Heart, chipBg: "hsl(8, 88%, 93%)", chipFg: "hsl(8, 72%, 48%)" },
+  { title: "Technology & Engineering", subtitle: "Software, hardware, IT", icon: Cpu, chipBg: "hsl(212, 90%, 93%)", chipFg: "hsl(212, 80%, 45%)" },
+  { title: "Business & Operations", subtitle: "Admin, logistics, management", icon: Building2, chipBg: "hsl(215, 18%, 92%)", chipFg: "hsl(215, 25%, 35%)" },
+  { title: "Sales & Marketing", subtitle: "Revenue, campaigns, outreach", icon: Megaphone, chipBg: "hsl(22, 92%, 92%)", chipFg: "hsl(22, 85%, 45%)" },
+  { title: "Creative & Media", subtitle: "Design, content, film, music", icon: Palette, chipBg: "hsl(272, 75%, 94%)", chipFg: "hsl(272, 60%, 50%)" },
+  { title: "Finance & Accounting", subtitle: "Banking, bookkeeping, auditing", icon: Landmark, chipBg: "hsl(155, 45%, 90%)", chipFg: "hsl(155, 55%, 25%)" },
+  { title: "Education & Social Care", subtitle: "Teaching, training, community", icon: BookOpen, chipBg: "hsl(178, 60%, 90%)", chipFg: "hsl(178, 60%, 30%)" },
+  { title: "Trades & Construction", subtitle: "Plumbing, electrical, building", icon: Wrench, chipBg: "hsl(32, 38%, 88%)", chipFg: "hsl(28, 45%, 35%)" },
 ];
 
+// Generic activities (used for students or as fallback)
 const ACTIVITIES = [
   "Talking to people",
   "Managing tasks & schedules",
@@ -54,6 +68,24 @@ const ACTIVITIES = [
   "Teaching or explaining",
   "Organising processes",
 ];
+
+// Pick a semantically relevant icon for an activity tile based on keywords
+function getActivityIcon(text: string) {
+  const t = text.toLowerCase();
+  if (/(writ|copy|document|report|note|polic)/.test(t)) return FileEdit;
+  if (/(design|creat|visual|brand|illustrat|photo|film|edit video|content)/.test(t)) return PenTool;
+  if (/(teach|train|coach|mentor|explain|lesson|curricul)/.test(t)) return TeachIcon;
+  if (/(lead|manag.*team|supervis|shift|run.*team)/.test(t)) return Users;
+  if (/(sell|upsell|pitch|deal|target|prospect|negotiat|close)/.test(t)) return Target;
+  if (/(build|fix|install|fit|repair|tool|machin|equipment|maintain)/.test(t)) return Hammer;
+  if (/(care|support|help|safeguard|patient|emotion|family|complain)/.test(t)) return HandHeart;
+  if (/(data|number|analy|report|figure|forecast|model|audit|payroll|account|financ)/.test(t)) return BarChart3;
+  if (/(solv|problem|debug|trouble|fault)/.test(t)) return Lightbulb;
+  if (/(schedul|plan|deadline|coordin|organis|process|stock|invent|admin|brief)/.test(t)) return ListChecks;
+  if (/(talk|serv|guest|customer|client|enquir|relationship|loyalty)/.test(t)) return MessageSquare;
+  if (/(meeting|stakeholder|onboard|recruit)/.test(t)) return CalendarCheck;
+  return Sparkles;
+}
 
 const Q1_TILES_BY_INDUSTRY: Record<string, string[]> = {
   "Hospitality & Food Service": [
