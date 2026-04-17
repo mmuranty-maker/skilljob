@@ -223,13 +223,24 @@ const ANALYSING_PHASES = [
   "Finding your best matches…",
 ];
 
+interface FunnelLocationState {
+  prefillIndustry?: string;
+  isStudent?: boolean;
+}
+
 const FunnelQuiz = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1); // 1..5 visible; we use phase=path|industry|activities|motivation|proud|analysing|celebrate
-  const [phase, setPhase] = useState<"path" | "industry" | "activities" | "motivation" | "proud" | "analysing" | "celebrate">("path");
+  const location = useLocation();
+  const prefill = (location.state as FunnelLocationState | null) || null;
+  const hasPrefill = !!prefill?.prefillIndustry;
 
-  const [isStudent, setIsStudent] = useState(false);
-  const [industry, setIndustry] = useState<string | null>(null);
+  const [step, setStep] = useState(1); // 1..5 visible; we use phase=path|industry|activities|motivation|proud|analysing|celebrate
+  const [phase, setPhase] = useState<"path" | "industry" | "activities" | "motivation" | "proud" | "analysing" | "celebrate">(
+    hasPrefill ? "activities" : "path"
+  );
+
+  const [isStudent, setIsStudent] = useState(prefill?.isStudent ?? false);
+  const [industry, setIndustry] = useState<string | null>(prefill?.prefillIndustry ?? null);
   const [q1Selections, setQ1Selections] = useState<string[]>([]);
   const [q2Selection, setQ2Selection] = useState<string | null>(null);
   const [q4Answer, setQ4Answer] = useState("");
