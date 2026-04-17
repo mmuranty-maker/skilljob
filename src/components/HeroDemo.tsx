@@ -1,209 +1,148 @@
-import { useEffect, useState } from "react";
-import { CheckCircle2, Sparkles } from "lucide-react";
-import { INDUSTRIES } from "@/data/industries";
+import { ArrowRight, Sparkles } from "lucide-react";
 
-// A 3-scene looping product demo.
-// Scene 0: Industry tiles light up one by one.
-// Scene 1: Skill chips assemble with a soft confetti glow.
-// Scene 2: Match ring animates to 92% with a top match callout.
+// Vertical scrolling ticker of career transformations.
+// Continuous slow scroll with edge fade. Shows 4-5 items at once.
 
-const SCENES = ["industries", "skills", "match"] as const;
-type Scene = typeof SCENES[number];
+type Transition = {
+  from: string;
+  to: string;
+  score: number;
+};
 
-const SKILL_CHIPS = [
-  "Team leadership",
-  "Process design",
-  "Stakeholder comms",
-  "Problem solving",
-  "Operations",
+const TRANSITIONS: Transition[] = [
+  { from: "Barista", to: "Customer Success Manager", score: 91 },
+  { from: "Warehouse worker", to: "Operations Analyst", score: 87 },
+  { from: "Waiter", to: "Sales Development Rep", score: 89 },
+  { from: "UX Writer", to: "Product Builder", score: 90 },
+  { from: "Retail Manager", to: "Operations Lead", score: 96 },
+  { from: "Teacher", to: "L&D Specialist", score: 93 },
+  { from: "Bartender", to: "Account Executive", score: 88 },
+  { from: "Hotel Receptionist", to: "Onboarding Manager", score: 92 },
+  { from: "Line Cook", to: "Production Supervisor", score: 85 },
+  { from: "Nanny", to: "People Operations Coordinator", score: 86 },
 ];
 
-export function HeroDemo() {
-  const [scene, setScene] = useState<Scene>("industries");
-  const [tick, setTick] = useState(0); // animation progress within scene
-
-  // Drive scene cycling
-  useEffect(() => {
-    const order: Record<Scene, number> = { industries: 3200, skills: 3000, match: 3800 };
-    const t = setTimeout(() => {
-      setTick(0);
-      setScene((s) => SCENES[(SCENES.indexOf(s) + 1) % SCENES.length]);
-    }, order[scene]);
-    return () => clearTimeout(t);
-  }, [scene]);
-
-  // Drive intra-scene tick (used for staggered reveals)
-  useEffect(() => {
-    const i = setInterval(() => setTick((t) => t + 1), 320);
-    return () => clearInterval(i);
-  }, [scene]);
+function MiniRing({ score }: { score: number }) {
+  const size = 38;
+  const stroke = 4;
+  const radius = (size - stroke) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (score / 100) * circumference;
+  const color = score >= 91 ? "hsl(152, 72%, 38%)" : "hsl(150, 55%, 45%)";
+  const track = score >= 91 ? "hsl(152, 72%, 38% / 0.15)" : "hsl(150, 55%, 45% / 0.15)";
 
   return (
-    <div className="relative w-full aspect-[4/5] sm:aspect-[5/6] max-w-[520px] mx-auto">
+    <div className="relative shrink-0" style={{ width: size, height: size }}>
+      <svg width={size} height={size} className="-rotate-90">
+        <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={track} strokeWidth={stroke} />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          fill="none"
+          stroke={color}
+          strokeWidth={stroke}
+          strokeLinecap="round"
+          strokeDasharray={circumference}
+          strokeDashoffset={offset}
+        />
+      </svg>
+      <span
+        className="absolute inset-0 flex items-center justify-center text-[10px] font-bold"
+        style={{ color }}
+      >
+        {score}
+      </span>
+    </div>
+  );
+}
+
+function TransitionRow({ t, isJustMatched }: { t: Transition; isJustMatched?: boolean }) {
+  return (
+    <div className="flex items-center gap-3 px-4 py-3.5 rounded-xl bg-card border border-border/70 shadow-sm">
+      <MiniRing score={t.score} />
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-1.5 text-sm font-semibold text-foreground leading-tight">
+          <span className="truncate text-muted-foreground">{t.from}</span>
+          <ArrowRight className="h-3.5 w-3.5 text-primary shrink-0" />
+          <span className="truncate">{t.to}</span>
+        </div>
+        {isJustMatched && (
+          <span className="mt-1 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-primary">
+            <Sparkles className="h-2.5 w-2.5" />
+            Just matched
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function HeroDemo() {
+  // Duplicate the list for a seamless loop
+  const loop = [...TRANSITIONS, ...TRANSITIONS];
+
+  return (
+    <div className="relative w-full max-w-[480px] mx-auto">
       {/* Soft glow backdrop */}
       <div
         aria-hidden
         className="absolute -inset-8 bg-gradient-to-br from-primary/15 via-primary/5 to-transparent blur-3xl rounded-full"
       />
 
-      {/* Frame */}
-      <div className="relative h-full w-full rounded-3xl bg-card border border-border shadow-2xl shadow-primary/10 overflow-hidden">
-        {/* Faux browser bar */}
-        <div className="h-9 bg-muted/40 border-b border-border flex items-center gap-1.5 px-3.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-[#FF5F57]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#FEBC2E]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#28C840]" />
-          <div className="ml-3 flex-1 h-5 rounded-md bg-background/60 border border-border" />
-        </div>
-
-        <div className="relative h-[calc(100%-2.25rem)] p-5 sm:p-6">
-          {/* Scene caption */}
-          <p
-            key={scene}
-            className="text-[11px] font-bold uppercase tracking-[0.14em] text-primary mb-3 animate-fade-in"
-          >
-            {scene === "industries" && "Pick your world"}
-            {scene === "skills" && "Build your skill profile"}
-            {scene === "match" && "Find your match"}
-          </p>
-
-          {scene === "industries" && <IndustriesScene tick={tick} />}
-          {scene === "skills" && <SkillsScene tick={tick} />}
-          {scene === "match" && <MatchScene tick={tick} />}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function IndustriesScene({ tick }: { tick: number }) {
-  // Highlight one tile at a time, cycling
-  const visible = INDUSTRIES.slice(0, 9);
-  const highlightIdx = tick % visible.length;
-  return (
-    <div className="grid grid-cols-3 gap-2.5 animate-fade-in">
-      {visible.map(({ title, icon: Icon, chipBg, chipFg }, i) => {
-        const active = i === highlightIdx;
-        return (
-          <div
-            key={title}
-            className={`flex flex-col items-center gap-1.5 p-2.5 rounded-xl border transition-all duration-500 ${
-              active
-                ? "border-primary bg-primary/5 scale-[1.04] shadow-md shadow-primary/15"
-                : "border-border bg-background/40"
-            }`}
-          >
-            <div
-              className="h-10 w-10 rounded-xl flex items-center justify-center transition-all duration-500"
-              style={{ backgroundColor: chipBg }}
-            >
-              <Icon className="h-5 w-5" style={{ color: chipFg }} strokeWidth={1.75} />
-            </div>
-            <p className="text-[10px] font-semibold text-foreground text-center leading-tight line-clamp-1">
-              {title.split(" & ")[0]}
-            </p>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function SkillsScene({ tick }: { tick: number }) {
-  // Reveal chips one by one
-  const revealed = Math.min(SKILL_CHIPS.length, tick + 1);
-  return (
-    <div className="animate-fade-in">
-      <p className="text-sm text-muted-foreground mb-4">
-        You specialise in <span className="text-foreground font-semibold">team leadership and operations</span>.
-      </p>
-      <div className="flex flex-wrap gap-2 relative">
-        {SKILL_CHIPS.slice(0, revealed).map((s, i) => (
-          <span
-            key={s}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20 text-sm font-medium"
-            style={{
-              animation: "fade-in 0.4s ease-out both",
-              animationDelay: `${i * 60}ms`,
-            }}
-          >
-            <Sparkles className="h-3 w-3" />
-            {s}
+      {/* Header */}
+      <div className="relative mb-3 flex items-center justify-between px-1">
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
           </span>
-        ))}
+          <span className="text-xs font-bold uppercase tracking-[0.14em] text-foreground">
+            Live matches
+          </span>
+        </div>
+        <span className="text-xs font-medium text-muted-foreground">Updated just now</span>
       </div>
 
-      {/* Soft confetti bursts */}
-      {revealed >= 3 && (
-        <div aria-hidden className="pointer-events-none absolute inset-0">
-          {[...Array(8)].map((_, i) => (
-            <span
-              key={i}
-              className="absolute h-1.5 w-1.5 rounded-full"
-              style={{
-                left: `${20 + i * 8}%`,
-                top: `${40 + (i % 3) * 10}%`,
-                backgroundColor: ["#1D9E75", "#2DBA8C", "#A7E8CC", "#0F6E56"][i % 4],
-                animation: `fade-in 0.6s ease-out ${i * 80}ms both`,
-                opacity: 0.7,
-              }}
+      {/* Ticker viewport */}
+      <div
+        className="relative overflow-hidden rounded-2xl bg-gradient-to-b from-background/40 via-card/60 to-background/40 border border-border/60 backdrop-blur-sm"
+        style={{ height: 420 }}
+      >
+        {/* Top fade */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent z-10" />
+        {/* Bottom fade — leaves room for stat card */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent z-10" />
+
+        <div className="ticker-track flex flex-col gap-2.5 p-4">
+          {loop.map((t, i) => (
+            <TransitionRow
+              key={`${t.from}-${i}`}
+              t={t}
+              isJustMatched={i === 0}
             />
           ))}
         </div>
-      )}
-    </div>
-  );
-}
-
-function MatchScene({ tick }: { tick: number }) {
-  // Animate ring 0 → 92 over the scene
-  const target = 92;
-  const progress = Math.min(target, Math.round((tick + 1) * 22));
-  const size = 130;
-  const stroke = 12;
-  const radius = (size - stroke) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (progress / 100) * circumference;
-  const ringColor = "hsl(152, 72%, 38%)";
-  const trackColor = "hsl(152, 72%, 38% / 0.15)";
-
-  return (
-    <div className="flex flex-col items-center justify-center h-full pb-2 animate-fade-in">
-      <div className="relative" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="-rotate-90">
-          <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke={trackColor} strokeWidth={stroke} />
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke={ringColor}
-            strokeWidth={stroke}
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-            style={{ transition: "stroke-dashoffset 0.4s ease-out" }}
-          />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-3xl font-black" style={{ color: ringColor }}>
-            {progress}
-            <span className="text-base font-bold">%</span>
-          </span>
-          <span className="text-[10px] font-bold uppercase tracking-wider text-foreground/70 mt-0.5">match</span>
-        </div>
       </div>
 
-      <div
-        className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/25"
-        style={{ animation: "fade-in 0.5s ease-out 0.7s both" }}
-      >
-        <CheckCircle2 className="h-4 w-4 text-primary" />
-        <span className="text-sm font-semibold text-foreground">Top match: Operations Lead</span>
+      {/* Stat card overlay */}
+      <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-20 px-4 py-2.5 rounded-full bg-card border border-border shadow-lg shadow-primary/10 flex items-center gap-2 whitespace-nowrap">
+        <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+        <span className="text-sm font-bold text-foreground">2,604 roles matched today</span>
       </div>
-      <p className="mt-2 text-xs text-muted-foreground" style={{ animation: "fade-in 0.5s ease-out 0.9s both" }}>
-        ★ Outstanding match · You're built for this role
-      </p>
+
+      <style>{`
+        @keyframes ticker-scroll {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-50%); }
+        }
+        .ticker-track {
+          animation: ticker-scroll 40s linear infinite;
+        }
+        .ticker-track:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
     </div>
   );
 }
