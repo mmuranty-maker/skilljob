@@ -8,7 +8,7 @@ interface IndustryQ2Tile {
   boost_posting_categories: string[];
 }
 
-interface IndustryQ3 {
+interface IndustryQ4 {
   heading: string;
   subtitle: string;
   placeholder: string;
@@ -27,7 +27,7 @@ export interface IndustryConfig {
   posting_categories: string[];
   seniority_filter: string[];
   q2: IndustryQ2;
-  q3: IndustryQ3;
+  q4: IndustryQ4;
 }
 
 const industries = (industryData as any).industries as Record<string, IndustryConfig>;

@@ -6,7 +6,7 @@ interface QuizResultsProps {
   topMatches: ScoredPosting[];
   onSeeAll: () => void;
   onStartOver: () => void;
-  q3Failed?: boolean;
+  q4Failed?: boolean;
   isStudent?: boolean;
 }
 
@@ -27,7 +27,7 @@ export function QuizResults({
   topMatches,
   onSeeAll,
   onStartOver,
-  q3Failed,
+  q4Failed,
   isStudent = false,
 }: QuizResultsProps) {
   const top3 = topMatches.slice(0, 3);
@@ -50,7 +50,7 @@ export function QuizResults({
             </span>
           ))}
         </div>
-        {q3Failed && (
+        {q4Failed && (
           <p className="mt-2 text-xs text-muted-foreground">
             Results based on your selections. Add more detail next time for even better matches.
           </p>

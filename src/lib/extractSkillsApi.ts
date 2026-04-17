@@ -5,7 +5,7 @@ import { extractSkillsFromText } from "./quizScoring";
  * Falls back to local keyword matching if the API is unavailable or times out.
  *
  * The caller (SkillQuiz) passes the result into runQuizScoring as
- * preExtractedQ3Skills so the local extractSkillsFromText is skipped.
+ * preExtractedQ4Skills so the local extractSkillsFromText is skipped.
  */
 export async function extractSkillsWithFallback(
   text: string,

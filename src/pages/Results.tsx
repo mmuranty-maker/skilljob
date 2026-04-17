@@ -34,7 +34,7 @@ const ResultsPage = () => {
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [quizOpen, setQuizOpen] = useState(false);
   const [applyOpen, setApplyOpen] = useState(false);
-  const [skippedQ3, setSkippedQ3] = useState(false);
+  const [skippedQ4, setSkippedQ3] = useState(false);
   const [proudMomentOpen, setProudMomentOpen] = useState(false);
   const [proudMomentText, setProudMomentText] = useState("");
 
@@ -96,8 +96,8 @@ const ResultsPage = () => {
     setFilters(defaultFilters);
     if (topMatches.length > 0) setSelectedId(topMatches[0].id);
     setQuizOpen(false);
-    setSkippedQ3(!!(quizSkippedQ3 ?? (window as any).__skilljob_skippedQ3));
-    (window as any).__skilljob_skippedQ3 = false;
+    setSkippedQ3(!!(quizSkippedQ3 ?? (window as any).__skilljob_skippedQ4));
+    (window as any).__skilljob_skippedQ4 = false;
     setProudMomentOpen(false);
     setProudMomentText("");
   };
@@ -158,7 +158,7 @@ const ResultsPage = () => {
           {filteredResults.length > 0 ? (
             <>
               {/* Proud moment nudge for skipped Q3 */}
-              {skippedQ3 && isQuizMode && (
+              {skippedQ4 && isQuizMode && (
                 <div className="mx-1 mb-2">
                   <button
                     onClick={() => setProudMomentOpen(!proudMomentOpen)}

@@ -1,6 +1,6 @@
 {
   "mapping_version": "3.0",
-  "description": "Industry-aware Q2 and Q3 questions with skill mapping. Each industry gets tailored motivation tiles (Q2) and story patterns (Q3) that extract more precise skills than generic questions. The industry context also filters job postings and weights skills differently.",
+  "description": "Industry-aware Q2 and Q4 questions with skill mapping. Each industry gets tailored motivation tiles (Q2) and story patterns (Q4) that extract more precise skills than generic questions. The industry context also filters job postings and weights skills differently.",
 
   "industries": {
 
@@ -65,7 +65,7 @@
         }
       },
 
-      "q3": {
+      "q4": {
         "heading": "Tell us about something you're proud of from work",
         "subtitle": "A shift, a moment with a customer, something you handled well — big or small.",
         "placeholder": "e.g. I handled a fully booked Friday service on my own, I turned a complaint into a 5-star review, I trained 3 new starters who all stayed...",
@@ -142,7 +142,7 @@
         }
       },
 
-      "q3": {
+      "q4": {
         "heading": "Tell us about something you handled really well",
         "subtitle": "A customer situation, a tough shift, something you solved — big or small.",
         "placeholder": "e.g. I de-escalated an angry customer and kept them as a regular, I reorganised the stockroom and cut pick time in half, I hit 130% of my sales target during the quietest month of the year...",
@@ -218,7 +218,7 @@
         }
       },
 
-      "q3": {
+      "q4": {
         "heading": "Tell us about something you're proud of clinically or professionally",
         "subtitle": "A patient outcome, a difficult situation, something you did that made a difference.",
         "placeholder": "e.g. I caught a medication error before it reached a patient, I supported a family through a really difficult diagnosis, I redesigned a handover process that reduced errors on our ward...",
@@ -295,7 +295,7 @@
         }
       },
 
-      "q3": {
+      "q4": {
         "heading": "Tell us about something you built or solved that you're proud of",
         "subtitle": "A project, a bug fix, a system — technical or otherwise.",
         "placeholder": "e.g. I built a feature solo that shipped on time, I reduced deployment time by 40%, I diagnosed a production issue at 2am and fixed it before users noticed, I migrated a legacy system to cloud with zero downtime...",
@@ -372,7 +372,7 @@
         }
       },
 
-      "q3": {
+      "q4": {
         "heading": "Tell us about something you delivered or improved at work",
         "subtitle": "A project, a process, a result — anything you feel good about.",
         "placeholder": "e.g. I implemented a new reporting system that saved 5 hours a week, I coordinated a team through a difficult product launch, I reduced supplier costs by 15% through renegotiation...",
@@ -449,7 +449,7 @@
         }
       },
 
-      "q3": {
+      "q4": {
         "heading": "Tell us about a result you're proud of",
         "subtitle": "A deal, a campaign, a target — anything that shows what you're capable of.",
         "placeholder": "e.g. I closed our biggest deal of the quarter after 3 months of nurturing, I ran a campaign that doubled email open rates, I hit 120% of my annual target during a market downturn...",
@@ -525,7 +525,7 @@
         }
       },
 
-      "q3": {
+      "q4": {
         "heading": "Tell us about something you created that you're proud of",
         "subtitle": "A project, a piece of work, a creative challenge you solved.",
         "placeholder": "e.g. I designed a brand identity that got picked up in a trade magazine, I edited a video that went viral, I wrote a campaign that converted 3x better than the previous one, I delivered a full shoot in conditions that nearly made it impossible...",
@@ -601,7 +601,7 @@
         }
       },
 
-      "q3": {
+      "q4": {
         "heading": "Tell us about something you spotted or delivered that made a difference",
         "subtitle": "A financial insight, a project, a process you improved.",
         "placeholder": "e.g. I identified a tax saving that saved the company £40k, I completed year-end two weeks early, I built a financial model that changed a major investment decision, I caught a fraud risk before it was exploited...",
@@ -677,7 +677,7 @@
         }
       },
 
-      "q3": {
+      "q4": {
         "heading": "Tell us about something you did that made a real difference",
         "subtitle": "A student, a client, a moment — big or small.",
         "placeholder": "e.g. I helped a struggling student pass their exams after months of extra support, I advocated for a client and got them housing they'd been denied for years, I designed a group session that finally worked for a class that had been disengaged all year...",
@@ -753,7 +753,7 @@
         }
       },
 
-      "q3": {
+      "q4": {
         "heading": "Tell us about something on the job you're proud of",
         "subtitle": "A difficult job, a problem you solved, something you built or fixed.",
         "placeholder": "e.g. I diagnosed an electrical fault that three other electricians had missed, I delivered a full kitchen fit-out two days early, I coordinated 6 different trades on a complex renovation without a single delay...",

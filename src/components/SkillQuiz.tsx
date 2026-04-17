@@ -199,7 +199,7 @@ interface SkillQuizProps {
   open: boolean;
   onClose: () => void;
   onComplete: (topSkill: string) => void;
-  onQuizResults?: (userSkills: UserSkill[], topMatches: ScoredPosting[], skippedQ3?: boolean) => void;
+  onQuizResults?: (userSkills: UserSkill[], topMatches: ScoredPosting[], skippedQ4?: boolean) => void;
 }
 
 export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQuizProps) {
@@ -208,7 +208,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
   const [industry, setIndustry] = useState<string | null>(null);
   const [q1Selections, setQ1Selections] = useState<string[]>([]);
   const [q2Selection, setQ2Selection] = useState<string | null>(null);
-  const [q3Answer, setQ3Answer] = useState("");
+  const [q4Answer, setQ4Answer] = useState("");
   const [loading, setLoading] = useState(false);
   const [userSkills, setUserSkills] = useState<UserSkill[] | null>(null);
   const [topMatches, setTopMatches] = useState<ScoredPosting[]>([]);
@@ -221,16 +221,16 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
   const q2Tiles = industry ? getIndustryQ2Tiles(industry) : [];
   const activeQ2Tiles = q2Tiles.length > 0 ? q2Tiles : GENERIC_Q2_TILES;
 
-  // Get Q2/Q3 headings — fixed copy across all industries
+  // Get Q2/Q4 headings — fixed copy across all industries
   const q2Heading = "Which of these sounds most like you?";
   const q2Subtitle = "Pick just one — this shapes your skill profile. Go with the one that fits most days, not your best day ever.";
     
 
-  const q3Heading = industryConfig?.q3.heading
+  const q3Heading = industryConfig?.q4.heading
     ?? (isStudent ? "Tell us about something you've done that you're proud of" : "Tell us about something you're proud of");
-  const q3Subtitle = industryConfig?.q3.subtitle
+  const q3Subtitle = industryConfig?.q4.subtitle
     ?? (isStudent ? "A project, a job, a society role, anything — big or small." : "At work, big or small — what's something you did that you felt good about?");
-  const q3Placeholder = industryConfig?.q3.placeholder
+  const q3Placeholder = industryConfig?.q4.placeholder
     ?? (isStudent
       ? "e.g. I led our university charity campaign and raised £3,000, I built an app for my final year project, I managed social media for our student union..."
       : "e.g. I trained 3 new starters, I reorganised how we handle complaints, I hit my sales target during a really tough month…");
@@ -246,25 +246,25 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
     setStep(1);
   };
 
-  const handleSubmit = async (skipQ3 = false) => {
+  const handleSubmit = async (skipQ4 = false) => {
     setLoading(true);
     setStep(5);
 
     const start = Date.now();
 
     // Call Claude API for skill extraction (falls back to keyword matching if unavailable)
-    let preExtractedQ3Skills: string[] | undefined;
-    if (!skipQ3 && q3Answer.length >= 15) {
-      preExtractedQ3Skills = await extractSkillsWithFallback(q3Answer, industry);
+    let preExtractedQ4Skills: string[] | undefined;
+    if (!skipQ4 && q4Answer.length >= 15) {
+      preExtractedQ4Skills = await extractSkillsWithFallback(q4Answer, industry);
     }
 
     const result = runQuizScoring(
       q1Selections,
       q2Selection || "",
-      skipQ3 ? "" : q3Answer,
+      skipQ4 ? "" : q4Answer,
       isStudent,
       industry,
-      preExtractedQ3Skills
+      preExtractedQ4Skills
     );
 
     // Keep a minimum loading animation time so it doesn't flash
@@ -273,10 +273,10 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
     await new Promise((resolve) => setTimeout(resolve, remaining));
 
     // Store skip state for results page
-    (window as any).__skilljob_skippedQ3 = skipQ3;
+    (window as any).__skilljob_skippedQ4 = skipQ4;
 
     if (onQuizResults && result.topMatches.length > 0) {
-      onQuizResults(result.userSkills, result.topMatches, skipQ3);
+      onQuizResults(result.userSkills, result.topMatches, skipQ4);
       resetAndClose();
     } else if (result.userSkills.length > 0) {
       onComplete(result.userSkills[0].name);
@@ -290,7 +290,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
 
   const handleSeeAll = () => {
     if (onQuizResults && userSkills && topMatches.length > 0) {
-      onQuizResults(userSkills, topMatches, !!(window as any).__skilljob_skippedQ3);
+      onQuizResults(userSkills, topMatches, !!(window as any).__skilljob_skippedQ4);
     } else if (userSkills && userSkills.length > 0) {
       onComplete(userSkills[0].name);
     }
@@ -303,7 +303,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
     setIndustry(null);
     setQ1Selections([]);
     setQ2Selection(null);
-    setQ3Answer("");
+    setQ4Answer("");
     setLoading(false);
     setUserSkills(null);
     setTopMatches([]);
@@ -316,7 +316,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
     setIndustry(null);
     setQ1Selections([]);
     setQ2Selection(null);
-    setQ3Answer("");
+    setQ4Answer("");
     setLoading(false);
     setUserSkills(null);
     setTopMatches([]);
@@ -521,7 +521,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
             </div>
           )}
 
-          {/* Step 4 — Proud moment / Q3 (skippable) */}
+          {/* Step 4 — Proud moment / Q4 (skippable) */}
           {step === 4 && (
             <div className="animate-fade-in flex flex-col flex-1">
               <h3 className="text-xl font-bold text-foreground">{q3Heading}</h3>
@@ -530,13 +530,13 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                 We use this to find skills your job title doesn't show — the more specific, the better your matches.
               </p>
               <p className="text-xs text-muted-foreground mb-4">
-                {q3Answer.length < 15
-                  ? `Write at least a sentence — ${Math.max(0, 15 - q3Answer.length)} more character${15 - q3Answer.length === 1 ? "" : "s"} to unlock your results.`
+                {q4Answer.length < 15
+                  ? `Write at least a sentence — ${Math.max(0, 15 - q4Answer.length)} more character${15 - q4Answer.length === 1 ? "" : "s"} to unlock your results.`
                   : "✓ Good — hit the button below to see your matches."}
               </p>
               <textarea
-                value={q3Answer}
-                onChange={(e) => setQ3Answer(e.target.value)}
+                value={q4Answer}
+                onChange={(e) => setQ4Answer(e.target.value)}
                 rows={3}
                 placeholder={q3Placeholder}
                 className="w-full px-4 py-3 rounded-xl bg-background border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all text-sm resize-none"
@@ -552,7 +552,7 @@ export function SkillQuiz({ open, onClose, onComplete, onQuizResults }: SkillQui
                   </button>
                   <button
                     onClick={() => handleSubmit(false)}
-                    disabled={q3Answer.length < 15}
+                    disabled={q4Answer.length < 15}
                     className="flex-1 h-12 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     Discover my skills →

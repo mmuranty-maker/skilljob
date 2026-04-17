@@ -449,9 +449,9 @@ function addQ2Skills(
 /**
  * Step C: Add Q3 extracted skills (from keyword extraction)
  */
-function addQ3Skills(userSkills: UserSkill[], q3Skills: string[]): UserSkill[] {
+function addQ3Skills(userSkills: UserSkill[], q4Skills: string[]): UserSkill[] {
   const existingNames = new Set(userSkills.map((s) => s.name.toLowerCase()));
-  for (const skill of q3Skills) {
+  for (const skill of q4Skills) {
     if (!existingNames.has(skill.toLowerCase())) {
       userSkills.push({ name: skill, boosted: false });
       existingNames.add(skill.toLowerCase());
@@ -471,7 +471,7 @@ export function extractSkillsFromText(text: string, industry: string | null = nu
     const config = getIndustryConfig(industry);
     if (config) {
       const matched: string[] = [];
-      for (const sp of config.q3.story_patterns) {
+      for (const sp of config.q4.story_patterns) {
         const patternWords = sp.pattern.toLowerCase().split(/\s+/);
         // Check if at least 2 words from the pattern appear in the text
         const hits = patternWords.filter((w) => w.length > 3 && lower.includes(w));
@@ -613,10 +613,10 @@ function scorePostings(
 export function runQuizScoring(
   q1Selections: string[],
   q2Selection: string,
-  q3Answer: string,
+  q4Answer: string,
   isStudent: boolean = false,
   industry: string | null = null,
-  preExtractedQ3Skills?: string[]
+  preExtractedQ4Skills?: string[]
 ): { userSkills: UserSkill[]; topMatches: ScoredPosting[] } {
   // Step A
   let userSkills = getQ1Skills(q1Selections);
@@ -625,8 +625,8 @@ export function runQuizScoring(
   userSkills = addQ2Skills(userSkills, q1Selections, q2Selection, industry);
 
   // Step C — use Claude-extracted skills when available, otherwise keyword matching
-  const q3Skills = preExtractedQ3Skills ?? extractSkillsFromText(q3Answer, industry);
-  userSkills = addQ3Skills(userSkills, q3Skills);
+  const q4Skills = preExtractedQ4Skills ?? extractSkillsFromText(q4Answer, industry);
+  userSkills = addQ3Skills(userSkills, q4Skills);
 
   // Step D — industry-aware scoring
   let scored = scorePostings(userSkills, q1Selections, q2Selection, industry);
