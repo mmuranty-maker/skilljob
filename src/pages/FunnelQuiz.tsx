@@ -1,21 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   ArrowLeft,
   X,
   Loader2,
   Briefcase,
   GraduationCap,
-  UtensilsCrossed,
-  ShoppingBag,
-  Heart,
-  Cpu,
-  Building2,
-  Megaphone,
-  Palette,
-  Landmark,
-  BookOpen,
-  Wrench,
   Sparkles,
   Plus,
   MessageSquare,
@@ -31,6 +21,12 @@ import {
   GraduationCap as TeachIcon,
   ListChecks,
 } from "lucide-react";
+import confetti from "canvas-confetti";
+import { SegmentedProgress } from "@/components/funnel/SegmentedProgress";
+import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
+import { getIndustryConfig, getIndustryQ2Tiles } from "@/lib/industryMapping";
+import { extractSkillsWithFallback } from "@/lib/extractSkillsApi";
+import { INDUSTRIES } from "@/data/industries";
 import confetti from "canvas-confetti";
 import { SegmentedProgress } from "@/components/funnel/SegmentedProgress";
 import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
