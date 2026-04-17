@@ -1,8 +1,9 @@
-import { Sparkles, MapPin, Briefcase, Clock, CheckCircle2, Heart, Plus, Lock } from "lucide-react";
+import { Sparkles, MapPin, Briefcase, Clock, CheckCircle2, Heart, Plus, PartyPopper, Trophy } from "lucide-react";
 import type { Job } from "@/data/jobs";
 import type { ScoredPosting, UserSkill } from "@/lib/quizScoring";
 import { jobExtraData } from "@/data/jobExtraData";
-import { Progress } from "@/components/ui/progress";
+import { ScoreRing, getScoreTier } from "./ScoreRing";
+import { PerkBadge } from "./PerkBadge";
 
 function formatSalary(amount: number) {
   return `£${Math.round(amount / 1000)}k`;
@@ -134,60 +135,85 @@ export function JobDetailPanel({ job, scored, query, userSkills, allJobs, allSco
           </button>
         </div>
 
-        {/* Match Score Hero Block */}
-        <div className="mt-6 rounded-[10px] border border-primary/30 bg-[#E8F7F2] p-5">
-          <div className="flex items-center justify-between gap-6">
-            {/* Big score */}
-            <div>
-              <p className="text-[48px] font-bold leading-none text-primary">{matchPercent}%</p>
-              <p className="text-xs text-muted-foreground mt-1">Skill match</p>
-            </div>
-            {/* Stats */}
-            <div className="flex gap-8">
-              <div className="text-center">
-                <p className="text-xl font-bold text-primary">{matchedCount}</p>
-                <p className="text-[11px] text-muted-foreground">Your matches</p>
-              </div>
-              <div className="text-center">
-                <p className="text-xl font-bold text-primary">{job.skills.length}</p>
-                <p className="text-[11px] text-muted-foreground">Skills required</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Progress bar */}
-          <div className="mt-4">
-            <Progress value={matchPercent} className="h-1.5 bg-primary/15" />
-          </div>
-
-          {/* Skill pills */}
-          <div className="mt-4 space-y-3">
-            {matchedSkills.length > 0 && (
-              <div>
-                <p className="text-[11px] text-muted-foreground mb-1.5">You have these</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {matchedSkills.map((skill) => (
-                    <span key={skill} className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full bg-primary/20 text-primary font-medium">
-                      <Sparkles className="h-2.5 w-2.5" />{skill}
+        {/* Match Score Hero Block - Circular ring style (wearable inspired) */}
+        {(() => {
+          const tier = getScoreTier(matchPercent);
+          const isCelebratory = matchPercent >= 81;
+          return (
+            <div
+              className="mt-6 rounded-2xl p-5 border"
+              style={{ backgroundColor: tier.bg, borderColor: `${tier.color}33` }}
+            >
+              <div className="flex items-center gap-5">
+                <ScoreRing score={matchPercent} size={120} strokeWidth={11} />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    {isCelebratory && <PartyPopper className="h-4 w-4" style={{ color: tier.color }} />}
+                    <span
+                      className="text-xs font-bold uppercase tracking-wider"
+                      style={{ color: tier.text }}
+                    >
+                      {tier.label}
                     </span>
-                  ))}
+                  </div>
+                  <p className="mt-1 text-base font-semibold text-foreground leading-snug">
+                    {matchPercent >= 91
+                      ? "You're built for this role."
+                      : matchPercent >= 81
+                      ? "You're a strong fit here."
+                      : matchPercent >= 50
+                      ? "You've got most of what they need."
+                      : "A stretch role to grow into."}
+                  </p>
+                  <div className="flex gap-4 mt-3">
+                    <div className="flex items-center gap-1.5">
+                      <Trophy className="h-3.5 w-3.5" style={{ color: tier.color }} />
+                      <span className="text-sm font-bold" style={{ color: tier.text }}>{matchedCount}</span>
+                      <span className="text-xs text-muted-foreground">matched</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <Sparkles className="h-3.5 w-3.5 text-muted-foreground" />
+                      <span className="text-sm font-bold text-foreground">{job.skills.length}</span>
+                      <span className="text-xs text-muted-foreground">required</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            )}
-            {gapSkills.length > 0 && (
-              <div>
-                <p className="text-[11px] text-muted-foreground mb-1.5">You're missing these</p>
-                <div className="flex flex-wrap gap-1.5">
-                  {gapSkills.map((skill) => (
-                    <span key={skill} className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-[hsl(15,65%,52%)]/30 text-[hsl(15,65%,42%)] bg-[hsl(15,65%,52%)]/5 font-medium">
-                      <Plus className="h-2.5 w-2.5" />{skill}
-                    </span>
-                  ))}
-                </div>
+
+              {/* Skill pills */}
+              <div className="mt-5 space-y-3">
+                {matchedSkills.length > 0 && (
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">You bring</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {matchedSkills.map((skill) => (
+                        <span
+                          key={skill}
+                          className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full font-medium"
+                          style={{ backgroundColor: `${tier.color}26`, color: tier.text }}
+                        >
+                          <CheckCircle2 className="h-3 w-3" />{skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {gapSkills.length > 0 && (
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Room to grow</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {gapSkills.map((skill) => (
+                        <span key={skill} className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border border-[hsl(15,65%,52%)]/30 text-[hsl(15,65%,42%)] bg-[hsl(15,65%,52%)]/5 font-medium">
+                          <Plus className="h-2.5 w-2.5" />{skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
+          );
+        })()}
 
         {/* About this role */}
         <SectionHeading>About this role</SectionHeading>
@@ -222,24 +248,21 @@ export function JobDetailPanel({ job, scored, query, userSkills, allJobs, allSco
         {extra?.offers && extra.offers.length > 0 && (
           <>
             <SectionHeading>What's on offer</SectionHeading>
-            <ul className="space-y-0.5">
+            <div className="flex flex-wrap gap-2">
               {extra.offers.map((o, i) => (
-                <BulletItem key={i} icon="heart">{o}</BulletItem>
+                <PerkBadge key={i} text={o} variant="soft" />
               ))}
-            </ul>
+            </div>
           </>
         )}
 
         {/* Benefits */}
         {extra?.benefits && extra.benefits.length > 0 && (
           <>
-            <SectionHeading>Benefits</SectionHeading>
-            <div className="grid grid-cols-2 gap-2">
+            <SectionHeading>Benefits & perks</SectionHeading>
+            <div className="flex flex-wrap gap-2">
               {extra.benefits.map((b, i) => (
-                <div key={i} className="flex items-center gap-2 text-sm text-foreground/70 px-3 py-2 rounded-lg border border-[#F0F0EC]">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-primary shrink-0" />
-                  {b}
-                </div>
+                <PerkBadge key={i} text={b} variant="outline" />
               ))}
             </div>
           </>
