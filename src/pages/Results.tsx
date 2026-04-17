@@ -87,18 +87,6 @@ const ResultsPage = () => {
     if (isMobile) setShowMobileDetail(true);
   };
 
-  const handleQuizComplete = (userSkills: UserSkill[], topMatches: ScoredPosting[], quizSkippedQ3?: boolean) => {
-    setQuizResults({ userSkills, topMatches });
-    setResults(topMatches);
-    setSkillTags(userSkills.map((s) => s.name));
-    setFilters(defaultFilters);
-    if (topMatches.length > 0) setSelectedId(topMatches[0].id);
-    setQuizOpen(false);
-    setSkippedQ3(!!(quizSkippedQ3 ?? (window as any).__skilljob_skippedQ4));
-    (window as any).__skilljob_skippedQ4 = false;
-    setProudMomentOpen(false);
-    setProudMomentText("");
-  };
 
   const handleBrowseAll = () => {
     setResults(jobs);
