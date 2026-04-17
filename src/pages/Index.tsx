@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { HeroSearch } from "@/components/HeroSearch";
+import { Testimonials } from "@/components/Testimonials";
 import { TrustpilotBlade } from "@/components/TrustpilotBlade";
 import { HowItWorks } from "@/components/HowItWorks";
 import { Navbar } from "@/components/Navbar";
@@ -13,6 +14,7 @@ const Index = () => {
       <Navbar />
       <div className="pt-16">
         <HeroSearch onOpenQuiz={openQuiz} />
+        <Testimonials />
         <HowItWorks onStartQuiz={openQuiz} />
         <TrustpilotBlade />
       </div>

@@ -1,21 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   ArrowLeft,
   X,
   Loader2,
   Briefcase,
   GraduationCap,
-  UtensilsCrossed,
-  ShoppingBag,
-  Heart,
-  Cpu,
-  Building2,
-  Megaphone,
-  Palette,
-  Landmark,
-  BookOpen,
-  Wrench,
   Sparkles,
   Plus,
   MessageSquare,
@@ -36,22 +26,9 @@ import { SegmentedProgress } from "@/components/funnel/SegmentedProgress";
 import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
 import { getIndustryConfig, getIndustryQ2Tiles } from "@/lib/industryMapping";
 import { extractSkillsWithFallback } from "@/lib/extractSkillsApi";
+import { INDUSTRIES } from "@/data/industries";
 
 const TOTAL_STEPS = 5;
-
-// Each industry gets a tinted chip background + darker icon color
-const INDUSTRIES = [
-  { title: "Hospitality & Food Service", subtitle: "Hotels, restaurants, events", icon: UtensilsCrossed, chipBg: "hsl(38, 92%, 92%)", chipFg: "hsl(32, 75%, 38%)" },
-  { title: "Retail & Customer Service", subtitle: "Shops, support, client-facing roles", icon: ShoppingBag, chipBg: "hsl(340, 82%, 94%)", chipFg: "hsl(340, 70%, 45%)" },
-  { title: "Healthcare & Medicine", subtitle: "Hospitals, clinics, care roles", icon: Heart, chipBg: "hsl(8, 88%, 93%)", chipFg: "hsl(8, 72%, 48%)" },
-  { title: "Technology & Engineering", subtitle: "Software, hardware, IT", icon: Cpu, chipBg: "hsl(212, 90%, 93%)", chipFg: "hsl(212, 80%, 45%)" },
-  { title: "Business & Operations", subtitle: "Admin, logistics, management", icon: Building2, chipBg: "hsl(215, 18%, 92%)", chipFg: "hsl(215, 25%, 35%)" },
-  { title: "Sales & Marketing", subtitle: "Revenue, campaigns, outreach", icon: Megaphone, chipBg: "hsl(22, 92%, 92%)", chipFg: "hsl(22, 85%, 45%)" },
-  { title: "Creative & Media", subtitle: "Design, content, film, music", icon: Palette, chipBg: "hsl(272, 75%, 94%)", chipFg: "hsl(272, 60%, 50%)" },
-  { title: "Finance & Accounting", subtitle: "Banking, bookkeeping, auditing", icon: Landmark, chipBg: "hsl(155, 45%, 90%)", chipFg: "hsl(155, 55%, 25%)" },
-  { title: "Education & Social Care", subtitle: "Teaching, training, community", icon: BookOpen, chipBg: "hsl(178, 60%, 90%)", chipFg: "hsl(178, 60%, 30%)" },
-  { title: "Trades & Construction", subtitle: "Plumbing, electrical, building", icon: Wrench, chipBg: "hsl(32, 38%, 88%)", chipFg: "hsl(28, 45%, 35%)" },
-];
 
 // Generic activities (used for students or as fallback)
 const ACTIVITIES = [
@@ -246,13 +223,24 @@ const ANALYSING_PHASES = [
   "Finding your best matches…",
 ];
 
+interface FunnelLocationState {
+  prefillIndustry?: string;
+  isStudent?: boolean;
+}
+
 const FunnelQuiz = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1); // 1..5 visible; we use phase=path|industry|activities|motivation|proud|analysing|celebrate
-  const [phase, setPhase] = useState<"path" | "industry" | "activities" | "motivation" | "proud" | "analysing" | "celebrate">("path");
+  const location = useLocation();
+  const prefill = (location.state as FunnelLocationState | null) || null;
+  const hasPrefill = !!prefill?.prefillIndustry;
 
-  const [isStudent, setIsStudent] = useState(false);
-  const [industry, setIndustry] = useState<string | null>(null);
+  const [step, setStep] = useState(1); // 1..5 visible; we use phase=path|industry|activities|motivation|proud|analysing|celebrate
+  const [phase, setPhase] = useState<"path" | "industry" | "activities" | "motivation" | "proud" | "analysing" | "celebrate">(
+    hasPrefill ? "activities" : "path"
+  );
+
+  const [isStudent, setIsStudent] = useState(prefill?.isStudent ?? false);
+  const [industry, setIndustry] = useState<string | null>(prefill?.prefillIndustry ?? null);
   const [q1Selections, setQ1Selections] = useState<string[]>([]);
   const [q2Selection, setQ2Selection] = useState<string | null>(null);
   const [q4Answer, setQ4Answer] = useState("");

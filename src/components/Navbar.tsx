@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import skilljobLogo from "@/assets/skilljob-logo.png";
 
 export function Navbar() {
+  const navigate = useNavigate();
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 h-16 flex items-center justify-between">
@@ -14,6 +16,12 @@ export function Navbar() {
           <a href="#" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors hidden sm:block">
             For Employers
           </a>
+          <button
+            onClick={() => navigate("/quiz")}
+            className="hidden sm:inline-flex h-9 px-4 rounded-lg border border-primary text-primary text-sm font-semibold hover:bg-primary/5 transition-colors"
+          >
+            Take the quiz →
+          </button>
           <button className="h-9 px-5 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:brightness-110 transition-all">
             Sign Up
           </button>

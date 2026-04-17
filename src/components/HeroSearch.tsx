@@ -1,135 +1,28 @@
-import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Sparkles, X } from "lucide-react";
-import { searchJobsBySkills } from "@/data/jobs";
-import heroPeople from "@/assets/hero-people.jpg";
+import { HeroDemo } from "@/components/HeroDemo";
+import { INDUSTRIES } from "@/data/industries";
 
 interface HeroSearchProps {
   onOpenQuiz: () => void;
 }
 
-const POPULAR_SKILLS = [
-  "Communication",
-  "Problem Solving",
-  "Documentation",
-  "Empathy",
-  "Research",
-  "Reporting",
-  "Creativity",
-  "Excel",
-  "Negotiation",
-  "Teamwork",
-];
-
-const MAX_SKILLS = 6;
-
 export function HeroSearch({ onOpenQuiz }: HeroSearchProps) {
   const navigate = useNavigate();
-  const [skillTags, setSkillTags] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (showSearch) {
-      setTimeout(() => inputRef.current?.focus(), 100);
-    }
-  }, [showSearch]);
-
-  const addSkills = (text: string) => {
-    const parts = text.split(",").map((s) => s.trim()).filter(Boolean);
-    setSkillTags((prev) => {
-      const next = [...prev];
-      for (const part of parts) {
-        if (next.length >= MAX_SKILLS) break;
-        if (!next.some((s) => s.toLowerCase() === part.toLowerCase())) {
-          next.push(part);
-        }
-      }
-      return next;
-    });
-    setInputValue("");
+  const goToIndustry = (industry: string) => {
+    // Skip Step 1 (path) and land directly in Step 3 (activities) with industry pre-selected.
+    navigate("/quiz", { state: { prefillIndustry: industry, isStudent: false } });
   };
 
-  const removeSkill = (skill: string) => {
-    setSkillTags((prev) => prev.filter((s) => s !== skill));
-  };
-
-  const doSearch = (tags: string[]) => {
-    if (tags.length === 0) return;
-    const matched = searchJobsBySkills(tags);
-    navigate("/results", { state: { results: matched, skillTags: tags } });
-  };
-
-  const handleSearch = () => {
-    let tags = [...skillTags];
-    if (inputValue.trim()) {
-      const parts = inputValue.split(",").map((s) => s.trim()).filter(Boolean);
-      for (const part of parts) {
-        if (tags.length >= MAX_SKILLS) break;
-        if (!tags.some((s) => s.toLowerCase() === part.toLowerCase())) {
-          tags.push(part);
-        }
-      }
-      setSkillTags(tags);
-      setInputValue("");
-    }
-    doSearch(tags);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    if (val.includes(",")) {
-      addSkills(val);
-    } else {
-      setInputValue(val);
-    }
-  };
-
-  const handlePaste = (e: React.ClipboardEvent) => {
-    const pasted = e.clipboardData.getData("text");
-    if (pasted.includes(",")) {
-      e.preventDefault();
-      addSkills(pasted);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      if (inputValue.trim()) {
-        addSkills(inputValue);
-      }
-      setTimeout(() => {
-        setSkillTags((current) => {
-          if (current.length > 0) doSearch(current);
-          return current;
-        });
-      }, 0);
-    } else if (e.key === "Backspace" && !inputValue && skillTags.length > 0) {
-      setSkillTags((prev) => prev.slice(0, -1));
-    }
-  };
-
-  const handlePopularClick = (skill: string) => {
-    if (skillTags.length >= MAX_SKILLS) return;
-    if (!skillTags.some((s) => s.toLowerCase() === skill.toLowerCase())) {
-      setSkillTags((prev) => [...prev, skill]);
-    }
-  };
-
-  const canSearch = skillTags.length >= 1;
-
-  const getPlaceholder = () => {
-    if (skillTags.length === 0) return "Try Customer Service or Team Leadership...";
-    if (skillTags.length === 1) return "Add another skill or press Enter to search";
-    return "Press Enter to search";
+  const goToSearch = () => {
+    // Send users straight to the results page with an empty query — they can start typing skills there.
+    navigate("/results", { state: { results: [], skillTags: [] } });
   };
 
   return (
-    <section className="hero-bg min-h-screen flex items-center px-4 md:px-8 lg:px-16 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-20">
-        {/* Left: Text + Search */}
+    <section className="hero-bg px-4 md:px-8 lg:px-16 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pt-14 pb-16 lg:py-20">
+        {/* Left: Text + CTAs + industry tiles */}
         <div className="relative z-10">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight animate-fade-up">
             Stop searching for titles.{" "}
@@ -140,121 +33,57 @@ export function HeroSearch({ onOpenQuiz }: HeroSearchProps) {
             Most job sites look at your job title. We look at what you can actually do. Get matched to roles you're actually built for.
           </p>
 
-          {/* Two-path entry point */}
+          {/* Primary CTA */}
+          <div className="mt-9 max-w-xl animate-fade-up-delay-2">
+            <button
+              onClick={onOpenQuiz}
+              className="w-full h-14 rounded-xl bg-primary text-primary-foreground font-bold text-base hover:brightness-110 transition-all shadow-lg shadow-primary/20"
+            >
+              Start the quiz →
+            </button>
+            <p className="mt-3 text-center text-xs text-muted-foreground font-medium">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary">
+                2 minutes · No signup · Free
+              </span>
+            </p>
+            <button
+              onClick={goToSearch}
+              className="mt-4 block mx-auto text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-4"
+            >
+              Already know your skills? Search directly →
+            </button>
+          </div>
+
+          {/* Embedded Step 1 — industry tiles */}
           <div className="mt-10 max-w-xl animate-fade-up-delay-2">
-            <h2 className="text-lg font-bold text-foreground mb-4">How would you like to get started?</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="bg-card border-[1.5px] border-primary rounded-xl p-6 hover:border-primary/80 transition-all flex flex-col">
-                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-primary-foreground bg-primary px-2.5 py-0.5 rounded-full w-fit mb-3">
-                  ★ Recommended
-                </span>
-                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Sparkles className="h-5 w-5 text-primary" />
-                </div>
-                <h3 className="font-bold text-foreground mb-1">Help me discover my skills</h3>
-                <p className="text-sm text-muted-foreground mb-5 flex-1">Most accurate results. Tell us what you do and we'll find roles you didn't know you qualified for.</p>
+            <p className="text-sm font-semibold text-foreground mb-3">
+              Or jump in — pick your industry to begin:
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+              {INDUSTRIES.map(({ title, icon: Icon, chipBg, chipFg }) => (
                 <button
-                  onClick={onOpenQuiz}
-                  className="w-full h-11 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 transition-all"
+                  key={title}
+                  onClick={() => goToIndustry(title)}
+                  className="group flex flex-col items-center gap-2 p-3 rounded-xl border border-border bg-card hover:border-primary hover:shadow-md hover:shadow-primary/10 hover:-translate-y-0.5 transition-all"
                 >
-                  Start the quiz →
-                </button>
-              </div>
-
-              <div className="bg-card border border-border rounded-xl p-6 hover:border-primary/40 transition-all flex flex-col">
-                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4 mt-[26px]">
-                  <Search className="h-5 w-5 text-primary" />
-                </div>
-                <h3 className="font-bold text-foreground mb-1">I know my skills</h3>
-                <p className="text-sm text-muted-foreground mb-5 flex-1">Already know your skills? Search directly and get matched instantly.</p>
-                <button
-                  onClick={() => setShowSearch(true)}
-                  className="w-full h-11 rounded-lg border border-primary text-primary font-semibold text-sm hover:bg-primary/5 transition-all"
-                >
-                  Search by skill →
-                </button>
-              </div>
-            </div>
-
-            {showSearch && (
-              <div className="mt-5 animate-fade-in">
-                <div className="flex items-end gap-2">
-                  <div className="relative flex-1 min-h-[44px] flex flex-wrap items-center gap-1.5 pl-12 pr-3 py-2.5 rounded-xl bg-card border border-border focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary transition-all shadow-sm">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                    {skillTags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-[20px] bg-primary text-primary-foreground text-sm font-medium"
-                      >
-                        {tag}
-                        <button
-                          onClick={() => removeSkill(tag)}
-                          className="hover:bg-primary-foreground/20 rounded-full p-0.5 transition-colors"
-                        >
-                          <X className="h-3 w-3" />
-                        </button>
-                      </span>
-                    ))}
-                    {skillTags.length < MAX_SKILLS && (
-                      <input
-                        ref={inputRef}
-                        type="text"
-                        value={inputValue}
-                        onChange={handleInputChange}
-                        onKeyDown={handleKeyDown}
-                        onPaste={handlePaste}
-                        placeholder={getPlaceholder()}
-                        className="flex-1 min-w-[120px] h-8 bg-transparent text-foreground placeholder:text-muted-foreground text-base focus:outline-none"
-                      />
-                    )}
-                  </div>
-                  <button
-                    onClick={handleSearch}
-                    disabled={!canSearch}
-                    className="h-11 px-8 rounded-xl bg-primary text-primary-foreground font-bold text-lg hover:brightness-110 transition-all shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
+                  <div
+                    className="h-11 w-11 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
+                    style={{ backgroundColor: chipBg }}
                   >
-                    Search
-                  </button>
-                </div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <span className="text-sm text-muted-foreground">Popular:</span>
-                  {POPULAR_SKILLS.filter((s) => !skillTags.some((t) => t.toLowerCase() === s.toLowerCase())).map((skill) => (
-                    <button
-                      key={skill}
-                      onClick={() => handlePopularClick(skill)}
-                      className="text-sm px-3 py-1 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer"
-                    >
-                      {skill}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+                    <Icon className="h-5 w-5" style={{ color: chipFg }} strokeWidth={1.75} />
+                  </div>
+                  <span className="text-[11px] font-semibold text-foreground text-center leading-tight">
+                    {title.split(" & ")[0]}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Right: Hero Image */}
+        {/* Right: Animated product demo */}
         <div className="relative animate-fade-up-delay hidden lg:block">
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-primary/10">
-            <img
-              src={heroPeople}
-              alt="Diverse group of professionals collaborating on job search"
-              width={1280}
-              height={720}
-              className="w-full h-auto object-cover"
-            />
-            <div className="absolute bottom-6 left-6 right-6 bg-card/90 backdrop-blur-sm rounded-xl p-4 border border-border shadow-lg">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-primary/15 flex items-center justify-center">
-                  <Search className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-foreground">2,604 roles matched today</p>
-                  <p className="text-xs text-muted-foreground">Based on skills, not titles</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <HeroDemo />
         </div>
       </div>
     </section>
