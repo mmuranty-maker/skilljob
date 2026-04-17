@@ -8,8 +8,6 @@ import { ResultsTopBar } from "@/components/results/ResultsTopBar";
 import { FilterSidebar, type Filters, defaultFilters } from "@/components/results/FilterSidebar";
 import { JobListCard } from "@/components/results/JobListCard";
 import { JobDetailPanel } from "@/components/results/JobDetailPanel";
-import { SkeletonCards } from "@/components/results/SkeletonCards";
-import { SkillQuiz } from "@/components/SkillQuiz";
 import { searchJobsBySkills, jobs } from "@/data/jobs";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -32,7 +30,7 @@ const ResultsPage = () => {
   const [selectedId, setSelectedId] = useState<string | null>(results.length > 0 ? results[0].id : null);
   const [showMobileDetail, setShowMobileDetail] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
-  const [quizOpen, setQuizOpen] = useState(false);
+  const openQuiz = () => navigate("/quiz");
   const [applyOpen, setApplyOpen] = useState(false);
   const [skippedQ4, setSkippedQ3] = useState(false);
   const [proudMomentOpen, setProudMomentOpen] = useState(false);
@@ -89,18 +87,6 @@ const ResultsPage = () => {
     if (isMobile) setShowMobileDetail(true);
   };
 
-  const handleQuizComplete = (userSkills: UserSkill[], topMatches: ScoredPosting[], quizSkippedQ3?: boolean) => {
-    setQuizResults({ userSkills, topMatches });
-    setResults(topMatches);
-    setSkillTags(userSkills.map((s) => s.name));
-    setFilters(defaultFilters);
-    if (topMatches.length > 0) setSelectedId(topMatches[0].id);
-    setQuizOpen(false);
-    setSkippedQ3(!!(quizSkippedQ3 ?? (window as any).__skilljob_skippedQ4));
-    (window as any).__skilljob_skippedQ4 = false;
-    setProudMomentOpen(false);
-    setProudMomentText("");
-  };
 
   const handleBrowseAll = () => {
     setResults(jobs);
@@ -144,7 +130,7 @@ const ResultsPage = () => {
           <FilterSidebar
             filters={filters}
             onChange={setFilters}
-            onOpenQuiz={() => setQuizOpen(true)}
+            onOpenQuiz={openQuiz}
             className="w-[220px] shrink-0 sticky top-14 h-[calc(100vh-56px)] overflow-y-auto custom-scrollbar"
           />
         )}
@@ -232,7 +218,7 @@ const ResultsPage = () => {
               </p>
               <div className="flex gap-3 w-full max-w-[280px]">
                 <button
-                  onClick={() => setQuizOpen(true)}
+                  onClick={openQuiz}
                   className="flex-1 h-10 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:brightness-110 transition-all"
                 >
                   Take the quiz →
@@ -315,18 +301,10 @@ const ResultsPage = () => {
                 <X className="h-5 w-5 text-muted-foreground" />
               </button>
             </div>
-            <FilterSidebar filters={filters} onChange={setFilters} onOpenQuiz={() => setQuizOpen(true)} className="border-r-0" />
+            <FilterSidebar filters={filters} onChange={setFilters} onOpenQuiz={openQuiz} className="border-r-0" />
           </div>
         </div>
       )}
-
-      {/* Quiz modal */}
-      <SkillQuiz
-        open={quizOpen}
-        onClose={() => setQuizOpen(false)}
-        onComplete={() => {}}
-        onQuizResults={handleQuizComplete}
-      />
 
       {/* Application modal */}
       {applyOpen && selectedJob && (
