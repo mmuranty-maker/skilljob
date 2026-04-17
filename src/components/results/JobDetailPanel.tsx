@@ -235,6 +235,18 @@ export function JobDetailPanel({ job, scored, query, userSkills, allJobs, allSco
         <SectionHeading>About this role</SectionHeading>
         <p className="text-sm text-foreground/80 leading-[1.7]">{job.description}</p>
 
+        {/* What's on offer */}
+        {extra?.offers && extra.offers.length > 0 && (
+          <>
+            <SectionHeading>What's on offer</SectionHeading>
+            <div className="flex flex-wrap gap-2">
+              {extra.offers.map((o, i) => (
+                <PerkBadge key={i} text={o} variant="soft" />
+              ))}
+            </div>
+          </>
+        )}
+
         {/* Responsibilities */}
         {extra?.responsibilities && extra.responsibilities.length > 0 && (
           <>
@@ -257,18 +269,6 @@ export function JobDetailPanel({ job, scored, query, userSkills, allJobs, allSco
                 return <BulletItem key={i} icon="check" highlight={highlight}>{r}</BulletItem>;
               })}
             </ul>
-          </>
-        )}
-
-        {/* What's on offer */}
-        {extra?.offers && extra.offers.length > 0 && (
-          <>
-            <SectionHeading>What's on offer</SectionHeading>
-            <div className="flex flex-wrap gap-2">
-              {extra.offers.map((o, i) => (
-                <PerkBadge key={i} text={o} variant="soft" />
-              ))}
-            </div>
           </>
         )}
 
