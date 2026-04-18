@@ -693,7 +693,7 @@ const FunnelQuiz = () => {
                   Skip and use my answers so far →
                 </button>
                 <button
-                  onClick={() => showAffirmation("Right — let's put it all together.", () => startAnalysing(false))}
+                  onClick={() => celebrate("Right — let's put it all together.", () => startAnalysing(false), 4)}
                   disabled={q4Answer.length < 15}
                   className="h-12 px-8 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
