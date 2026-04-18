@@ -447,7 +447,7 @@ const FunnelQuiz = () => {
             <ArrowLeft className="h-4 w-4" />
             <span className="hidden sm:inline">Back</span>
           </button>
-          <SegmentedProgress current={currentStep} total={TOTAL_STEPS} />
+          <SegmentedProgress current={currentStep} total={TOTAL_STEPS} warmup={isWarmup} />
           <button
             onClick={exitQuiz}
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
@@ -462,6 +462,44 @@ const FunnelQuiz = () => {
       {/* Body */}
       <main className="flex-1 px-4 sm:px-6 py-10 sm:py-16 overflow-y-auto">
         <div className="max-w-3xl mx-auto w-full">
+          {/* Q0 — NAME (warm-up) */}
+          {phase === "name" && (
+            <div className="animate-fade-in max-w-xl mx-auto pt-4">
+              <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-3">
+                What should we call you?
+              </h1>
+              <p className="text-base text-muted-foreground mb-8">
+                We'll use this to make things feel a bit more personal. Nothing else needed right now.
+              </p>
+              <input
+                type="text"
+                inputMode="text"
+                autoFocus
+                maxLength={30}
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); submitName(nameInput); } }}
+                placeholder="Your first name"
+                aria-label="Your first name"
+                className="w-full h-14 px-5 rounded-xl bg-card border-2 border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all text-lg"
+              />
+              <div className="flex flex-col items-stretch gap-3 mt-8">
+                <button
+                  onClick={() => submitName(nameInput)}
+                  className="h-12 px-8 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all"
+                >
+                  Nice to meet you →
+                </button>
+                <button
+                  onClick={() => submitName("")}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2 self-center"
+                >
+                  Prefer not to say — skip
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* PATH */}
           {phase === "path" && (
             <div className="animate-fade-in">
