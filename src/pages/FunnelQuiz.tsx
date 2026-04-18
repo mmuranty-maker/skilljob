@@ -687,7 +687,7 @@ const FunnelQuiz = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:justify-end items-stretch sm:items-center">
                 <button
-                  onClick={() => showAffirmation("Right — let's put it all together.", () => startAnalysing(true))}
+                  onClick={() => celebrate("Right — let's put it all together.", () => startAnalysing(true), 4)}
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2 sm:mr-auto"
                 >
                   Skip and use my answers so far →
