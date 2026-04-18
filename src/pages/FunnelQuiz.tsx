@@ -652,7 +652,7 @@ const FunnelQuiz = () => {
               </div>
               <div className="flex justify-end">
                 <button
-                  onClick={() => showAffirmation("Interesting. Not many people can describe that the way you did.", () => setPhase("proud"))}
+                  onClick={() => celebrate("Interesting. Not many people can describe that the way you did.", () => setPhase("proud"), 3)}
                   disabled={!q2Selection}
                   className="h-12 px-8 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
