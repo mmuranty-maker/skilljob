@@ -745,7 +745,9 @@ const FunnelQuiz = () => {
                   Your skill profile is ready
                 </div>
                 <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-foreground mb-3">
-                  Here are your skills
+                  {firstName
+                    ? `Here's what we saw in your answers, ${firstName}`
+                    : "Here's what we saw in your answers"}
                 </h1>
                 <p className="text-lg text-muted-foreground max-w-xl mx-auto">
                   You specialise in <span className="text-foreground font-semibold">{specialism}</span>.
@@ -831,6 +833,18 @@ const FunnelQuiz = () => {
           )}
         </div>
       </main>
+
+      {/* Affirmation transition overlay */}
+      {affirmation && (
+        <AffirmationScreen
+          message={affirmation.message}
+          onContinue={() => {
+            const fn = affirmation.next;
+            setAffirmation(null);
+            fn();
+          }}
+        />
+      )}
     </div>
   );
 };
