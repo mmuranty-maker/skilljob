@@ -260,19 +260,7 @@ const FunnelQuiz = () => {
     | "celebrate";
   const [phase, setPhase] = useState<Phase>(hasPrefill ? "activities" : "name");
 
-  // Inline celebration: shows a small pill above the next step's headline + briefly pulses the just-completed dot
-  const [inlineMessage, setInlineMessage] = useState<string>("");
-  const [pulseIndex, setPulseIndex] = useState<number | null>(null);
-  const celebrate = (message: string, next: () => void, completedStep?: number) => {
-    setInlineMessage(message);
-    if (completedStep) {
-      setPulseIndex(completedStep);
-      setTimeout(() => setPulseIndex(null), 700);
-    }
-    next();
-  };
-
-  // First name (Q0)
+  // First name (Q1)
   const [firstName, setFirstName] = useState<string>(() => {
     if (typeof window === "undefined") return "";
     try { return localStorage.getItem(FIRST_NAME_KEY) ?? ""; } catch { return ""; }
@@ -307,19 +295,18 @@ const FunnelQuiz = () => {
   const q3Placeholder = industryConfig?.q4.placeholder
     ?? "e.g. I trained 3 new starters, I reorganised how we handle complaints, I hit my sales target during a really tough month…";
 
-  // Step ↔ phase mapping. `name` is Step 0 (warm-up).
+  // Step ↔ phase mapping. `name` is now Step 1.
   const phaseToStep: Record<Phase, number> = {
-    name: 0,
-    path: 1,
-    industry: 2,
-    activities: 3,
-    motivation: 4,
-    proud: 5,
-    analysing: 5,
-    celebrate: 5,
+    name: 1,
+    path: 2,
+    industry: 3,
+    activities: 4,
+    motivation: 5,
+    proud: 6,
+    analysing: 6,
+    celebrate: 6,
   };
   const currentStep = phaseToStep[phase];
-  const isWarmup = phase === "name";
 
   // Analysing animation
   useEffect(() => {
@@ -359,14 +346,11 @@ const FunnelQuiz = () => {
     navigate("/");
   };
 
-  // Submit Q0 → inline pill on next step
+  // Submit Q1 (name) → advance to path
   const submitName = (name: string) => {
     const cleaned = name.trim().slice(0, 30);
     persistFirstName(cleaned);
-    const msg = cleaned
-      ? `Lovely to meet you, ${cleaned}.`
-      : "Let's see what you've been up to.";
-    celebrate(msg, () => setPhase("path"), 0);
+    setPhase("path");
   };
 
   const exitQuiz = () => navigate("/");
