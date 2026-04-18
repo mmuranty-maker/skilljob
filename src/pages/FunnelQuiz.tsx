@@ -31,18 +31,6 @@ import { INDUSTRIES } from "@/data/industries";
 const TOTAL_STEPS = 6;
 const FIRST_NAME_KEY = "skilljob.firstName";
 
-// Pick affirmation copy after the industry step (Step 1)
-function getIndustryAffirmation(industry: string | null): string {
-  if (!industry) return "That's a great starting point.";
-  const i = industry.toLowerCase();
-  if (i.includes("hospitality")) return "Hospitality — one of the most transferable skill bases in the UK. Nice starting point.";
-  if (i.includes("retail")) return "Retail — you've probably got more skills than the CV template ever asked you about.";
-  if (i.includes("health") || i.includes("care") || i.includes("social")) return "Care work — some of the toughest and most-valued skills going. Keep going.";
-  if (i.includes("business") || i.includes("operations") || i.includes("admin") || i.includes("finance")) return "Admin — quiet backbone of British workplaces. We see you.";
-  if (i.includes("trade") || i.includes("construction") || i.includes("warehouse") || i.includes("logistic")) return "You've built skills most people never see. Let's name them.";
-  if (i.includes("creative") || i.includes("media")) return "Creative work — notoriously under-described on CVs. We'll fix that.";
-  return "That's a great starting point.";
-}
 
 // Generic activities (used for students or as fallback)
 const ACTIVITIES = [
