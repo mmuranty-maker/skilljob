@@ -343,12 +343,25 @@ const FunnelQuiz = () => {
   }, [phase]);
 
   const goBack = () => {
+    // If an affirmation is showing, dismiss it back to where we came from
+    if (affirmation) { setAffirmation(null); return; }
+    if (phase === "path") { setPhase("name"); return; }
     if (phase === "industry") { setPhase("path"); return; }
     if (phase === "activities") { setPhase("industry"); return; }
     if (phase === "motivation") { setPhase("activities"); return; }
     if (phase === "proud") { setPhase("motivation"); return; }
     if (phase === "celebrate") { setPhase("proud"); confettiFiredRef.current = false; return; }
     navigate("/");
+  };
+
+  // Submit Q0 → affirmation → path
+  const submitName = (name: string) => {
+    const cleaned = name.trim().slice(0, 30);
+    persistFirstName(cleaned);
+    const msg = cleaned
+      ? `Lovely, ${cleaned} — let's see what you've been up to.`
+      : "Let's see what you've been up to.";
+    showAffirmation(msg, "path");
   };
 
   const exitQuiz = () => navigate("/");
