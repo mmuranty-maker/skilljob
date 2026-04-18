@@ -351,8 +351,6 @@ const FunnelQuiz = () => {
   }, [phase]);
 
   const goBack = () => {
-    // If an affirmation is showing, dismiss it back to where we came from
-    if (affirmation) { setAffirmation(null); return; }
     if (phase === "path") { setPhase("name"); return; }
     if (phase === "industry") { setPhase("path"); return; }
     if (phase === "activities") { setPhase("industry"); return; }
@@ -362,14 +360,14 @@ const FunnelQuiz = () => {
     navigate("/");
   };
 
-  // Submit Q0 → affirmation → path
+  // Submit Q0 → inline pill on next step
   const submitName = (name: string) => {
     const cleaned = name.trim().slice(0, 30);
     persistFirstName(cleaned);
     const msg = cleaned
-      ? `Lovely, ${cleaned} — let's see what you've been up to.`
+      ? `Lovely to meet you, ${cleaned}.`
       : "Let's see what you've been up to.";
-    showAffirmation(msg, () => setPhase("path"));
+    celebrate(msg, () => setPhase("path"), 0);
   };
 
   const exitQuiz = () => navigate("/");
