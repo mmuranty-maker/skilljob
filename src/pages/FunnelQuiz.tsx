@@ -546,7 +546,7 @@ const FunnelQuiz = () => {
                       setIndustry(title);
                       setQ2Selection(null);
                       setQ1Selections([]);
-                      setPhase("activities");
+                      showAffirmation(getIndustryAffirmation(title), () => setPhase("activities"));
                     }}
                     className={`text-left p-4 rounded-xl border-2 transition-all flex items-start gap-3 ${
                       industry === title
@@ -610,7 +610,7 @@ const FunnelQuiz = () => {
               </div>
               <div className="flex justify-end">
                 <button
-                  onClick={() => setPhase("motivation")}
+                  onClick={() => showAffirmation("Tick — that's a few real skills already.", () => setPhase("motivation"))}
                   disabled={q1Selections.length === 0}
                   className="h-12 px-8 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
@@ -646,7 +646,7 @@ const FunnelQuiz = () => {
               </div>
               <div className="flex justify-end">
                 <button
-                  onClick={() => setPhase("proud")}
+                  onClick={() => showAffirmation("Interesting. Not many people can describe that the way you did.", () => setPhase("proud"))}
                   disabled={!q2Selection}
                   className="h-12 px-8 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
