@@ -23,13 +23,12 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { SegmentedProgress } from "@/components/funnel/SegmentedProgress";
-import { InlineAffirmation } from "@/components/funnel/InlineAffirmation";
 import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
 import { getIndustryConfig, getIndustryQ2Tiles } from "@/lib/industryMapping";
 import { extractSkillsWithFallback } from "@/lib/extractSkillsApi";
 import { INDUSTRIES } from "@/data/industries";
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 6;
 const FIRST_NAME_KEY = "skilljob.firstName";
 
 // Pick affirmation copy after the industry step (Step 1)
