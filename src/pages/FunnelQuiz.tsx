@@ -681,13 +681,13 @@ const FunnelQuiz = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:justify-end items-stretch sm:items-center">
                 <button
-                  onClick={() => startAnalysing(true)}
+                  onClick={() => showAffirmation("Right — let's put it all together.", () => startAnalysing(true))}
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2 sm:mr-auto"
                 >
                   Skip and use my answers so far →
                 </button>
                 <button
-                  onClick={() => startAnalysing(false)}
+                  onClick={() => showAffirmation("Right — let's put it all together.", () => startAnalysing(false))}
                   disabled={q4Answer.length < 15}
                   className="h-12 px-8 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
