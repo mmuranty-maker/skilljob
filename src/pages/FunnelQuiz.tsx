@@ -453,7 +453,7 @@ const FunnelQuiz = () => {
             <ArrowLeft className="h-4 w-4" />
             <span className="hidden sm:inline">Back</span>
           </button>
-          <SegmentedProgress current={currentStep} total={TOTAL_STEPS} warmup={isWarmup} />
+          <SegmentedProgress current={currentStep} total={TOTAL_STEPS} warmup={isWarmup} pulseIndex={pulseIndex} />
           <button
             onClick={exitQuiz}
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
