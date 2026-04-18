@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { SegmentedProgress } from "@/components/funnel/SegmentedProgress";
-import { AffirmationScreen } from "@/components/funnel/AffirmationScreen";
+import { InlineAffirmation } from "@/components/funnel/InlineAffirmation";
 import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
 import { getIndustryConfig, getIndustryQ2Tiles } from "@/lib/industryMapping";
 import { extractSkillsWithFallback } from "@/lib/extractSkillsApi";
