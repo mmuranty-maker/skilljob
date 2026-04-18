@@ -23,27 +23,14 @@ import {
 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { SegmentedProgress } from "@/components/funnel/SegmentedProgress";
-import { InlineAffirmation } from "@/components/funnel/InlineAffirmation";
 import { runQuizScoring, type UserSkill, type ScoredPosting } from "@/lib/quizScoring";
 import { getIndustryConfig, getIndustryQ2Tiles } from "@/lib/industryMapping";
 import { extractSkillsWithFallback } from "@/lib/extractSkillsApi";
 import { INDUSTRIES } from "@/data/industries";
 
-const TOTAL_STEPS = 5;
+const TOTAL_STEPS = 6;
 const FIRST_NAME_KEY = "skilljob.firstName";
 
-// Pick affirmation copy after the industry step (Step 1)
-function getIndustryAffirmation(industry: string | null): string {
-  if (!industry) return "That's a great starting point.";
-  const i = industry.toLowerCase();
-  if (i.includes("hospitality")) return "Hospitality — one of the most transferable skill bases in the UK. Nice starting point.";
-  if (i.includes("retail")) return "Retail — you've probably got more skills than the CV template ever asked you about.";
-  if (i.includes("health") || i.includes("care") || i.includes("social")) return "Care work — some of the toughest and most-valued skills going. Keep going.";
-  if (i.includes("business") || i.includes("operations") || i.includes("admin") || i.includes("finance")) return "Admin — quiet backbone of British workplaces. We see you.";
-  if (i.includes("trade") || i.includes("construction") || i.includes("warehouse") || i.includes("logistic")) return "You've built skills most people never see. Let's name them.";
-  if (i.includes("creative") || i.includes("media")) return "Creative work — notoriously under-described on CVs. We'll fix that.";
-  return "That's a great starting point.";
-}
 
 // Generic activities (used for students or as fallback)
 const ACTIVITIES = [
@@ -261,19 +248,7 @@ const FunnelQuiz = () => {
     | "celebrate";
   const [phase, setPhase] = useState<Phase>(hasPrefill ? "activities" : "name");
 
-  // Inline celebration: shows a small pill above the next step's headline + briefly pulses the just-completed dot
-  const [inlineMessage, setInlineMessage] = useState<string>("");
-  const [pulseIndex, setPulseIndex] = useState<number | null>(null);
-  const celebrate = (message: string, next: () => void, completedStep?: number) => {
-    setInlineMessage(message);
-    if (completedStep) {
-      setPulseIndex(completedStep);
-      setTimeout(() => setPulseIndex(null), 700);
-    }
-    next();
-  };
-
-  // First name (Q0)
+  // First name (Q1)
   const [firstName, setFirstName] = useState<string>(() => {
     if (typeof window === "undefined") return "";
     try { return localStorage.getItem(FIRST_NAME_KEY) ?? ""; } catch { return ""; }
@@ -308,19 +283,18 @@ const FunnelQuiz = () => {
   const q3Placeholder = industryConfig?.q4.placeholder
     ?? "e.g. I trained 3 new starters, I reorganised how we handle complaints, I hit my sales target during a really tough month…";
 
-  // Step ↔ phase mapping. `name` is Step 0 (warm-up).
+  // Step ↔ phase mapping. `name` is now Step 1.
   const phaseToStep: Record<Phase, number> = {
-    name: 0,
-    path: 1,
-    industry: 2,
-    activities: 3,
-    motivation: 4,
-    proud: 5,
-    analysing: 5,
-    celebrate: 5,
+    name: 1,
+    path: 2,
+    industry: 3,
+    activities: 4,
+    motivation: 5,
+    proud: 6,
+    analysing: 6,
+    celebrate: 6,
   };
   const currentStep = phaseToStep[phase];
-  const isWarmup = phase === "name";
 
   // Analysing animation
   useEffect(() => {
@@ -360,14 +334,11 @@ const FunnelQuiz = () => {
     navigate("/");
   };
 
-  // Submit Q0 → inline pill on next step
+  // Submit Q1 (name) → advance to path
   const submitName = (name: string) => {
     const cleaned = name.trim().slice(0, 30);
     persistFirstName(cleaned);
-    const msg = cleaned
-      ? `Lovely to meet you, ${cleaned}.`
-      : "Let's see what you've been up to.";
-    celebrate(msg, () => setPhase("path"), 0);
+    setPhase("path");
   };
 
   const exitQuiz = () => navigate("/");
@@ -453,7 +424,7 @@ const FunnelQuiz = () => {
             <ArrowLeft className="h-4 w-4" />
             <span className="hidden sm:inline">Back</span>
           </button>
-          <SegmentedProgress current={currentStep} total={TOTAL_STEPS} warmup={isWarmup} pulseIndex={pulseIndex} />
+          <SegmentedProgress current={currentStep} total={TOTAL_STEPS} />
           <button
             onClick={exitQuiz}
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
@@ -468,14 +439,14 @@ const FunnelQuiz = () => {
       {/* Body */}
       <main className="flex-1 px-4 sm:px-6 py-10 sm:py-16 overflow-y-auto">
         <div className="max-w-3xl mx-auto w-full">
-          {/* Q0 — NAME (warm-up) */}
+          {/* Q1 — NAME */}
           {phase === "name" && (
             <div className="animate-fade-in max-w-xl mx-auto pt-4">
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-3">
                 What should we call you?
               </h1>
               <p className="text-base text-muted-foreground mb-8">
-                We'll use this to make things feel a bit more personal. Nothing else needed right now.
+                First name's enough. No email, no CV — that can all wait.
               </p>
               <input
                 type="text"
@@ -485,7 +456,7 @@ const FunnelQuiz = () => {
                 value={nameInput}
                 onChange={(e) => setNameInput(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); submitName(nameInput); } }}
-                placeholder="Your first name"
+                placeholder="e.g. Sarah"
                 aria-label="Your first name"
                 className="w-full h-14 px-5 rounded-xl bg-card border-2 border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all text-lg"
               />
@@ -494,7 +465,7 @@ const FunnelQuiz = () => {
                   onClick={() => submitName(nameInput)}
                   className="h-12 px-8 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all"
                 >
-                  Nice to meet you →
+                  Let's go →
                 </button>
                 <button
                   onClick={() => submitName("")}
@@ -509,7 +480,7 @@ const FunnelQuiz = () => {
           {/* PATH */}
           {phase === "path" && (
             <div className="animate-fade-in">
-              <InlineAffirmation message={inlineMessage} resetKey="path" />
+              
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-3">
                 First, which best describes you?
               </h1>
@@ -539,7 +510,7 @@ const FunnelQuiz = () => {
           {/* INDUSTRY */}
           {phase === "industry" && (
             <div className="animate-fade-in">
-              <InlineAffirmation message={inlineMessage} resetKey="industry" />
+              
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-3">
                 {isStudent ? "What area interests you most?" : "What industry do you work in?"}
               </h1>
@@ -554,7 +525,7 @@ const FunnelQuiz = () => {
                       setIndustry(title);
                       setQ2Selection(null);
                       setQ1Selections([]);
-                      celebrate(getIndustryAffirmation(title), () => setPhase("activities"), 1);
+                      setPhase("activities");
                     }}
                     className={`text-left p-4 rounded-xl border-2 transition-all flex items-start gap-3 ${
                       industry === title
@@ -581,7 +552,7 @@ const FunnelQuiz = () => {
           {/* ACTIVITIES */}
           {phase === "activities" && (
             <div className="animate-fade-in">
-              <InlineAffirmation message={inlineMessage} resetKey="activities" />
+              
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-3">
                 {firstName ? `Nice one, ${firstName} — ` : ""}
                 {isStudent ? "what do you actually spend your time doing?" : "what do you actually do at work?"}
@@ -620,7 +591,7 @@ const FunnelQuiz = () => {
               </div>
               <div className="flex justify-end">
                 <button
-                  onClick={() => celebrate("Tick — that's a few real skills already.", () => setPhase("motivation"), 2)}
+                  onClick={() => setPhase("motivation")}
                   disabled={q1Selections.length === 0}
                   className="h-12 px-8 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
@@ -633,7 +604,7 @@ const FunnelQuiz = () => {
           {/* MOTIVATION (Q2) */}
           {phase === "motivation" && (
             <div className="animate-fade-in">
-              <InlineAffirmation message={inlineMessage} resetKey="motivation" />
+              
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-3">
                 Pick the one that describes how you do your best work
               </h1>
@@ -657,7 +628,7 @@ const FunnelQuiz = () => {
               </div>
               <div className="flex justify-end">
                 <button
-                  onClick={() => celebrate("Interesting. Not many people can describe that the way you did.", () => setPhase("proud"), 3)}
+                  onClick={() => setPhase("proud")}
                   disabled={!q2Selection}
                   className="h-12 px-8 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
@@ -670,7 +641,7 @@ const FunnelQuiz = () => {
           {/* PROUD MOMENT */}
           {phase === "proud" && (
             <div className="animate-fade-in">
-              <InlineAffirmation message={inlineMessage} resetKey="proud" />
+              
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-3">
                 {q3Heading}
               </h1>
@@ -693,13 +664,13 @@ const FunnelQuiz = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-3 sm:justify-end items-stretch sm:items-center">
                 <button
-                  onClick={() => celebrate("Right — let's put it all together.", () => startAnalysing(true), 4)}
+                  onClick={() => startAnalysing(true)}
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2 sm:mr-auto"
                 >
                   Skip and use my answers so far →
                 </button>
                 <button
-                  onClick={() => celebrate("Right — let's put it all together.", () => startAnalysing(false), 4)}
+                  onClick={() => startAnalysing(false)}
                   disabled={q4Answer.length < 15}
                   className="h-12 px-8 rounded-xl bg-primary text-primary-foreground font-bold hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                 >
