@@ -509,6 +509,7 @@ const FunnelQuiz = () => {
           {/* PATH */}
           {phase === "path" && (
             <div className="animate-fade-in">
+              <InlineAffirmation message={inlineMessage} resetKey="path" />
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-3">
                 First, which best describes you?
               </h1>
@@ -538,6 +539,7 @@ const FunnelQuiz = () => {
           {/* INDUSTRY */}
           {phase === "industry" && (
             <div className="animate-fade-in">
+              <InlineAffirmation message={inlineMessage} resetKey="industry" />
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-3">
                 {isStudent ? "What area interests you most?" : "What industry do you work in?"}
               </h1>
@@ -579,8 +581,10 @@ const FunnelQuiz = () => {
           {/* ACTIVITIES */}
           {phase === "activities" && (
             <div className="animate-fade-in">
+              <InlineAffirmation message={inlineMessage} resetKey="activities" />
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-3">
-                {isStudent ? "What do you actually spend your time doing?" : "What do you actually do at work?"}
+                {firstName ? `Nice one, ${firstName} — ` : ""}
+                {isStudent ? "what do you actually spend your time doing?" : "what do you actually do at work?"}
               </h1>
               <p className="text-base text-muted-foreground mb-8">
                 Pick everything that applies. Most people pick 4–6.
@@ -629,6 +633,7 @@ const FunnelQuiz = () => {
           {/* MOTIVATION (Q2) */}
           {phase === "motivation" && (
             <div className="animate-fade-in">
+              <InlineAffirmation message={inlineMessage} resetKey="motivation" />
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-3">
                 Pick the one that describes how you do your best work
               </h1>
@@ -665,6 +670,7 @@ const FunnelQuiz = () => {
           {/* PROUD MOMENT */}
           {phase === "proud" && (
             <div className="animate-fade-in">
+              <InlineAffirmation message={inlineMessage} resetKey="proud" />
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground mb-3">
                 {q3Heading}
               </h1>
