@@ -261,9 +261,9 @@ const FunnelQuiz = () => {
     | "celebrate";
   const [phase, setPhase] = useState<Phase>(hasPrefill ? "activities" : "name");
 
-  // Affirmation transition: when set, shows AffirmationScreen, then advances to `next`
-  const [affirmation, setAffirmation] = useState<{ message: string; next: Phase } | null>(null);
-  const showAffirmation = (message: string, next: Phase) => setAffirmation({ message, next });
+  // Affirmation transition: when set, shows AffirmationScreen, then runs `next`
+  const [affirmation, setAffirmation] = useState<{ message: string; next: () => void } | null>(null);
+  const showAffirmation = (message: string, next: () => void) => setAffirmation({ message, next });
 
   // First name (Q0)
   const [firstName, setFirstName] = useState<string>(() => {
@@ -361,7 +361,7 @@ const FunnelQuiz = () => {
     const msg = cleaned
       ? `Lovely, ${cleaned} — let's see what you've been up to.`
       : "Let's see what you've been up to.";
-    showAffirmation(msg, "path");
+    showAffirmation(msg, () => setPhase("path"));
   };
 
   const exitQuiz = () => navigate("/");
