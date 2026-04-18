@@ -552,7 +552,7 @@ const FunnelQuiz = () => {
                       setIndustry(title);
                       setQ2Selection(null);
                       setQ1Selections([]);
-                      showAffirmation(getIndustryAffirmation(title), () => setPhase("activities"));
+                      celebrate(getIndustryAffirmation(title), () => setPhase("activities"), 1);
                     }}
                     className={`text-left p-4 rounded-xl border-2 transition-all flex items-start gap-3 ${
                       industry === title
