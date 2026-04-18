@@ -249,10 +249,32 @@ const FunnelQuiz = () => {
   const prefill = (location.state as FunnelLocationState | null) || null;
   const hasPrefill = !!prefill?.prefillIndustry;
 
-  const [step, setStep] = useState(1); // 1..5 visible; we use phase=path|industry|activities|motivation|proud|analysing|celebrate
-  const [phase, setPhase] = useState<"path" | "industry" | "activities" | "motivation" | "proud" | "analysing" | "celebrate">(
-    hasPrefill ? "activities" : "path"
-  );
+  const [step, setStep] = useState(1);
+  type Phase =
+    | "name"
+    | "path"
+    | "industry"
+    | "activities"
+    | "motivation"
+    | "proud"
+    | "analysing"
+    | "celebrate";
+  const [phase, setPhase] = useState<Phase>(hasPrefill ? "activities" : "name");
+
+  // Affirmation transition: when set, shows AffirmationScreen, then advances to `next`
+  const [affirmation, setAffirmation] = useState<{ message: string; next: Phase } | null>(null);
+  const showAffirmation = (message: string, next: Phase) => setAffirmation({ message, next });
+
+  // First name (Q0)
+  const [firstName, setFirstName] = useState<string>(() => {
+    if (typeof window === "undefined") return "";
+    try { return localStorage.getItem(FIRST_NAME_KEY) ?? ""; } catch { return ""; }
+  });
+  const [nameInput, setNameInput] = useState<string>(firstName);
+  const persistFirstName = (value: string) => {
+    setFirstName(value);
+    try { localStorage.setItem(FIRST_NAME_KEY, value); } catch { /* ignore */ }
+  };
 
   const [isStudent, setIsStudent] = useState(prefill?.isStudent ?? false);
   const [industry, setIndustry] = useState<string | null>(prefill?.prefillIndustry ?? null);
@@ -278,8 +300,9 @@ const FunnelQuiz = () => {
   const q3Placeholder = industryConfig?.q4.placeholder
     ?? "e.g. I trained 3 new starters, I reorganised how we handle complaints, I hit my sales target during a really tough month…";
 
-  // Step ↔ phase mapping
-  const phaseToStep: Record<string, number> = {
+  // Step ↔ phase mapping. `name` is Step 0 (warm-up).
+  const phaseToStep: Record<Phase, number> = {
+    name: 0,
     path: 1,
     industry: 2,
     activities: 3,
@@ -289,6 +312,7 @@ const FunnelQuiz = () => {
     celebrate: 5,
   };
   const currentStep = phaseToStep[phase];
+  const isWarmup = phase === "name";
 
   // Analysing animation
   useEffect(() => {
