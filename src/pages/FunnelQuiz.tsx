@@ -839,18 +839,6 @@ const FunnelQuiz = () => {
           )}
         </div>
       </main>
-
-      {/* Affirmation transition overlay */}
-      {affirmation && (
-        <AffirmationScreen
-          message={affirmation.message}
-          onContinue={() => {
-            const fn = affirmation.next;
-            setAffirmation(null);
-            fn();
-          }}
-        />
-      )}
     </div>
   );
 };
