@@ -261,9 +261,17 @@ const FunnelQuiz = () => {
     | "celebrate";
   const [phase, setPhase] = useState<Phase>(hasPrefill ? "activities" : "name");
 
-  // Affirmation transition: when set, shows AffirmationScreen, then runs `next`
-  const [affirmation, setAffirmation] = useState<{ message: string; next: () => void } | null>(null);
-  const showAffirmation = (message: string, next: () => void) => setAffirmation({ message, next });
+  // Inline celebration: shows a small pill above the next step's headline + briefly pulses the just-completed dot
+  const [inlineMessage, setInlineMessage] = useState<string>("");
+  const [pulseIndex, setPulseIndex] = useState<number | null>(null);
+  const celebrate = (message: string, next: () => void, completedStep?: number) => {
+    setInlineMessage(message);
+    if (completedStep) {
+      setPulseIndex(completedStep);
+      setTimeout(() => setPulseIndex(null), 700);
+    }
+    next();
+  };
 
   // First name (Q0)
   const [firstName, setFirstName] = useState<string>(() => {
